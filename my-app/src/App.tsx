@@ -40,7 +40,6 @@ function App() {
             <Route path="*" element={<Error></Error>} />
           </Route>
         </Routes>
-        נכנגכנ
       </div>
     </Router>
   );
