@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import Admin from "./Admin";
 import Coupon from "./Coupon";
-import "./css-files/App.css";
+import "../css-files/App.css";
 import Customer from "./Customer";
 import Error from "./Error";
 import HomePage from "./HomePage";

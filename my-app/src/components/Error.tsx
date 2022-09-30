@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./css-files/App.css";
+import "../css-files/App.css";
 import LoginPage from "./LoginPage";
 
 function Error() {
