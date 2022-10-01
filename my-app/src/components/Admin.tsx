@@ -7,13 +7,16 @@ function Admin() {
   const [active, setActive] = useState(false);
 
   const showMeData = (): JSX.Element => {
-    return <AllCouponOfCompany isActive={active}></AllCouponOfCompany>;
+    return <AllCouponOfCompany isActive={true}></AllCouponOfCompany>;
   };
 
   return (
     <>
+
+
       I am an admin
       {active && showMeData}
+     
       <button
         onClick={() => {
           setActive(!active);
@@ -21,7 +24,10 @@ function Admin() {
       >
         show me data
       </button>
+      
       <div>stam to check </div>
+    
+
     </>
   );
 }
