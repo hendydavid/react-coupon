@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {login,logout} from "../features/UserReducer"
+import {login,logout} from './features/UserReducer'
 
 
 function LoginExample() {
