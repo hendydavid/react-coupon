@@ -5,23 +5,13 @@ import validator from "validator";
 import Emailnpute from "../../Utils/Emailnpute";
 
 const AddCompany = () => {
-  const [display, setDisplay] = useState("none");
-  const [isDisable, setDisable] = useState(true);
-  const [emailFromState, setEmail] = useState("");
 
+  const [emailFromState, setEmail] = useState("");
   const companyNameRef = useRef<HTMLInputElement>(null);
   const passRef = useRef<HTMLInputElement>(null);
+  const o = 'hwllo';
 
-  const validateEmail = (e: any) => {
-    if (!validator.isEmail(e.target.value)) {
-      setDisplay("block");
-      console.log("i am here not V ");
-      setDisable(true);
-    } else {
-      setDisplay("none");
-      setDisable(false);
-    }
-  };
+  
 
   const addCompanyHandler = (event: any) => {
     event.preventDefault();
@@ -42,6 +32,7 @@ const AddCompany = () => {
 
   return (
     <>
+       
       <h2>Please Add A New Company</h2>
       <form onSubmit={addCompanyHandler}>
         <label>Company Name</label>
