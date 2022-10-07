@@ -23,9 +23,9 @@ export interface Customer {
 
 export interface Company {
     companyId:Number,
-    companyName:String
-    email:String
-    password:String
+    companyName:string
+    email:string
+    password:string
     dateCreated:Date
     coupons:Coupon[], 
 }
