@@ -1,5 +1,5 @@
 
-const API_URL = "http://localhost:8080/admin";
+const API_URL = "http://localhost:8080/";
 
 const addCompanyHandler = async (company:any) => {
 
@@ -11,7 +11,7 @@ const addCompanyHandler = async (company:any) => {
     body: JSON.stringify(company),
   };
 
-  const response = await fetch(API_URL + "/addCompany", requestOptions);
+  const response = await fetch(API_URL + "/admin/addCompany", requestOptions);
 
   if (!response.ok) {
     const error = await response.json();
@@ -20,6 +20,8 @@ const addCompanyHandler = async (company:any) => {
 
   // console.log(JSON.stringify(company));
 };
+
+
 
 
 export const API = {

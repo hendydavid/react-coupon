@@ -1,15 +1,15 @@
 export interface Coupon {
-  couponId: Number;
+  couponId: number;
   couponName: String;
   description: String;
   company: Number;
   customers: Customer[];
   amount: Number;
-  price: Number;
+  price: number;
   categoryId: Number;
   imageURL?: String;
-  startDate: Date;
-  endDate: Date;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export interface Customer {
@@ -22,10 +22,10 @@ export interface Customer {
 }
 
 export interface Company {
-    companyId:Number,
-    companyName:string
-    email:string
-    password:string
-    dateCreated:Date
-    coupons:Coupon[], 
+  companyId: Number,
+  companyName: string
+  email: string
+  password: string
+  dateCreated: Date
+  coupons: Coupon[],
 }
