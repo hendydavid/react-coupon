@@ -15,7 +15,6 @@ const Emailnpute = (prop: Prop) => {
   const validateEmail = (e: any) => {
     if (!validator.isEmail(e.target.value)) {
       setDisplay("block");
-      console.log("i am here not V ");
       setDisable(true);
     } else {
       prop.setEmail(e.target.value)

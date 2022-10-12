@@ -18,7 +18,6 @@ const addCompanyHandler = async (company:any) => {
     console.log(JSON.stringify(error));
   }
 
-  // console.log(JSON.stringify(company));
 };
 
 
