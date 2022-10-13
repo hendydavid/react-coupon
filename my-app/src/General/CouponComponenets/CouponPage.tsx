@@ -26,8 +26,7 @@ const CouponPage = (props: Props) => {
     amount: 0,
     price: 0,
     categoryId: 0,
-    imageURL: ''
-
+    imageURL: "",
   };
 
   const [coupon, setCoupon] = useState<Coupon>(baseCoupon);
@@ -52,34 +51,38 @@ const CouponPage = (props: Props) => {
     setCoupon(couponFromDB);
   };
 
-  const purchaseCouponHandler = (couponId: number) =>  {
-    const myToken = "get from redux";
+  const purchaseCouponHandler = (couponId: number) => {
 
+    const myToken = "get from redux";
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json", token: myToken },
-      body: JSON.stringify(couponId),
+      headers: { "Content-Type": "application/json", token: myToken},
+      body: ''
     };
 
     fetch(
       "http://localhost:8080/customers/addCustomerPurchase/" + { couponId },
       requestOptions
-    ).then((response) => {
-      if (!response.ok) {
-        console.log(0)
-       // nav to message component of customer 
-      }
-      else {
-      // succsseful message    
-      }
-    })
-    .catch(error =>{console.log(error)})
-    ;
+    )
+      .then((response) => {
+        if (!response.ok) {
+          console.log(0);
+         
+        } else {
+          console.log(1);
+          
+        }
+      })
+      
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-//   useEffect(() => {
-//     getCouponByIdHandler(coupon.couponId);
-//   }, []);
+
+  //   useEffect(() => {
+  //     getCouponByIdHandler(coupon.couponId);
+  //   }, []);
 
   return (
     <>
@@ -87,7 +90,11 @@ const CouponPage = (props: Props) => {
       <div>
         <img src={coupon.imageURL} alt="" />
         price : {coupon.price}
-        <button onClick={()=>{purchaseCouponHandler(coupon.couponId)}}>
+        <button
+          onClick={() => {
+            purchaseCouponHandler(coupon.couponId);
+          }}
+        >
           purchase this coupon
         </button>
       </div>
