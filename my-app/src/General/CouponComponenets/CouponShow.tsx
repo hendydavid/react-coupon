@@ -10,8 +10,8 @@ const CouponShow = (props : Props) => {
     return (
         <li>
             <h2>{props.image}</h2>
-            <h2>{props.description}</h2>
-            <h3>{props.price}</h3>
+            <h2>Description: {props.description}</h2>
+            <h3>Price: {props.price}</h3>
         </li>  
 );
 }

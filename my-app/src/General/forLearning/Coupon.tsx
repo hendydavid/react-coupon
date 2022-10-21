@@ -1,6 +1,4 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "../css-files/App.css";
 import { useNavigate} from "react-router-dom";
 
 function Coupon() {

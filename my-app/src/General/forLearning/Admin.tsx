@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AllCouponOfCompany from "./AllCouponOfCompany";
-import "../css-files/App.css";
 
 function Admin() {
   const [active, setActive] = useState(false);

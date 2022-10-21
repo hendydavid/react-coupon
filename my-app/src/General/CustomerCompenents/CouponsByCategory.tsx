@@ -1,32 +1,49 @@
-import {useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import CouponList from "../CouponComponenets/CouponList";
 
-
 type Props = {
-    categoryId : number
-}
+  categoryId: number;
+};
 
-const CouponsByCategory = (props: Props) =>{
+const CouponsByCategory = (props: Props) => {
+  const [coupons, setCoupons] = useState([]);
 
-    const [coupons, setCoupons] = useState([]);
+  const couponByCategoryHandler = async () => {
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json", token: "token" },
+    };
 
-    const couponsByCategoryHandler = useCallback(async (categoryId : number) => {
-        try {
-            
-            const response = await fetch("http://localhost:8080/customer/getCustomerCouponByCategory/" + {categoryId});
-            if(!response.ok){
-                throw new Error('Something went wrong!');
-            }
-            const data = await response.json();
-            setCoupons(data);
-        } catch (error : any) {
-            console.log(error.message);
-        }
-    }, []);
+    try {
+      const response = await fetch(
+        "http://localhost:8080/customers/getCustomerCouponByCategory/" +
+          props.categoryId,
+        requestOptions
+      );
 
-    return(
-        <CouponList coupons = {coupons}/>
-    )
-}
+      if (!response.ok) {
+        console.log("error");
+      } else {
+        const data = await response.json();
+        setCoupons(data);
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
+  return (
+    <>
+      <button
+        onClick={() => {
+          couponByCategoryHandler();
+        }}
+      >
+        Click Me For Coupon Category
+      </button>
+      <CouponList coupons={coupons} />
+    </>
+  );
+};
 
 export default CouponsByCategory;

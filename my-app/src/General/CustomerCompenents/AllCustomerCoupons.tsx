@@ -1,29 +1,45 @@
 import { useCallback, useState } from "react";
 import CouponList from "../CouponComponenets/CouponList";
-import couponList from '../CouponComponenets/CouponList';
-
+import couponList from "../CouponComponenets/CouponList";
 
 const AllCustomerCoupons = () => {
+  const [coupons, setCoupons] = useState([]);
 
-    const [coupons, setCoupons] = useState([])
+  const allCouponsHandler = async () => {
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json", token: "token" },
+    };
 
-    const allCouponsHandler = useCallback(async () => {
-        try {
-            
-            const response = await fetch("http://localhost:8080/customer/getAllCustomerCoupon");
-            if(!response.ok){
-                throw new Error('Something went wrong!');
-            }
-            const data = await response.json();
-            setCoupons(data);
-        } catch (error : any) {
-            console.log(error.message);
-        }
-    }, []);
+    try {
+      const response = await fetch(
+        "http://localhost:8080/customers/getAllCustomerCoupon",
+        requestOptions
+      );
 
-    return(
-        <CouponList coupons = {coupons}/>
-    )
-}
+      if (!response.ok) {
+        console.log("error");
+      } else {
+        const data = await response.json();
+        setCoupons(data);
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
 
-export default AllCustomerCoupons
+  return (
+    <>
+      <button
+        onClick={() => {
+          allCouponsHandler();
+        }}
+      >
+        Click Me
+      </button>
+      <CouponList coupons={coupons} />
+    </>
+  );
+};
+
+export default AllCustomerCoupons;

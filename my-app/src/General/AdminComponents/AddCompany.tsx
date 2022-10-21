@@ -3,15 +3,12 @@ import { API } from "../../Utils/APIWrapper";
 import Emailnpute from "../../Utils/Emailnpute";
 
 const AddCompany = () => {
-
   const [emailFromState, setEmail] = useState("");
   const companyNameRef = useRef<HTMLInputElement>(null);
   const passRef = useRef<HTMLInputElement>(null);
 
-    const addCompanyHandler = (event: any) => {
+  const addCompanyHandler = (event: any) => {
     event.preventDefault();
-    let i: string = "";
-    i = companyNameRef.current!.value;
     const company = {
       companyId: 0,
       companyName: companyNameRef.current!.value,
@@ -24,10 +21,8 @@ const AddCompany = () => {
     API.addCompany(company);
   };
 
-
   return (
     <>
-       
       <h2>Please Add A New Company</h2>
       <form onSubmit={addCompanyHandler}>
         <label>Company Name</label>
@@ -37,6 +32,7 @@ const AddCompany = () => {
         <Emailnpute
           functionHndler={addCompanyHandler}
           setEmail={setEmail}
+          buttonValue={"Add Company"}
         ></Emailnpute>
       </form>
     </>

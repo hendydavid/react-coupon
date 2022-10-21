@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import {useState } from "react";
 import { useDispatch } from "react-redux";
 import { changeColor } from "./features/Teme";
 
