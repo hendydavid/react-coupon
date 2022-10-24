@@ -8,7 +8,7 @@ const initState:Company={
   password: '',
   dateCreated: new Date(),
   coupons: [],
-};;
+};
 
 export const UpdateCompanySlice = createSlice({
   name: "companyUpdate",
@@ -16,18 +16,18 @@ export const UpdateCompanySlice = createSlice({
   initialState: { value: initState },
 
   reducers: {
-    changeCompamy: (state, action) => {
+    changeCompany: (state, action) => {
       state.value = action.payload;
     },
-    reverseState: (state) => {
+    reverseCompanyState: (state) => {
       state.value = initState;
     },
    
   }
 });
 
-export const { changeCompamy } = UpdateCompanySlice.actions;
-export const { reverseState } = UpdateCompanySlice.actions;
+export const { changeCompany } = UpdateCompanySlice.actions;
+export const { reverseCompanyState } = UpdateCompanySlice.actions;
 
 export default UpdateCompanySlice.reducer;
 

@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Company } from "../Models/models";
-import UpdateCompany from "./UpdateCompany";
+import UpdateAndDeleteCompany from "./UpdateAndDeleteCompany";
 
-
-const UpdateCompanyList = () => {
-  const companyArray = [
-    {
-      companyId: 0,
-      companyName: "",
-      email: "emailFromState",
-      password: "",
-      dateCreated: new Date(),
-      coupons: [],
-    },
-  ];
+const UpdateAndDeleteCompanyList = () => {
+ const [reloading,setLoading] = useState(true) 
+ let keyNumber =1;
   const [companies, setCompany] = useState([]);
 
   const fetchCompany = async () => {
@@ -35,16 +26,15 @@ const UpdateCompanyList = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchCompany();
-
   }, []);
-  let counter =1;   
+  let counter = 1;
   return (
     <div>
       {companies.map((company) => (
-        <UpdateCompany company={company} key={counter++}></UpdateCompany>
+       <UpdateAndDeleteCompany company={company} key={keyNumber++}></UpdateAndDeleteCompany>
       ))}
     </div>
   );
 };
 
-export default UpdateCompanyList;
+export default UpdateAndDeleteCompanyList;

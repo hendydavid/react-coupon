@@ -6,18 +6,8 @@ const AdminPage = () => {
     <Header />
 
     /*
- 
-   list of alll action agter login (with routing )
-
-  addCompany
-getAllCompanies
-updateCompany
-deleteCompany
-addCustomer
-updateCustomer
-deleteCustomer
-
-   
+    
+updateCustomer    
    */
   );
 };

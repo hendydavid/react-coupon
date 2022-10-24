@@ -1,14 +1,15 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Company } from "../Models/models";
-import { changeCompamy } from "../Redex/UpdateCompanySlice";
-
+import { changeCompany } from "../Redux/UpdateCompanySlice";
+import { API } from "../../Utils/APIWrapper";
 type Prop = { company: Company };
 
-const UpdateCompany = (prop: Prop) => {
+const UpdateAndDeleteCompany = (prop: Prop) => {
   const dispatch = useDispatch();
+
   const dispachCompany = (myCompany: Company) => {
-    dispatch(changeCompamy(prop.company));
+    dispatch(changeCompany(prop.company));
   };
 
   return (
@@ -17,7 +18,19 @@ const UpdateCompany = (prop: Prop) => {
         company name: {prop.company.companyName}
         company email: {prop.company.email}
         company issue date: {prop.company.dateCreated}
-        <button>Delete</button>{" "}
+        <button
+          onClick={() => {
+            if (
+              window.confirm(
+                `are you would you like to delete ${prop.company.companyName}`
+              )
+            ) {
+              API.deleteCompany(Number(prop.company.companyId));
+            }
+          }}
+        >
+          Delete
+        </button>{" "}
         <button
           onClick={() => {
             dispachCompany(prop.company);
@@ -30,4 +43,4 @@ const UpdateCompany = (prop: Prop) => {
   );
 };
 
-export default UpdateCompany;
+export default UpdateAndDeleteCompany;

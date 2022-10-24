@@ -1,8 +1,10 @@
-import { type } from "@testing-library/user-event/dist/type";
 import React, { useRef, useState } from "react";
 import validator from "validator";
+import Alert from "@mui/material/Alert";
+import { Stack } from "@mui/system";
 
 type Prop = {
+
   functionHndler: (e: any) => any;
   setEmail: (email: string) => void;
   inputValue?: string;
@@ -10,6 +12,7 @@ type Prop = {
 };
 
 const Emailnpute = (prop: Prop) => {
+ 
   const [display, setDisplay] = useState("none");
   const [isDisable, setDisable] = useState(true);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -35,7 +38,11 @@ const Emailnpute = (prop: Prop) => {
         name="email"
         ref={emailRef}
       />
-      <p style={{ display: display }}>Please Enter A valid Email </p>
+      <div style={{ display: display }}>
+        <Stack sx={{ width: "inherit" }} spacing={2} marginTop={2}>
+          <Alert severity="warning">Please Enter A Valid Email</Alert>
+        </Stack>
+      </div>
       <button disabled={isDisable} onClick={prop.functionHndler} type="submit">
         {prop.buttonValue}
       </button>

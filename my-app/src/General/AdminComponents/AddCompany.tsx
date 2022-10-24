@@ -25,15 +25,17 @@ const AddCompany = () => {
     <>
       <h2>Please Add A New Company</h2>
       <form onSubmit={addCompanyHandler}>
-        <label>Company Name</label>
-        <input type="text" ref={companyNameRef} />
-        <label>Password</label>
-        <input type="password" ref={passRef} />
-        <Emailnpute
-          functionHndler={addCompanyHandler}
-          setEmail={setEmail}
-          buttonValue={"Add Company"}
-        ></Emailnpute>
+        <div className="form">
+          <label>Company Name</label>
+          <input type="text" ref={companyNameRef} />
+          <label>Password</label>
+          <input type="password" ref={passRef} />
+          <Emailnpute
+            functionHndler={addCompanyHandler}
+            setEmail={setEmail}
+            buttonValue={"Add Company"}
+          ></Emailnpute>
+        </div>
       </form>
     </>
   );
