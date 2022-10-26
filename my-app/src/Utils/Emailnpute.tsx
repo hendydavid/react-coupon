@@ -4,7 +4,6 @@ import Alert from "@mui/material/Alert";
 import { Stack } from "@mui/system";
 
 type Prop = {
-
   functionHndler: (e: any) => any;
   setEmail: (email: string) => void;
   inputValue?: string;
@@ -12,7 +11,6 @@ type Prop = {
 };
 
 const Emailnpute = (prop: Prop) => {
- 
   const [display, setDisplay] = useState("none");
   const [isDisable, setDisable] = useState(true);
   const emailRef = useRef<HTMLInputElement>(null);

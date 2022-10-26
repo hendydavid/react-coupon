@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import UpdateAndDeleteCustomer from "./UpdateAndDeleteCustomer";
+import { useParams } from "react-router-dom";
+import { Customer } from "../Models/models";
+import { useDispatch } from "react-redux";
+import { changeCustomer } from "../Redux/UpdateCustomerSlice";
 
 type Props = {};
 
 const UpdateAndDeleteCustomersList = (props: Props) => {
-  const [customers, setCustomers] = useState([]);
+  const dispatch = useDispatch();
+  const [customers, setCustomers] = useState<Customer[]>([]);
 
   const fetchCompany = async () => {
     const requestOptions = {
@@ -16,9 +21,11 @@ const UpdateAndDeleteCustomersList = (props: Props) => {
       "http://localhost:8080/admin/getAllCustomers",
       requestOptions
     );
+
     if (response.ok) {
       const data = await response.json();
       setCustomers(data);
+      dispatch(changeCustomer(data));
     }
   };
 
@@ -32,7 +39,10 @@ const UpdateAndDeleteCustomersList = (props: Props) => {
   return (
     <div>
       {customers.map((customer) => (
-        <UpdateAndDeleteCustomer customer={customer} key={keyNumber++}></UpdateAndDeleteCustomer>
+        <UpdateAndDeleteCustomer
+          customer={customer}
+          key={keyNumber++}
+        ></UpdateAndDeleteCustomer>
       ))}
     </div>
   );

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Company } from "../Models/models";
 import UpdateAndDeleteCompany from "./UpdateAndDeleteCompany";
+import { useDispatch } from "react-redux";
+import { changeCompany } from "../Redux/UpdateCompanySlice";
 
 const UpdateAndDeleteCompanyList = () => {
- const [reloading,setLoading] = useState(true) 
- let keyNumber =1;
+  const dispatch = useDispatch();
+  let keyNumber = 1;
   const [companies, setCompany] = useState([]);
 
   const fetchCompany = async () => {
@@ -19,6 +21,7 @@ const UpdateAndDeleteCompanyList = () => {
     );
     if (response.ok) {
       const data = await response.json();
+      dispatch(changeCompany(data));
       setCompany(data);
     }
   };
@@ -31,7 +34,10 @@ const UpdateAndDeleteCompanyList = () => {
   return (
     <div>
       {companies.map((company) => (
-       <UpdateAndDeleteCompany company={company} key={keyNumber++}></UpdateAndDeleteCompany>
+        <UpdateAndDeleteCompany
+          company={company}
+          key={keyNumber++}
+        ></UpdateAndDeleteCompany>
       ))}
     </div>
   );

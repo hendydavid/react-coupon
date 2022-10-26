@@ -61,11 +61,11 @@ const addCustomerHandler = async (customer: Customer) => {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", token: myToken },
-    body: "",
+    body: JSON.stringify(customer),
   };
 
   const response = await fetch(
-    API_URL + "admin/addCustomer" + customer.customerId,
+    API_URL + "admin/addCustomer",
     requestOptions
   );
 

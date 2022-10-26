@@ -8,6 +8,8 @@ import Theme from './General/forLearning/features/Teme'
 import UpdateCompanySlice from './General/Redux/UpdateCompanySlice'
 import UpdateCustomerSlice from './General/Redux/UpdateCustomerSlice'
 import { configureStore } from '@reduxjs/toolkit';
+import { BrowserRouter } from 'react-router-dom';
+
 
 
 const store = configureStore({
@@ -30,7 +32,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-    <App />
+      <BrowserRouter>
+      <App />
+      </BrowserRouter>
+
     </Provider>
    
   </React.StrictMode>

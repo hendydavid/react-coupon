@@ -1,53 +1,67 @@
 import React, { useEffect, useRef, useState } from "react";
 import Emailnpute from "../../Utils/Emailnpute";
-import { useDispatch, useSelector } from "react-redux";
+import {useSelector } from "react-redux";
 import { API } from "../../Utils/APIWrapper";
-import { reverseCompanyState } from "../Redux/UpdateCompanySlice";
+import { useParams } from "react-router-dom";
+import { Company } from "../Models/models";
 
 const UpdateCompanyPage = () => {
-  const [emailFromState, setEmail] = useState("");
-  const companyNameRef = useRef<HTMLInputElement>(null);
-  const passRef = useRef<HTMLInputElement>(null);
-
-  const dispatch = useDispatch();
-
   const companyFromRedux = useSelector(
     (state: any) => state.companyUpdate.value
   );
 
+  let { companyId } = useParams();
+  const [company, setCompany] = useState<Company>();
+  const [emailFromState, setEmail] = useState("");
+
+  const companyNameRef = useRef<HTMLInputElement>(null);
+  const passRef = useRef<HTMLInputElement>(null);
+
+  const emptyCompany: Company = {
+    companyId: 0,
+    companyName: "",
+    email: "",
+    password: "",
+    dateCreated: new Date(),
+    coupons: [],
+  };
   const updateCompanyHandler = (event: any) => {
     event.preventDefault();
-    const company = {
-      companyId: companyFromRedux.companyId,
+    const mycompany = {
+      companyId: Number(company!.companyId),
       companyName: companyNameRef.current!.value,
       email: emailFromState,
       password: passRef.current!.value,
       dateCreated: new Date(),
       coupons: [],
     };
-    API.updateCompany(company);
-    dispatch(reverseCompanyState());
+    API.updateCompany(mycompany);
+    setCompany(emptyCompany);
   };
+
+  useEffect(() => {
+    setCompany(
+      companyFromRedux.find((c: Company) => c.companyId === Number(companyId))
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [companyId]);
 
   return (
     <form onSubmit={updateCompanyHandler}>
+      {company && company!.companyName}
       <div className="form">
         <label>Company Name</label>
         <input
           type="text"
           ref={companyNameRef}
-          defaultValue={companyFromRedux.companyName}
+          defaultValue={company && company!.companyName}
         />
         <label>Password</label>
-        <input
-          type="password"
-          ref={passRef}
-          defaultValue={companyFromRedux.password}
-        />
+        <input type="password" ref={passRef} defaultValue={company?.password} />
         <Emailnpute
           functionHndler={updateCompanyHandler}
           setEmail={setEmail}
-          inputValue={companyFromRedux.email}
+          inputValue={company && company!.email}
           buttonValue={"update company"}
         ></Emailnpute>
       </div>

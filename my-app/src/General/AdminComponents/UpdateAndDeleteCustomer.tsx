@@ -2,7 +2,7 @@ import React from "react";
 import { Customer } from "../Models/models";
 import { API } from "../../Utils/APIWrapper";
 import { changeCustomer } from "../Redux/UpdateCustomerSlice";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 type props = {
   customer: Customer;
 };
@@ -11,12 +11,9 @@ const UpdateAndDeleteCustomer = (props: props) => {
   let firstName = props.customer.firstName;
   let lastName = props.customer.lastName;
 
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const dispatchCustomer = (customer: Customer) => {
-    dispatch(changeCustomer(customer));
-  };
-
+  
   return (
     <>
       <div>
@@ -39,7 +36,7 @@ const UpdateAndDeleteCustomer = (props: props) => {
       </button>
       <button
         onClick={() => {
-          dispatchCustomer(props.customer);
+          navigate(`/admin/updateCustomerPage/${props.customer.customerId}`);
         }}
       >
         Edit
