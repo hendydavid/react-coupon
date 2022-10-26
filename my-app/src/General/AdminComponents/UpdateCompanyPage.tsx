@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import Emailnpute from "../../Utils/Emailnpute";
 import { useSelector } from "react-redux";
 import { API } from "../../Utils/APIWrapper";
 import { useParams } from "react-router-dom";
 import { Company } from "../Models/models";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-interface IFormInputs {
+export interface IFormInputsCompany {
   companyId: number;
   companyName: string;
   email: string;
@@ -14,6 +13,8 @@ interface IFormInputs {
   dateCreated: Date;
   coupons: [];
 }
+
+
 
 const UpdateCompanyPage = () => {
   let { companyId } = useParams();
@@ -29,7 +30,7 @@ const UpdateCompanyPage = () => {
     formState: { errors },
     handleSubmit,
     resetField,
-  } = useForm<IFormInputs>();
+  } = useForm<IFormInputsCompany>();
 
   const reset = () => {
     resetField("companyName");
@@ -37,7 +38,7 @@ const UpdateCompanyPage = () => {
     resetField("password");
   };
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<IFormInputsCompany> = (data) => {
     console.log(data);
 
     const companyUpdate: Company = {
@@ -117,7 +118,6 @@ const UpdateCompanyPage = () => {
       {errors.password && "password must be with 8 digit minimum"}
       <input type="submit" className="btn" value={"For Example"} />
     </form>
-    {companyId}
     </>
     
   );

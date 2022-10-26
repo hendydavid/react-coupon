@@ -3,12 +3,14 @@ import { useDispatch } from "react-redux";
 import { Company } from "../Models/models";
 import { changeCompany } from "../Redux/UpdateCompanySlice";
 import { API } from "../../Utils/APIWrapper";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { URL } from "../Routing";
+
 type Prop = { company: Company };
 
 const UpdateAndDeleteCompany = (prop: Prop) => {
   const dispatch = useDispatch();
-  const naviaget = useNavigate()
+  const naviaget = useNavigate();
 
   const dispachCompany = (myCompany: Company) => {
     dispatch(changeCompany(prop.company));
@@ -35,7 +37,9 @@ const UpdateAndDeleteCompany = (prop: Prop) => {
         </button>{" "}
         <button
           onClick={() => {
-           naviaget(`/admin/updateCompanyPage/${prop.company.companyId}`)
+            naviaget(
+              URL.adminUrl.updateCompaniesPage + `${prop.company.companyId}`
+            );
           }}
         >
           Edit

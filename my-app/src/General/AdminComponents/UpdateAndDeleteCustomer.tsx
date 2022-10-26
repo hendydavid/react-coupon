@@ -1,7 +1,7 @@
 import React from "react";
 import { Customer } from "../Models/models";
 import { API } from "../../Utils/APIWrapper";
-import { changeCustomer } from "../Redux/UpdateCustomerSlice";
+import { URL } from "../Routing";
 import { useNavigate } from "react-router-dom";
 type props = {
   customer: Customer;
@@ -13,7 +13,6 @@ const UpdateAndDeleteCustomer = (props: props) => {
 
   const navigate = useNavigate();
 
-  
   return (
     <>
       <div>
@@ -36,7 +35,9 @@ const UpdateAndDeleteCustomer = (props: props) => {
       </button>
       <button
         onClick={() => {
-          navigate(`/admin/updateCustomerPage/${props.customer.customerId}`);
+          navigate(
+            URL.adminUrl.updateCustomersPage + `${props.customer.customerId}`
+          );
         }}
       >
         Edit

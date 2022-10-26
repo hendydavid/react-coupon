@@ -7,7 +7,7 @@ import { reverseCustomerState } from "../Redux/UpdateCustomerSlice";
 import { useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-interface IFormInputs {
+export interface IFormInputsCustomer {
   customerId: number;
   firstName: string;
   lastName: string;
@@ -21,7 +21,7 @@ const UpdateCustomerPage = () => {
     formState: { errors },
     handleSubmit,
     resetField,
-  } = useForm<IFormInputs>();
+  } = useForm<IFormInputsCustomer>();
  
   const customerFromRedux = useSelector(
     (state: any) => state.updateCustomer.value
@@ -34,7 +34,7 @@ const UpdateCustomerPage = () => {
     resetField("password");
   };
   
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<IFormInputsCustomer> = (data) => {
     console.log(data);
 
     const customerUpdated: Customer = {

@@ -15,6 +15,24 @@ import GetAllCustomer from "./AdminComponents/GetAllCustomer";
 import AddCompany from "./AdminComponents/AddCompany";
 import AddCustomer from "./AdminComponents/AddCustomer";
 
+export const URL = {
+  adminUrl: {
+    
+    main: "/admin",
+    addCustomer: "/admin/addCustomer",
+    addCompany: "/admin/addCompany",
+    getAllCompany: "/admin/getAllCompanies",
+    getAllCustomer: "/admin/getAllCustomers",
+    editAndDeleteCustomers: "/admin/editAndDeleteCustomers/",
+    editAndDeleteCompanies: "/admin/editAndDeleteCompanies/",
+    updateCustomersPage: "/admin/updateCustomersPage/",
+    updateCompaniesPage: "/admin/updateCompaniesPage/",
+  },
+
+  customersUrl: {},
+  companyUrl: {},
+};
+
 const Routing = (): JSX.Element => {
   return (
     <>
@@ -27,6 +45,7 @@ const Routing = (): JSX.Element => {
         <Route path="/customer/:username" element={<Customer></Customer>} />
         <Route path="*" element={<Error></Error>} />
         <Route path="/coupon" element={<Coupon></Coupon>} />
+        
         {/* here is goin the admin routing  --- the above is just example*/}
         <Route path="/admin" element={<AdminNavBar></AdminNavBar>}>
           <Route
@@ -35,11 +54,11 @@ const Routing = (): JSX.Element => {
           />
           <Route path="/admin/addCompany" element={<AddCompany></AddCompany>} />
           <Route
-            path="/admin/updateCompanyPage/:companyId"
+            path="/admin/updateCompaniesPage/:companyId"
             element={<UpdateCompanyPage></UpdateCompanyPage>}
           />
           <Route
-            path="/admin/updateCustomerPage/:customerId"
+            path="/admin/updateCustomersPage/:customerId"
             element={<UpdateCustomerPage></UpdateCustomerPage>}
           />
           <Route
@@ -55,7 +74,7 @@ const Routing = (): JSX.Element => {
           />
 
           <Route
-            path="/admin/getAllCompany"
+            path="/admin/getAllCompanies"
             element={<GetAllCompany></GetAllCompany>}
           />
           <Route
