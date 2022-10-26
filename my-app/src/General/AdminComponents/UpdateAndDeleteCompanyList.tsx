@@ -30,7 +30,7 @@ const UpdateAndDeleteCompanyList = () => {
   useEffect(() => {
     fetchCompany();
   }, []);
-  let counter = 1;
+
   return (
     <div>
       {companies.map((company) => (

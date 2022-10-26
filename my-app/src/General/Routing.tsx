@@ -11,6 +11,9 @@ import UpdateCompanyPage from "./AdminComponents/UpdateCompanyPage";
 import UpdateAndDeleteCompanyList from "./AdminComponents/UpdateAndDeleteCompanyList";
 import UpdateCustomerPage from "./AdminComponents/UpdateCustomerPage";
 import UpdateAndDeleteCustomersList from "./AdminComponents/UpdateAndDeleteCustomersList";
+import GetAllCustomer from "./AdminComponents/GetAllCustomer";
+import AddCompany from "./AdminComponents/AddCompany";
+import AddCustomer from "./AdminComponents/AddCustomer";
 
 const Routing = (): JSX.Element => {
   return (
@@ -24,24 +27,26 @@ const Routing = (): JSX.Element => {
         <Route path="/customer/:username" element={<Customer></Customer>} />
         <Route path="*" element={<Error></Error>} />
         <Route path="/coupon" element={<Coupon></Coupon>} />
-
-
         {/* here is goin the admin routing  --- the above is just example*/}
         <Route path="/admin" element={<AdminNavBar></AdminNavBar>}>
-         
+          <Route
+            path="/admin/addCustomer"
+            element={<AddCustomer></AddCustomer>}
+          />
+          <Route path="/admin/addCompany" element={<AddCompany></AddCompany>} />
           <Route
             path="/admin/updateCompanyPage/:companyId"
             element={<UpdateCompanyPage></UpdateCompanyPage>}
           />
-
           <Route
             path="/admin/updateCustomerPage/:customerId"
             element={<UpdateCustomerPage></UpdateCustomerPage>}
           />
-
           <Route
             path="/admin/editAndDeleteCustomers/"
-            element={<UpdateAndDeleteCustomersList></UpdateAndDeleteCustomersList>}
+            element={
+              <UpdateAndDeleteCustomersList></UpdateAndDeleteCustomersList>
+            }
           />
 
           <Route
@@ -53,8 +58,11 @@ const Routing = (): JSX.Element => {
             path="/admin/getAllCompany"
             element={<GetAllCompany></GetAllCompany>}
           />
+          <Route
+            path="/admin/getAllCustomers"
+            element={<GetAllCustomer></GetAllCustomer>}
+          />
         </Route>
-      
       </Routes>
     </>
   );

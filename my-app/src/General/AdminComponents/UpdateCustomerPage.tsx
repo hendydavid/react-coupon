@@ -16,10 +16,24 @@ interface IFormInputs {
 }
 
 const UpdateCustomerPage = () => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    resetField,
+  } = useForm<IFormInputs>();
+ 
   const customerFromRedux = useSelector(
     (state: any) => state.updateCustomer.value
   );
-
+   
+  const reset = () => {
+    resetField("firstName");
+    resetField("lastName");
+    resetField("email");
+    resetField("password");
+  };
+  
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     console.log(data);
 
@@ -27,17 +41,15 @@ const UpdateCustomerPage = () => {
       customerId: Number(customerId),
       firstName: data.firstName,
       lastName: data.lastName,
-      email: data.lastName,
+      email: data.email,
       password: data.password,
       coupons: [],
     };
     API.updateCustomer(customerUpdated);
+    reset();
+  
+    
   };
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<IFormInputs>();
 
   const { customerId } = useParams();
   const [customer, setCustomer] = useState<Customer>();
@@ -106,7 +118,6 @@ const UpdateCustomerPage = () => {
       </form> */}
 
       <form onSubmit={handleSubmit(onSubmit)} className="form">
-        
         <label> First Name </label>
         <input
           {...register("firstName", { required: true })}
@@ -135,7 +146,6 @@ const UpdateCustomerPage = () => {
         {errors.password && "password must be with 8 digit minimum"}
         <input type="submit" className="btn" value={"For Example"} />
       </form>
-      {customer?.customerId}
     </>
   );
 };
