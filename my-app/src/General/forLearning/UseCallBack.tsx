@@ -1,4 +1,3 @@
-import { ResultType } from "@remix-run/router/dist/utils";
 import React, { useCallback, useEffect, useState } from "react";
 
 const UseCallBack = () => {

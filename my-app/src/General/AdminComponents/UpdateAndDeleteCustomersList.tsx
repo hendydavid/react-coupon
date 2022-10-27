@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import UpdateAndDeleteCustomer from "./UpdateAndDeleteCustomer";
-import { useParams } from "react-router-dom";
 import { Customer } from "../Models/models";
 import { useDispatch } from "react-redux";
 import { changeCustomer } from "../Redux/UpdateCustomerSlice";
+import Pagination from "../../Utils/Pagination";
 
-type Props = {};
+const UpdateAndDeleteCustomersList = () => {
+  const [reLoading, setReloading] = useState(false);
 
-const UpdateAndDeleteCustomersList = (props: Props) => {
   const dispatch = useDispatch();
   const [customers, setCustomers] = useState<Customer[]>([]);
 
-  const fetchCompany = async () => {
+  const fetchCustomers = async () => {
     const requestOptions = {
       method: "GET",
       headers: { "Content-Type": "application/json", token: "token" },
@@ -29,21 +29,38 @@ const UpdateAndDeleteCustomersList = (props: Props) => {
     }
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = customers.slice(indexOfFirstPost, indexOfLastPost);
+
+  const changepageNumber = (pageNumber: number) => setCurrentPage(pageNumber);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    fetchCompany();
-  }, []);
+    fetchCustomers();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [customers]);
 
   let keyNumber = 1;
 
   return (
     <div>
-      {customers.map((customer) => (
+      {currentPosts.map((customer) => (
         <UpdateAndDeleteCustomer
+          fetchCustomers={fetchCustomers}
           customer={customer}
           key={keyNumber++}
         ></UpdateAndDeleteCustomer>
       ))}
+      <Pagination
+        totalPosts={customers.length}
+        postsPerPage={postsPerPage}
+        setCurrentPage={changepageNumber}
+      ></Pagination>
     </div>
   );
 };

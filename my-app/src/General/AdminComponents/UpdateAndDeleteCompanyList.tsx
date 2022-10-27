@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Company } from "../Models/models";
 import UpdateAndDeleteCompany from "./UpdateAndDeleteCompany";
 import { useDispatch } from "react-redux";
 import { changeCompany } from "../Redux/UpdateCompanySlice";
+import Pagination from "../../Utils/Pagination";
 
 const UpdateAndDeleteCompanyList = () => {
+  
   const dispatch = useDispatch();
-  let keyNumber = 1;
+
   const [companies, setCompany] = useState([]);
 
-  const fetchCompany = async () => {
+  const fetchCompanies = async () => {
     const requestOptions = {
       method: "GET",
       headers: { "Content-Type": "application/json", token: "token" },
@@ -26,19 +27,36 @@ const UpdateAndDeleteCompanyList = () => {
     }
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = companies.slice(indexOfFirstPost, indexOfLastPost);
+
+  const changepageNumber = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  let keyNumber = 1;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    fetchCompany();
-  }, []);
+    fetchCompanies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [companies]);
 
   return (
     <div>
-      {companies.map((company) => (
+      {currentPosts.map((company) => (
         <UpdateAndDeleteCompany
           company={company}
+          fetchCompanies={fetchCompanies}
           key={keyNumber++}
         ></UpdateAndDeleteCompany>
       ))}
+      <Pagination
+        totalPosts={companies.length}
+        postsPerPage={postsPerPage}
+        setCurrentPage={changepageNumber}
+      ></Pagination>
     </div>
   );
 };

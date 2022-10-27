@@ -5,6 +5,7 @@ import { URL } from "../Routing";
 import { useNavigate } from "react-router-dom";
 type props = {
   customer: Customer;
+  fetchCustomers: () => void;
 };
 
 const UpdateAndDeleteCustomer = (props: props) => {
@@ -28,6 +29,7 @@ const UpdateAndDeleteCustomer = (props: props) => {
             )
           ) {
             API.deleteCustomer(props.customer);
+            props.fetchCustomers();
           }
         }}
       >
