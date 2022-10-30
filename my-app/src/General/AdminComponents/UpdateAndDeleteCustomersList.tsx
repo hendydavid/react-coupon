@@ -6,8 +6,6 @@ import { changeCustomer } from "../Redux/UpdateCustomerSlice";
 import Pagination from "../../Utils/Pagination";
 
 const UpdateAndDeleteCustomersList = () => {
-  const [reLoading, setReloading] = useState(false);
-
   const dispatch = useDispatch();
   const [customers, setCustomers] = useState<Customer[]>([]);
 
@@ -26,6 +24,8 @@ const UpdateAndDeleteCustomersList = () => {
       const data = await response.json();
       setCustomers(data);
       dispatch(changeCustomer(data));
+    } else if (!response.ok) {
+      console.log(response.json());
     }
   };
 
@@ -43,12 +43,13 @@ const UpdateAndDeleteCustomersList = () => {
     fetchCustomers();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [customers]);
+  }, []);
 
   let keyNumber = 1;
 
   return (
     <div>
+      <button onClick={()=>fetchCustomers()}></button>
       {currentPosts.map((customer) => (
         <UpdateAndDeleteCustomer
           fetchCustomers={fetchCustomers}

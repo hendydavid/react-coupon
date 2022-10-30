@@ -14,8 +14,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 const store = configureStore({
 reducer:{
-user:UserReducer,
-theme:Theme,
 companyUpdate:UpdateCompanySlice,
 updateCustomer:UpdateCustomerSlice,
 }  

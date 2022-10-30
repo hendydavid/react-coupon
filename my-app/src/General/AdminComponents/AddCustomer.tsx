@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { API } from "../../Utils/APIWrapper";
-import Emailnpute from "../../Utils/Emailnpute";
 import { Customer } from "../Models/models";
 import "../css-files/App.css";
 import { IFormInputsCustomer } from "./UpdateCustomerPage";

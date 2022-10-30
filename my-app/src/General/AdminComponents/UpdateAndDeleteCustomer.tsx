@@ -3,6 +3,7 @@ import { Customer } from "../Models/models";
 import { API } from "../../Utils/APIWrapper";
 import { URL } from "../Routing";
 import { useNavigate } from "react-router-dom";
+
 type props = {
   customer: Customer;
   fetchCustomers: () => void;
@@ -28,8 +29,10 @@ const UpdateAndDeleteCustomer = (props: props) => {
               `are you would you like to delete ${firstName + " " + lastName}`
             )
           ) {
-            API.deleteCustomer(props.customer);
-            props.fetchCustomers();
+            API.deleteCustomer(props.customer, {
+              fetchData: props.fetchCustomers,
+              errorRouting: (message:string)=>{navigate("/admin/error" + message)},
+            });
           }
         }}
       >

@@ -7,13 +7,10 @@ import { URL } from "../Routing";
 type Prop = {
   company: Company;
   fetchCompanies: () => void;
-
 };
 
 const UpdateAndDeleteCompany = (prop: Prop) => {
   const naviaget = useNavigate();
-
- 
 
   return (
     <div>
@@ -28,8 +25,12 @@ const UpdateAndDeleteCompany = (prop: Prop) => {
                 `are you would you like to delete ${prop.company.companyName}`
               )
             ) {
-              API.deleteCompany(Number(prop.company.companyId));
-              prop.fetchCompanies();
+              API.deleteCompany(Number(prop.company.companyId), {
+                fetchData: prop.fetchCompanies,
+                errorRouting: (errorMessage: string) => {
+                  naviaget(URL.adminUrl.errorMessage + errorMessage);
+                },
+              });
             }
           }}
         >

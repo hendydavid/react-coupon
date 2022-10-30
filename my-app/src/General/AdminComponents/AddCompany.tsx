@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { API } from "../../Utils/APIWrapper";
-import Emailnpute from "../../Utils/Emailnpute";
 import { Company } from "../Models/models";
 import { IFormInputsCompany } from "./UpdateCompanyPage";
 

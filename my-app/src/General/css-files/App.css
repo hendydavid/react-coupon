@@ -12,6 +12,12 @@
   padding: 0px 50px;
 }
 
+.icon {
+  text-align: center;
+  color: blue;
+
+}
+
 .form label {
   color: rgb(47, 172, 138)
 }
@@ -57,4 +63,23 @@
   padding: 15px;
   background: rgb(39, 196, 227);
   color: #fff;
+}
+
+.edit,
+.delete {
+  position: relative;
+  top: 0px;
+  right: 0px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.stam {
+  margin: auto;
+  display: flex;
+  justify-content: flex-end;
+  height: 80vh;
+  width: 80vw;
+  background-color: rgb(241, 144, 25);
 }

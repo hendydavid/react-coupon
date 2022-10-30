@@ -1,5 +1,10 @@
 import { Company, Customer } from "../General/Models/models";
 
+interface DeleteAndUpdatePromise {
+  fetchData: () => void;
+  errorRouting: (message: string) => void;
+}
+
 const API_URL = "http://localhost:8080/";
 
 const addCompanyHandler = async (company: any) => {
@@ -36,7 +41,10 @@ const updateCompanyHandler = async (company: any) => {
   }
 };
 
-const deleteCompanyHandler = async (companyId: number) => {
+const deleteCompanyHandler = async (
+  companyId: number,
+  fetching: DeleteAndUpdatePromise
+) => {
   const myToken = "get from redux";
 
   const requestOptions = {
@@ -51,7 +59,10 @@ const deleteCompanyHandler = async (companyId: number) => {
 
   if (!response.ok) {
     const error = await response.json();
-    console.log(JSON.stringify(error));
+    fetching.errorRouting(error.value);
+    console.log(JSON.stringify(error.value));
+  } else {
+    fetching.fetchData();
   }
 };
 
@@ -64,10 +75,7 @@ const addCustomerHandler = async (customer: Customer) => {
     body: JSON.stringify(customer),
   };
 
-  const response = await fetch(
-    API_URL + "admin/addCustomer",
-    requestOptions
-  );
+  const response = await fetch(API_URL + "admin/addCustomer", requestOptions);
 
   if (!response.ok) {
     const error = await response.json();
@@ -97,7 +105,10 @@ const updateCustomerHandler = async (customer: Customer) => {
   }
 };
 
-const deleteCustomerHandler = async (customer: Customer) => {
+const deleteCustomerHandler = (
+  customer: Customer,
+  fetching: DeleteAndUpdatePromise
+) => {
   const myToken = "get from redux";
 
   const requestOptions = {
@@ -106,23 +117,38 @@ const deleteCustomerHandler = async (customer: Customer) => {
     body: JSON.stringify(customer),
   };
 
-  const response = await fetch(
-    API_URL + "admin/deleteCustomer/" + customer.customerId,
-    requestOptions
-  );
+  fetch(API_URL + "admin/deleteCustomer/" + customer.customerId, requestOptions)
+    .then((res) => res.text())
+    .then((text) => {
+      if (text === "false") {
+        fetching.fetchData();
+      }
+    })
+    .catch((error) => {
+      fetching.errorRouting(JSON.stringify(error));
+    });
 
-  if (!response.ok) {
-    const error = await response.json();
-    console.log(JSON.stringify(error));
-  }
+  // const response = await fetch(
+  //   API_URL + "admin/deleteCustomer/" + customer.customerId,
+  //   requestOptions
+  // );
+  // if (response.ok) {
+  //   const res = await response.text();
+  //   let isFalse = res;
+  //   console.log("your res is : " + isFalse);
+  //   console.log(JSON.stringify(res));
+  // } else if (!response.ok) {
+  //   const error = await response.json();
+  //   console.log(JSON.stringify(error));
+  // }
 };
 
 export const API = {
-  
+  // admin components
   addCompany: addCompanyHandler,
   updateCompany: updateCompanyHandler,
   deleteCompany: deleteCompanyHandler,
-  
+
   addCustomer: addCustomerHandler,
   deleteCustomer: deleteCustomerHandler,
   updateCustomer: updateCustomerHandler,

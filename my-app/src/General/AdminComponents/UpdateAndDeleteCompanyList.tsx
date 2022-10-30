@@ -1,30 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import UpdateAndDeleteCompany from "./UpdateAndDeleteCompany";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeCompany } from "../Redux/UpdateCompanySlice";
 import Pagination from "../../Utils/Pagination";
 
 const UpdateAndDeleteCompanyList = () => {
-  
   const dispatch = useDispatch();
 
-  const [companies, setCompany] = useState([]);
+  const [companies, setCompanies] = useState([]);
 
-  const fetchCompanies = async () => {
+  const fetchCompanies = () => {
     const requestOptions = {
       method: "GET",
       headers: { "Content-Type": "application/json", token: "token" },
     };
 
-    const response = await fetch(
-      "http://localhost:8080/admin/getAllCompanies",
-      requestOptions
-    );
-    if (response.ok) {
-      const data = await response.json();
-      dispatch(changeCompany(data));
-      setCompany(data);
-    }
+    //   "http://localhost:8080/admin/getAllCompanies",
+    //   requestOptions
+    // );
+
+    fetch("http://localhost:8080/admin/getAllCompanies", requestOptions)
+      .then((response) => response.json())
+
+      .then((resJson) => {
+        setCompanies(resJson);
+        dispatch(changeCompany(companies));
+      })
+
+      .catch((error) =>
+        console.log("error beem occured" + JSON.stringify(error))
+      );
+
+    // if (response.ok) {
+    //   const data = await response.json();
+    //   setCompanies(data);
+    //   dispatch(changeCompany(data));
+    // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,18 +49,19 @@ const UpdateAndDeleteCompanyList = () => {
   const changepageNumber = (pageNumber: number) => setCurrentPage(pageNumber);
 
   let keyNumber = 1;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchCompanies();
+    console.log("render again");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [companies]);
+  }, []);
 
   return (
     <div>
+      <button onClick={fetchCompanies}>Refresh Data</button>
       {currentPosts.map((company) => (
         <UpdateAndDeleteCompany
           company={company}
-          fetchCompanies={fetchCompanies}
+          fetchCompanies={() => fetchCompanies()}
           key={keyNumber++}
         ></UpdateAndDeleteCompany>
       ))}

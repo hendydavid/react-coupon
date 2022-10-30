@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import Emailnpute from "../../Utils/Emailnpute";
 import { Customer } from "../Models/models";
 import { useDispatch, useSelector } from "react-redux";
 import { API } from "../../Utils/APIWrapper";

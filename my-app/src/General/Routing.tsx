@@ -1,11 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Admin from "./forLearning/Admin";
-import Coupon from "./forLearning/Coupon";
-import Customer from "./forLearning/Customer";
-import HomePage from "./forLearning/HomePage";
 import Error from "./forLearning/Error";
-import GetAllCompany from "./AdminComponents/GetAllCompany";
+import GetAllCompany from "../General/AdminComponents/GetAllCompany";
 import AdminNavBar from "./AdminComponents/AdminNavBar";
 import UpdateCompanyPage from "./AdminComponents/UpdateCompanyPage";
 import UpdateAndDeleteCompanyList from "./AdminComponents/UpdateAndDeleteCompanyList";
@@ -14,10 +10,10 @@ import UpdateAndDeleteCustomersList from "./AdminComponents/UpdateAndDeleteCusto
 import GetAllCustomer from "./AdminComponents/GetAllCustomer";
 import AddCompany from "./AdminComponents/AddCompany";
 import AddCustomer from "./AdminComponents/AddCustomer";
+import AdminError from "./AdminComponents/AdminError";
 
 export const URL = {
   adminUrl: {
-    
     main: "/admin",
     addCustomer: "/admin/addCustomer",
     addCompany: "/admin/addCompany",
@@ -27,6 +23,7 @@ export const URL = {
     editAndDeleteCompanies: "/admin/editAndDeleteCompanies/",
     updateCustomersPage: "/admin/updateCustomersPage/",
     updateCompaniesPage: "/admin/updateCompaniesPage/",
+    errorMessage: "/admin/error/",
   },
 
   customersUrl: {},
@@ -37,17 +34,16 @@ const Routing = (): JSX.Element => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePage />}>
-          <Route index element={<div>i am index default</div>} />
-          <Route path="/Stamadmin" element={<Admin></Admin>}></Route>
-        </Route>
-        <Route path="/customer" element={<div>no-param!</div>} />{" "}
-        <Route path="/customer/:username" element={<Customer></Customer>} />
+        <Route
+          path="/"
+          element={<div>here is the login page --- first page </div>}
+        />
+
         <Route path="*" element={<Error></Error>} />
-        <Route path="/coupon" element={<Coupon></Coupon>} />
-        
         {/* here is goin the admin routing  --- the above is just example*/}
         <Route path="/admin" element={<AdminNavBar></AdminNavBar>}>
+          <Route index element={<div>i am index default</div>} />
+          <Route path="/admin/error/:errorMessage" element={<AdminError></AdminError>} />
           <Route
             path="/admin/addCustomer"
             element={<AddCustomer></AddCustomer>}
@@ -88,17 +84,3 @@ const Routing = (): JSX.Element => {
 };
 
 export default Routing;
-
-{
-  /* <AddCompany></AddCompany>
-<CouponPage couponId={7}></CouponPage>
-<AllCustomerCoupons></AllCustomerCoupons>
-<CouponsByCategory categoryId={2}></CouponsByCategory>
-<UpdateCompanyPage></UpdateCompanyPage>
-<GetAllCompany></GetAllCompany>
-<GetAllCustomer></GetAllCustomer>
-<UpdateAndDeleteCustomersList></UpdateAndDeleteCustomersList>
-<UpdateAndDeleteCompanyList></UpdateAndDeleteCompanyList>
-<UpdateCustomerPage></UpdateCustomerPage>
-<UpdateAndDeleteCustomersList></UpdateAndDeleteCustomersList> */
-}

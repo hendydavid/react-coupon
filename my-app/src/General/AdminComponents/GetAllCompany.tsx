@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link,Navigation, useNavigate } from "react-router-dom";
-import { Company } from "../Models/models";
 import CompanyDisplay from "./CompanyDisplay";
- 
 
 const GetAllCompany = () => {
-  const navigation = useNavigate();
   const [companies, setCompany] = useState([]);
 
   const fetchCompany = async () => {
@@ -33,13 +29,10 @@ const GetAllCompany = () => {
 
   return (
     <div>
-
-      
       {companies.map((company) => (
         <CompanyDisplay company={company} key={keyNumber++}></CompanyDisplay>
       ))}
     </div>
   );
 };
-
 export default GetAllCompany;
