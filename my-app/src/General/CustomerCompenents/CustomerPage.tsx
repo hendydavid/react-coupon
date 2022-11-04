@@ -1,4 +1,4 @@
-import Header from "../Header";
+
 import AllCustomerCoupons from "./AllCustomerCoupons";
 import allCustomerCoupons from './AllCustomerCoupons';
 import CouponsByCategory from './CouponsByCategory';
@@ -10,7 +10,6 @@ const CustomerPage = () => {
     let maxPrice = 0;
     return (
         <>
-        <Header />
         <AllCustomerCoupons />
         <CouponsByCategory categoryId={categoryId}/>
         <CouponsByMaxPrice price={maxPrice}/>

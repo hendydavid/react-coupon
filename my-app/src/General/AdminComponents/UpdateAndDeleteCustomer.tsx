@@ -1,8 +1,9 @@
 import React from "react";
 import { Customer } from "../Models/models";
-import { API } from "../../Utils/APIWrapper";
+import { API } from "../Utils/APIWrapper";
 import { URL } from "../Routing";
 import { useNavigate } from "react-router-dom";
+import { iconsList } from "../Utils/Icon";
 
 type props = {
   customer: Customer;
@@ -10,44 +11,42 @@ type props = {
 };
 
 const UpdateAndDeleteCustomer = (props: props) => {
-  let firstName = props.customer.firstName;
-  let lastName = props.customer.lastName;
+  let customer = props.customer;
 
   const navigate = useNavigate();
 
   return (
-    <>
-      <div>
-        customer name: {props.customer.firstName}
-        customer name: {props.customer.lastName}
-        customer email: {props.customer.email}
-      </div>
-      <button
-        onClick={() => {
+    <div className="data-display">
+      {iconsList.customer("")}
+      <h4>Name:</h4>
+      <p>{`${customer.firstName} ${customer.lastName}`}</p>
+      <h4>Email:</h4>
+      <p>{customer.email}</p>
+      <div className="button-display">
+        {iconsList.delete(() => {
           if (
             window.confirm(
-              `are you would you like to delete ${firstName + " " + lastName}`
+              `are you would you like to delete ${
+                customer.firstName + " " + customer.lastName
+              }`
             )
           ) {
             API.deleteCustomer(props.customer, {
               fetchData: props.fetchCustomers,
-              errorRouting: (message:string)=>{navigate("/admin/error" + message)},
+              errorRouting: (message: string) => {
+                navigate("/admin/error" + message);
+              },
             });
           }
-        }}
-      >
-        Delete
-      </button>
-      <button
-        onClick={() => {
+        })}
+
+        {iconsList.update(() => {
           navigate(
             URL.adminUrl.updateCustomersPage + `${props.customer.customerId}`
           );
-        }}
-      >
-        Edit
-      </button>
-    </>
+        })}
+      </div>
+    </div>
   );
 };
 

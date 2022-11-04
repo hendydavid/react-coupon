@@ -1,4 +1,3 @@
-import Header from "../Header";
 import { useState, useEffect } from "react";
 import { Company, Coupon } from "../Models/models";
 import "./Circle.css";
@@ -88,7 +87,6 @@ const CouponPage = (props: Props) => {
         </div>
       ) : (
         <>
-          <Header />
           <div>
             <img src={coupon.imageURL} alt="" />
             price : {coupon.price}

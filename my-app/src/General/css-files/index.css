@@ -1,24 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles&family=Roboto:wght@300;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap');
 
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
 
 }
 
 body {
-  background-color: rgb(229, 162, 235);
+  background-color: rgb(236, 231, 244);
 
 }
 
 body button {
   background-color: rgb(229, 162, 235);
-  font-family: 'Fuzzy Bubbles', cursive;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .link-active {

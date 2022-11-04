@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { API } from "../../Utils/APIWrapper";
+import { API } from "../Utils/APIWrapper";
 import { Customer } from "../Models/models";
 import "../css-files/App.css";
 import { IFormInputsCustomer } from "./UpdateCustomerPage";
@@ -37,7 +37,7 @@ const AddCustomer = () => {
 
   return (
     <>
-      <h2>Please Add A New Customer</h2>
+      <h2  className="title">Please Add A New Customer</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label> First Name </label>
         <input
@@ -61,7 +61,7 @@ const AddCustomer = () => {
           {...register("password", { required: true, minLength: 8 })}
         />
         {errors.password && "password must be with 8 digit minimum"}
-        <input type="submit" className="btn" value={"For Example"} />
+        <input type="submit" className="btn" value={"Add Customer"} />
       </form>
     </>
   );

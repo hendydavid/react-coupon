@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { API } from "../../Utils/APIWrapper";
+import { API } from "../Utils/APIWrapper";
 import { useParams } from "react-router-dom";
 import { Company } from "../Models/models";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -83,7 +83,7 @@ const UpdateCompanyPage = () => {
           defaultValue={company && company!.password}
         />
         {errors.password && "password must be with 8 digit minimum"}
-        <input type="submit" className="btn" value={"For Example"} />
+        <input type="submit" className="btn" value={"Update Company"} />
       </form>
     </>
   );

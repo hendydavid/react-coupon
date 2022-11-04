@@ -3,11 +3,15 @@ import UpdateAndDeleteCustomer from "./UpdateAndDeleteCustomer";
 import { Customer } from "../Models/models";
 import { useDispatch } from "react-redux";
 import { changeCustomer } from "../Redux/UpdateCustomerSlice";
-import Pagination from "../../Utils/Pagination";
+import Pagination from "../Utils/Pagination";
 
 const UpdateAndDeleteCustomersList = () => {
   const dispatch = useDispatch();
   const [customers, setCustomers] = useState<Customer[]>([]);
+
+  const postsPerPageToShow = (): number => {
+    return window.innerWidth > 700 ? 9 : 10;
+  };
 
   const fetchCustomers = async () => {
     const requestOptions = {
@@ -30,7 +34,7 @@ const UpdateAndDeleteCustomersList = () => {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
+  const [postsPerPage] = useState(postsPerPageToShow());
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -38,7 +42,6 @@ const UpdateAndDeleteCustomersList = () => {
 
   const changepageNumber = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchCustomers();
 
@@ -49,18 +52,21 @@ const UpdateAndDeleteCustomersList = () => {
 
   return (
     <div>
-      <button onClick={()=>fetchCustomers()}></button>
-      {currentPosts.map((customer) => (
-        <UpdateAndDeleteCustomer
-          fetchCustomers={fetchCustomers}
-          customer={customer}
-          key={keyNumber++}
-        ></UpdateAndDeleteCustomer>
-      ))}
+      <div className="data-row">
+        {currentPosts.map((customer) => (
+          <UpdateAndDeleteCustomer
+            fetchCustomers={fetchCustomers}
+            customer={customer}
+            key={keyNumber++}
+          ></UpdateAndDeleteCustomer>
+        ))}
+      </div>
+
       <Pagination
         totalPosts={customers.length}
         postsPerPage={postsPerPage}
         setCurrentPage={changepageNumber}
+        currentPage={currentPage}
       ></Pagination>
     </div>
   );

@@ -1,11 +1,36 @@
-import { Company, Customer } from "../General/Models/models";
+import LoginPage from "../LoginPage";
+import { Company, Customer } from "../Models/models";
 
 interface DeleteAndUpdatePromise {
   fetchData: () => void;
   errorRouting: (message: string) => void;
 }
+interface LoginInfo {
+  email: string;
+  password: string;
+  forwardLogin: () => void;
+  forwardError: () => void;
+}
 
 const API_URL = "http://localhost:8080/";
+
+const Login = async (loginDetails: LoginInfo) => {
+  const myToken = "get from redux";
+
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json", token: myToken },
+    body: JSON.stringify(loginDetails),
+  };
+
+  const response = await fetch(API_URL + "admin/loginAdmin", requestOptions);
+
+  if (!response.ok) {
+    loginDetails.forwardError();
+  } else {
+    loginDetails.forwardLogin();
+  }
+};
 
 const addCompanyHandler = async (company: any) => {
   const myToken = "get from redux";
@@ -152,4 +177,5 @@ export const API = {
   addCustomer: addCustomerHandler,
   deleteCustomer: deleteCustomerHandler,
   updateCustomer: updateCustomerHandler,
+  login: Login,
 };

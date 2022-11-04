@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
+import Pagination from "../Utils/Pagination";
 import { Customer } from "../Models/models";
 import CustomerDisplay from "./CustomerDisplay";
 
-
-
 const GetAllCustomer = () => {
+  const postsPerPageToShow = ():number => { 
+
+    return window.innerWidth > 700 ?9:10;
+  }
   const [customersList, setCustomers] = useState([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(postsPerPageToShow());
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = customersList.slice(indexOfFirstPost, indexOfLastPost);
+
   let keyNumber = 1;
   const fetchCustomer = async () => {
     const requestOptions = {
@@ -23,21 +34,26 @@ const GetAllCustomer = () => {
     }
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchCustomer();
   }, []);
 
   return (
     <div>
-      <div>
-        {customersList.map((customer) => (
+      <div className="data-row">
+        {currentPosts.map((customer) => (
           <CustomerDisplay
             customer={customer}
             key={keyNumber++}
           ></CustomerDisplay>
         ))}
       </div>
+      <Pagination
+        totalPosts={customersList.length}
+        postsPerPage={postsPerPage}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+      ></Pagination>
     </div>
   );
 };

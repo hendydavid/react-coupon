@@ -2,10 +2,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import UpdateAndDeleteCompany from "./UpdateAndDeleteCompany";
 import { useDispatch, useSelector } from "react-redux";
 import { changeCompany } from "../Redux/UpdateCompanySlice";
-import Pagination from "../../Utils/Pagination";
+import Pagination from "../Utils/Pagination";
 
 const UpdateAndDeleteCompanyList = () => {
   const dispatch = useDispatch();
+  const postsPerPageToShow = (): number => {
+    return window.innerWidth > 700 ? 9 : 10;
+  };
 
   const [companies, setCompanies] = useState([]);
 
@@ -40,7 +43,7 @@ const UpdateAndDeleteCompanyList = () => {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
+  const [postsPerPage] = useState(postsPerPageToShow());
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -57,18 +60,21 @@ const UpdateAndDeleteCompanyList = () => {
 
   return (
     <div>
-      <button onClick={fetchCompanies}>Refresh Data</button>
-      {currentPosts.map((company) => (
-        <UpdateAndDeleteCompany
-          company={company}
-          fetchCompanies={() => fetchCompanies()}
-          key={keyNumber++}
-        ></UpdateAndDeleteCompany>
-      ))}
+      <div className="data-row">
+        {currentPosts.map((company) => (
+          <UpdateAndDeleteCompany
+            company={company}
+            fetchCompanies={() => fetchCompanies()}
+            key={keyNumber++}
+          ></UpdateAndDeleteCompany>
+        ))}
+      </div>
+
       <Pagination
         totalPosts={companies.length}
         postsPerPage={postsPerPage}
         setCurrentPage={changepageNumber}
+        currentPage={currentPage}
       ></Pagination>
     </div>
   );

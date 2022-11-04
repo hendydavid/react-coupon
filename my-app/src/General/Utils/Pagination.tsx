@@ -1,10 +1,11 @@
 import React from "react";
-import "../General/css-files/App.css";
+import "../css-files/App.css";
 
 type Props = {
   postsPerPage: number;
   totalPosts: number;
   setCurrentPage: (currentPage: number) => void;
+  currentPage: number;
 };
 
 const Pagination = (props: Props) => {
@@ -19,7 +20,9 @@ const Pagination = (props: Props) => {
         {pageNumbers.map((number) => (
           <li
             key={number}
-            className="page-item"
+            className={
+              props.currentPage === number ? "selected-item" : "page-item"
+            }
             onClick={() => props.setCurrentPage(number)}
           >
             {number}

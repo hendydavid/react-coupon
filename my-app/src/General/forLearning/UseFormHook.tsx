@@ -1,6 +1,6 @@
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { API } from "../../Utils/APIWrapper";
+import { API } from "../Utils/APIWrapper";
 import "../css-files/App.css";
 import { Customer } from "../Models/models";
 

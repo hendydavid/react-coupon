@@ -22,10 +22,15 @@ export interface Customer {
 }
 
 export interface Company {
-  companyId: Number,
-  companyName: string
-  email: string
-  password: string
-  dateCreated: Date
-  coupons: Coupon[],
+  companyId: Number;
+  companyName: string;
+  email: string;
+  password: string;
+  dateCreated: Date;
+  coupons: Coupon[];
+}
+
+export interface PagesLinks {
+  key: string;
+  value: string;
 }

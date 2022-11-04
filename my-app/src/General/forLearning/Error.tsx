@@ -1,9 +1,10 @@
 import React from "react";
+import PopUp from "../shared/PopUp";
 
 function Error() {
   return (
     <div className="app">
-      I am an error
+      <PopUp message="Somthing Went Wrong..."></PopUp>
       <a href="/">return home page </a>
     </div>
   );

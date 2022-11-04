@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Customer } from "../Models/models";
 import { useDispatch, useSelector } from "react-redux";
-import { API } from "../../Utils/APIWrapper";
-import { reverseCustomerState } from "../Redux/UpdateCustomerSlice";
+import { API } from "../Utils/APIWrapper";
+
 import { useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -143,7 +143,7 @@ const UpdateCustomerPage = () => {
           defaultValue={customer && customer!.password}
         />
         {errors.password && "password must be with 8 digit minimum"}
-        <input type="submit" className="btn" value={"For Example"} />
+        <input type="submit" className="btn" value={"Update Customer"} />
       </form>
     </>
   );
