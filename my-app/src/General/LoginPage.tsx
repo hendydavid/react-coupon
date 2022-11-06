@@ -1,5 +1,3 @@
-import { CheckBox } from "@mui/icons-material";
-import React, { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { API } from "../General/Utils/APIWrapper";
 import { URL } from "./Routing";

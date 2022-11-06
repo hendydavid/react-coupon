@@ -15,11 +15,9 @@ interface LoginInfo {
 const API_URL = "http://localhost:8080/";
 
 const Login = async (loginDetails: LoginInfo) => {
-  const myToken = "get from redux";
-
   const requestOptions = {
     method: "POST",
-    headers: { "Content-Type": "application/json", token: myToken },
+    headers: { "Content-Type": "application/json", token: "token" },
     body: JSON.stringify(loginDetails),
   };
 
@@ -27,7 +25,12 @@ const Login = async (loginDetails: LoginInfo) => {
 
   if (!response.ok) {
     loginDetails.forwardError();
+    console.log(JSON.stringify(response.json()));
+    let token = await response.text();
+    console.log(token);
+    window.localStorage.setItem("token", token);
   } else {
+    console.log(response.text());
     loginDetails.forwardLogin();
   }
 };
