@@ -12,7 +12,8 @@ import { CiFacebook } from "react-icons/ci";
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import SendIcon from "@mui/icons-material/Send";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 export const User = (size: number): JSX.Element => {
   return (
@@ -120,6 +121,14 @@ export const updateButton = (onClick: () => void): JSX.Element => {
   );
 };
 
+export const loadingButton = (): JSX.Element => {
+  return (
+    <Box sx={{ display: "flex" }}>
+      <CircularProgress />
+    </Box>
+  );
+};
+
 export const iconsList = {
   userIcon: User,
   coupon: Coupon,
@@ -131,5 +140,4 @@ export const iconsList = {
   facebooke: facbookeIcon,
   delete: deleteButton,
   update: updateButton,
-
 };

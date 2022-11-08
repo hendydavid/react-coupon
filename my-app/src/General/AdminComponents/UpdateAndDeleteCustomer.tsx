@@ -33,8 +33,8 @@ const UpdateAndDeleteCustomer = (props: props) => {
           ) {
             API.deleteCustomer(props.customer, {
               fetchData: props.fetchCustomers,
-              errorRouting: (message: string) => {
-                navigate("/admin/error" + message);
+              errorRouting: () => {
+                navigate(URL.adminUrl.errorMessage);
               },
             });
           }

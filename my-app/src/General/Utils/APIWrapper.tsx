@@ -1,20 +1,24 @@
-import LoginPage from "../LoginPage";
 import { Company, Customer } from "../Models/models";
 
 interface DeleteAndUpdatePromise {
   fetchData: () => void;
-  errorRouting: (message: string) => void;
+  errorRouting: () => void;
 }
 interface LoginInfo {
   email: string;
   password: string;
   forwardLogin: () => void;
-  forwardError: () => void;
+  forwardError: (message: string) => void;
 }
+
+export const getToken = (): any => {
+  let token = window.localStorage.getItem("token");
+  return token;
+};
 
 const API_URL = "http://localhost:8080/";
 
-const Login = async (loginDetails: LoginInfo) => {
+const adminLogin = async (loginDetails: LoginInfo) => {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", token: "token" },
@@ -23,41 +27,80 @@ const Login = async (loginDetails: LoginInfo) => {
 
   const response = await fetch(API_URL + "admin/loginAdmin", requestOptions);
 
-  if (!response.ok) {
-    loginDetails.forwardError();
-    console.log(JSON.stringify(response.json()));
+  if (response.ok) {
     let token = await response.text();
-    console.log(token);
     window.localStorage.setItem("token", token);
-  } else {
-    console.log(response.text());
     loginDetails.forwardLogin();
+  } else if (!response.ok) {
+    let error = await response.json();
+    loginDetails.forwardError(error.value);
   }
 };
-
-const addCompanyHandler = async (company: any) => {
-  const myToken = "get from redux";
-
+const customerLogin = async (loginDetails: LoginInfo) => {
   const requestOptions = {
     method: "POST",
-    headers: { "Content-Type": "application/json", token: myToken },
+    headers: { "Content-Type": "application/json", token: "token" },
+    body: JSON.stringify(loginDetails),
+  };
+
+  const response = await fetch(
+    API_URL + "customers/loginCustomer",
+    requestOptions
+  );
+
+  if (response.ok) {
+    let token = await response.text();
+    window.localStorage.setItem("token", token);
+    loginDetails.forwardLogin();
+  } else if (!response.ok) {
+    const error = await response.json();
+    loginDetails.forwardError(error.value);
+  }
+};
+const companyLogin = async (loginDetails: LoginInfo) => {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json", token: "token" },
+    body: JSON.stringify(loginDetails),
+  };
+
+  const response = await fetch(API_URL + "admin/loginAdmin", requestOptions);
+
+  if (response.ok) {
+    let token = await response.text();
+    window.localStorage.setItem("token", token);
+    loginDetails.forwardLogin();
+  } else if (!response.ok) {
+    const error = await response.json();
+    loginDetails.forwardError(error.value);
+  }
+};
+const addCompanyHandler = async (
+  company: Company,
+  onSuccess: () => void = () => {}
+) => {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json", token: getToken() },
     body: JSON.stringify(company),
   };
 
   const response = await fetch(API_URL + "admin/addCompany", requestOptions);
-
-  if (!response.ok) {
+  if (response.ok) {
+    onSuccess();
+  } else if (!response.ok) {
     const error = await response.json();
-    console.log(JSON.stringify(error));
+    console.log(error);
   }
 };
 
-const updateCompanyHandler = async (company: any) => {
-  const myToken = "get from redux";
-
+const updateCompanyHandler = async (
+  company: Company,
+  chagngeMessage: (m: string) => void
+) => {
   const requestOptions = {
     method: "POST",
-    headers: { "Content-Type": "application/json", token: myToken },
+    headers: { "Content-Type": "application/json", token: getToken() },
     body: JSON.stringify(company),
   };
 
@@ -65,7 +108,7 @@ const updateCompanyHandler = async (company: any) => {
 
   if (!response.ok) {
     const error = await response.json();
-    console.log(JSON.stringify(error));
+    chagngeMessage(error.value);
   }
 };
 
@@ -73,11 +116,9 @@ const deleteCompanyHandler = async (
   companyId: number,
   fetching: DeleteAndUpdatePromise
 ) => {
-  const myToken = "get from redux";
-
   const requestOptions = {
     method: "DELETE",
-    headers: { "Content-Type": "application/json", token: myToken },
+    headers: { "Content-Type": "application/json", token: getToken() },
   };
 
   const response = await fetch(
@@ -87,19 +128,16 @@ const deleteCompanyHandler = async (
 
   if (!response.ok) {
     const error = await response.json();
-    fetching.errorRouting(error.value);
-    console.log(JSON.stringify(error.value));
+    fetching.errorRouting();
   } else {
     fetching.fetchData();
   }
 };
 
 const addCustomerHandler = async (customer: Customer) => {
-  const myToken = "get from redux";
-
   const requestOptions = {
     method: "POST",
-    headers: { "Content-Type": "application/json", token: myToken },
+    headers: { "Content-Type": "application/json", token: getToken() },
     body: JSON.stringify(customer),
   };
 
@@ -114,11 +152,9 @@ const addCustomerHandler = async (customer: Customer) => {
 };
 
 const updateCustomerHandler = async (customer: Customer) => {
-  const myToken = "get from redux";
-
   const requestOptions = {
     method: "POST",
-    headers: { "Content-Type": "application/json", token: myToken },
+    headers: { "Content-Type": "application/json", token: getToken() },
     body: JSON.stringify(customer),
   };
 
@@ -137,11 +173,9 @@ const deleteCustomerHandler = (
   customer: Customer,
   fetching: DeleteAndUpdatePromise
 ) => {
-  const myToken = "get from redux";
-
   const requestOptions = {
     method: "DELETE",
-    headers: { "Content-Type": "application/json", token: myToken },
+    headers: { "Content-Type": "application/json", token: getToken() },
     body: JSON.stringify(customer),
   };
 
@@ -152,8 +186,8 @@ const deleteCustomerHandler = (
         fetching.fetchData();
       }
     })
-    .catch((error) => {
-      fetching.errorRouting(JSON.stringify(error));
+    .catch(() => {
+      fetching.errorRouting();
     });
 
   // const response = await fetch(
@@ -180,5 +214,7 @@ export const API = {
   addCustomer: addCustomerHandler,
   deleteCustomer: deleteCustomerHandler,
   updateCustomer: updateCustomerHandler,
-  login: Login,
+  adminLogin: adminLogin,
+  companyLogin: companyLogin,
+  customerLogin: customerLogin,
 };

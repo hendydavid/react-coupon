@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { API } from "../Utils/APIWrapper";
+import { API, getToken } from "../Utils/APIWrapper";
 import { useParams } from "react-router-dom";
 import { Company } from "../Models/models";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { changeMessage, clearMessage } from "../Redux/ErrorMessage";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export interface IFormInputsCompany {
   companyId: number;
@@ -15,13 +17,10 @@ export interface IFormInputsCompany {
 }
 
 const UpdateCompanyPage = () => {
-  let { companyId } = useParams();
+
+  const { companyId } = useParams();
 
   const [company, setCompany] = useState<Company>();
-
-  const companyFromRedux = useSelector(
-    (state: any) => state.companyUpdate.value
-  );
 
   const {
     register,
@@ -48,15 +47,30 @@ const UpdateCompanyPage = () => {
       coupons: [],
     };
 
-    API.updateCompany(companyUpdate);
+    API.updateCompany(companyUpdate,changeMessage);
     reset();
   };
 
-  useEffect(() => {
-    setCompany(
-      companyFromRedux.find((c: Company) => c.companyId === Number(companyId))
+  const fetchOneCompany = async () => {
+    console.log(companyId);
+    let id: number = Number(companyId);
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json", token: getToken() },
+    };
+    const res = await fetch(
+      `http://localhost:8080/admin/getOneCompany/${id}`,
+      requestOptions
     );
-
+    if (res.ok) {
+      const data = await res.json();
+      setCompany(data);
+    } else {
+      console.log(res.json());
+    }
+  };
+  useEffect(() => {
+    fetchOneCompany();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [companyId]);
 

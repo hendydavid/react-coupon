@@ -1,42 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './General/css-files/index.css';
-import App from './General/App';
-import { Provider } from 'react-redux';
-import UserReducer from './General/forLearning/features/UserReducer';
-import Theme from './General/forLearning/features/Teme'
-import UpdateCompanySlice from './General/Redux/UpdateCompanySlice'
-import UpdateCustomerSlice from './General/Redux/UpdateCustomerSlice'
-import { configureStore } from '@reduxjs/toolkit';
-import { BrowserRouter } from 'react-router-dom';
-
-
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./General/css-files/index.css";
+import App from "./General/App";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import { BrowserRouter } from "react-router-dom";
+import ErrorMessage from "./General/Redux/ErrorMessage";
 
 const store = configureStore({
-reducer:{
-companyUpdate:UpdateCompanySlice,
-updateCustomer:UpdateCustomerSlice,
-}  
-
-})
-
-
-
+  reducer: {
+    errorMessage: ErrorMessage,
+  },
+});
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-      <App />
+        <App />
       </BrowserRouter>
-
     </Provider>
-   
   </React.StrictMode>
 );
-
-

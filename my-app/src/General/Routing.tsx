@@ -13,6 +13,8 @@ import AddCustomer from "./AdminComponents/AddCustomer";
 import PopUp from "./shared/PopUp";
 import { PagesLinks } from "./Models/models";
 import LoginPage from "./LoginPage";
+import CustomerNavBar from "./CustomerCompenents/CustomerNavBar";
+import CompanyNavBar from "./CompanyComponent/CompanyNavBar";
 
 export const URL = {
   adminUrl: {
@@ -28,8 +30,14 @@ export const URL = {
     errorMessage: "/admin/error/",
   },
 
-  customersUrl: {},
-  companyUrl: {},
+  customersUrl: {
+    main: "/customer",
+    error: "/customer/error",
+  },
+  companyUrl: {
+    main: "/company",
+    error: "/company/error",
+  },
 };
 
 function createSpaceToCapitalLetter(word: string): string {
@@ -62,17 +70,64 @@ export const keysAndValyeUrlForAdmin = (): PagesLinks[] => {
   }
   return pageAndLink;
 };
+export const keysAndValyeUrlForCompany = (): PagesLinks[] => {
+  const keysAndValyues = {
+    main: "/admin",
+    addCustomer: "/admin/addCustomer",
+    addCompany: "/admin/addCompany",
+    getAllCompany: "/admin/getAllCompanies",
+    getAllCustomer: "/admin/getAllCustomers",
+    editAndDeleteCustomers: "/admin/editAndDeleteCustomers/",
+    editAndDeleteCompanies: "/admin/editAndDeleteCompanies/",
+  };
+
+  const pageAndLink: PagesLinks[] = [];
+
+  let values = Object.values(keysAndValyues);
+  let keys = Object.keys(keysAndValyues);
+
+  for (let i = 0; i < values.length; i++) {
+    pageAndLink.push({
+      key: createSpaceToCapitalLetter(keys[i]),
+      value: values[i],
+    });
+  }
+  return pageAndLink;
+};
+export const keysAndValyeUrlForCustomer = (): PagesLinks[] => {
+  const keysAndValyues = {
+    main: "/admin",
+    addCustomer: "/admin/addCustomer",
+    addCompany: "/admin/addCompany",
+    getAllCompany: "/admin/getAllCompanies",
+    getAllCustomer: "/admin/getAllCustomers",
+    editAndDeleteCustomers: "/admin/editAndDeleteCustomers/",
+    editAndDeleteCompanies: "/admin/editAndDeleteCompanies/",
+  };
+
+  const pageAndLink: PagesLinks[] = [];
+
+  let values = Object.values(keysAndValyues);
+  let keys = Object.keys(keysAndValyues);
+
+  for (let i = 0; i < values.length; i++) {
+    pageAndLink.push({
+      key: createSpaceToCapitalLetter(keys[i]),
+      value: values[i],
+    });
+  }
+  return pageAndLink;
+};
 
 const Routing = (): JSX.Element => {
   return (
     <>
       <Routes>
-        <Route
-          path="/"
-          element={<LoginPage></LoginPage>}
-        />
+        <Route path="/" element={<LoginPage></LoginPage>} />
+        <Route path="/message" element={<PopUp></PopUp>} />
 
         <Route path="*" element={<Error></Error>} />
+
         {/* here is goin the admin routing  --- the above is just example*/}
         <Route path="/admin" element={<AdminNavBar></AdminNavBar>}>
           <Route index element={<div>i am index default</div>} />
@@ -110,6 +165,16 @@ const Routing = (): JSX.Element => {
             path="/admin/getAllCustomers"
             element={<GetAllCustomer></GetAllCustomer>}
           />
+        </Route>
+       
+        {/* here is goin the customer routing  */}
+        <Route path="/customer" element={<CustomerNavBar></CustomerNavBar>}>
+          <Route path="/customer/error" element={<PopUp></PopUp>} />
+        </Route>
+       
+         {/* here is goin the company routing  */}
+        <Route path="/company" element={<CompanyNavBar></CompanyNavBar>}>
+          <Route path="/company/error/" element={<PopUp></PopUp>} />
         </Route>
       </Routes>
     </>

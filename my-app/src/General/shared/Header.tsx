@@ -7,15 +7,12 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link, useNavigate } from "react-router-dom";
 import { iconsList } from "../Utils/Icon";
 import "../css-files/App.css";
 import { PagesLinks } from "../Models/models";
-import { count } from "console";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 type Prop = {
@@ -31,6 +28,7 @@ let counter = 0;
 const settings = ["Logout"];
 
 function Header(prop: Prop) {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -58,7 +56,7 @@ function Header(prop: Prop) {
   };
 
   return (
-    <AppBar position="static" sx={{ background: "#fff45",mb:3 }}>
+    <AppBar position="static" sx={{ background: "#fff45", mb: 3 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters className="tool-bar">
           {prop.userInfo?.type === "customer"
@@ -163,11 +161,16 @@ function Header(prop: Prop) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={() => {}}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem
+                onClick={() => {
+                  if (window.confirm("are you sure you want to logout")) {
+                    window.localStorage.removeItem("token");
+                    navigate("/");
+                  }
+                }}
+              >
+                <Typography textAlign="center">{settings[0]}</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

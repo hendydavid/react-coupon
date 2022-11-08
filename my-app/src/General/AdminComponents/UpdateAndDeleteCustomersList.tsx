@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import UpdateAndDeleteCustomer from "./UpdateAndDeleteCustomer";
 import { Customer } from "../Models/models";
-import { useDispatch } from "react-redux";
-import { changeCustomer } from "../Redux/UpdateCustomerSlice";
 import Pagination from "../Utils/Pagination";
+import { getToken } from "../Utils/APIWrapper";
 
 const UpdateAndDeleteCustomersList = () => {
-  const dispatch = useDispatch();
   const [customers, setCustomers] = useState<Customer[]>([]);
 
   const postsPerPageToShow = (): number => {
@@ -16,7 +14,7 @@ const UpdateAndDeleteCustomersList = () => {
   const fetchCustomers = async () => {
     const requestOptions = {
       method: "GET",
-      headers: { "Content-Type": "application/json", token: "token" },
+      headers: { "Content-Type": "application/json", token: getToken() },
     };
 
     const response = await fetch(
@@ -27,7 +25,6 @@ const UpdateAndDeleteCustomersList = () => {
     if (response.ok) {
       const data = await response.json();
       setCustomers(data);
-      dispatch(changeCustomer(data));
     } else if (!response.ok) {
       console.log(response.json());
     }

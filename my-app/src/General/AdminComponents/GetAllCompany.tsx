@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "../Utils/Pagination";
 import CompanyDisplay from "./CompanyDisplay";
+import { getToken } from "../Utils/APIWrapper";
 
 const GetAllCompany = () => {
   const postsPerPageToShow = (): number => {
@@ -20,7 +21,7 @@ const GetAllCompany = () => {
   const fetchCompany = async () => {
     const requestOptions = {
       method: "GET",
-      headers: { "Content-Type": "application/json", token: "token" },
+      headers: { "Content-Type": "application/json", token: getToken() },
     };
 
     const response = await fetch(
@@ -30,6 +31,9 @@ const GetAllCompany = () => {
     if (response.ok) {
       const data = await response.json();
       setCompanies(data);
+    } else {
+      const error = await response.json();
+      console.log(error.value);
     }
   };
 
@@ -47,7 +51,7 @@ const GetAllCompany = () => {
           <CompanyDisplay company={company} key={keyNumber++}></CompanyDisplay>
         ))}
       </div>
-      Storage.set
+
       <Pagination
         totalPosts={companies.length}
         postsPerPage={postsPerPage}

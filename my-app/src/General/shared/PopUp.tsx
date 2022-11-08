@@ -1,13 +1,20 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../css-files/popUp.css";
-import message from "../Utils/message";
-type Message = { message?: string };
-export default function PopUp(message: Message) {
+import { changeMessage, clearMessage } from "../Redux/ErrorMessage";
+import { useDispatch, useSelector } from "react-redux";
+
+export default function PopUp() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [modal, setModal] = useState(true);
-  const { errorMessage } = useParams();
+  const defaultMessage = "Something went wrong please try again";
+  const errorMessage = useSelector((state: any) => state.errorMessage.value);
+
   const toggleModal = () => {
     setModal(!modal);
+    navigate(-1);
+    dispatch(clearMessage());
   };
 
   return (
@@ -16,10 +23,14 @@ export default function PopUp(message: Message) {
         <div className="modal">
           <div className="overlay"></div>
           <div className="modal-content">
-            <h2>Hello Modal</h2>
-            <p>{errorMessage && errorMessage}</p>
-            <p>{message.message && message.message}</p>
-            <button className="close-modal" onClick={toggleModal}>
+            <p>{errorMessage ? errorMessage : defaultMessage}</p>
+
+            <button
+              className="close-modal"
+              onClick={() => {
+                toggleModal();
+              }}
+            >
               CLOSE
             </button>
           </div>

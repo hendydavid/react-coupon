@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import Pagination from "../Utils/Pagination";
 import { Customer } from "../Models/models";
 import CustomerDisplay from "./CustomerDisplay";
+import { getToken } from "../Utils/APIWrapper";
 
 const GetAllCustomer = () => {
-  const postsPerPageToShow = ():number => { 
-
-    return window.innerWidth > 700 ?9:10;
-  }
+  const postsPerPageToShow = (): number => {
+    return window.innerWidth > 700 ? 9 : 10;
+  };
   const [customersList, setCustomers] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,7 +21,7 @@ const GetAllCustomer = () => {
   const fetchCustomer = async () => {
     const requestOptions = {
       method: "GET",
-      headers: { "Content-Type": "application/json", token: "token" },
+      headers: { "Content-Type": "application/json", token: getToken() },
     };
 
     const response = await fetch(
@@ -31,6 +31,9 @@ const GetAllCustomer = () => {
     if (response.ok) {
       const data = await response.json();
       setCustomers(data);
+    } else {
+      const error = await response.json();
+      console.log(error.value);
     }
   };
 

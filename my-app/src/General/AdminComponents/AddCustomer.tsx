@@ -1,11 +1,20 @@
-import React, { useRef, useState } from "react";
 import { API } from "../Utils/APIWrapper";
 import { Customer } from "../Models/models";
 import "../css-files/App.css";
-import { IFormInputsCustomer } from "./UpdateCustomerPage";
+
 import { SubmitHandler, useForm } from "react-hook-form";
 
+
+export interface IFormInputsCustomer {
+  customerId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
 const AddCustomer = () => {
+  
   const {
     register,
     formState: { errors },
@@ -37,29 +46,22 @@ const AddCustomer = () => {
 
   return (
     <>
-      <h2  className="title">Please Add A New Customer</h2>
+      <h2 className="title">Please Add A New Customer</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label> First Name </label>
-        <input
-          {...register("firstName", { required: true })}
-        />
+        <input {...register("firstName", { required: true })} />
         {errors.firstName && "First name is required"}
 
         <label> Last Name</label>
-        <input
-          {...register("lastName", { required: true })}
-        />
+        <input {...register("lastName", { required: true })} />
 
         <label> Email</label>
-        <input
-          {...register("email", { required: true })}
-          type="email"
-        />
+        <input {...register("email", { required: true })} type="email" />
 
         <label> Password</label>
-        <input
-          {...register("password", { required: true, minLength: 8 })}
-        />
+        <input {...register("password", { required: true, minLength: 8 })} />
+        
+
         {errors.password && "password must be with 8 digit minimum"}
         <input type="submit" className="btn" value={"Add Customer"} />
       </form>

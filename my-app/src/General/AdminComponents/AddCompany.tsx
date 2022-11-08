@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { API } from "../Utils/APIWrapper";
 import { Company } from "../Models/models";
 import { IFormInputsCompany } from "./UpdateCompanyPage";
+import { useState } from "react";
 
 const AddCompany = () => {
+  const [addCompanySuccess,setAddCompanySuccess] = useState(true);
   const {
     register,
     formState: { errors },
@@ -19,8 +20,6 @@ const AddCompany = () => {
   };
 
   const onSubmit: SubmitHandler<IFormInputsCompany> = (data) => {
-    console.log(data);
-
     const company: Company = {
       companyId: 0,
       companyName: data.companyName,
@@ -30,13 +29,16 @@ const AddCompany = () => {
       coupons: [],
     };
 
-    API.addCompany(company);
+    API.addCompany(company, () => {
+     setAddCompanySuccess(true)
+    });
     reset();
   };
 
   return (
     <>
-      <h2  className="title">Please Add A New Company</h2>
+      <h2 className="title">Please Add A New Company</h2>
+       
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label> Company Name </label>
         <input {...register("companyName", { required: true })} />

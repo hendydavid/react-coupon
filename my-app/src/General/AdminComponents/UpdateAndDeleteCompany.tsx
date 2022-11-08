@@ -4,7 +4,8 @@ import { API } from "../Utils/APIWrapper";
 import { useNavigate } from "react-router-dom";
 import { URL } from "../Routing";
 import { iconsList } from "../Utils/Icon";
-import "../css-files/App.css"
+
+import "../css-files/App.css";
 
 type Prop = {
   company: Company;
@@ -33,8 +34,8 @@ const UpdateAndDeleteCompany = (prop: Prop) => {
           ) {
             API.deleteCompany(Number(prop.company.companyId), {
               fetchData: prop.fetchCompanies,
-              errorRouting: (errorMessage: string) => {
-                navigate(URL.adminUrl.errorMessage + errorMessage);
+              errorRouting: () => {
+                navigate(URL.adminUrl.errorMessage);
               },
             });
           }

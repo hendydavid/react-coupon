@@ -2,20 +2,37 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { API } from "../General/Utils/APIWrapper";
 import { URL } from "./Routing";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { changeMessage, clearMessage } from "./Redux/ErrorMessage";
+import { useDispatch, useSelector } from "react-redux";
 
 type LoginInfo = {
   email: string;
   password: string;
+  checkBox: boolean;
+};
+type Colors = {
+  adminColor?: string;
+  customerColor?: string;
+  companyColor?: string;
 };
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const succsess = () => {
-    navigate(URL.adminUrl.main);
+  const changeMessageRedux = (message: string) => {
+    dispatch(changeMessage(message));
+    navigate("/meesage");
   };
-  const error = () => {
-    navigate("error");
+
+  const [isDisable, setDisable] = useState(true);
+  const [colors, setColors] = useState<Colors>();
+  const [accountType, setAccountType] = useState("");
+
+  const succsessNavigate = (path: string) => {
+    navigate(path);
   };
+ 
 
   const {
     register,
@@ -30,12 +47,29 @@ const LoginPage = () => {
   };
 
   const onSubmit: SubmitHandler<LoginInfo> = (data) => {
-    API.login({
-      email: data.email,
-      password: data.password,
-      forwardError: error,
-      forwardLogin: succsess,
-    });
+    if (accountType === "ADMIN") {
+      API.adminLogin({
+        email: data.email,
+        password: data.password,
+        forwardError: changeMessageRedux,
+        forwardLogin: () => succsessNavigate(URL.adminUrl.main),
+      });
+    } else if (accountType === "COMPANY") {
+      API.companyLogin({
+        email: data.email,
+        password: data.password,
+        forwardError: changeMessageRedux,
+        forwardLogin: () => succsessNavigate(URL.companyUrl.main),
+      });
+    } else {
+      API.customerLogin({
+        email: data.email,
+        password: data.password,
+        forwardError: changeMessageRedux,
+        forwardLogin: () => succsessNavigate(URL.customersUrl.main),
+      });
+    }
+
     reset();
   };
 
@@ -55,8 +89,53 @@ const LoginPage = () => {
           type={"password"}
         />
         {errors.password && "password must be with 8 digit minimum"}
+        <label>Please Select Account Type </label>
+        <div className="button-display-login">
+          <button
+            style={{ background: colors?.adminColor && colors?.adminColor }}
+            type="button"
+            onClick={() => {
+              setAccountType("ADMIN");
+              setDisable(false);
+              setColors({ adminColor: "#1bf79f" });
+            }}
+          >
+            Admin
+          </button>
 
-        <input type="submit" className="btn" value={"Login"} />
+          <button
+            style={{ background: colors?.companyColor && colors?.companyColor }}
+            type="button"
+            onClick={() => {
+              setAccountType("COMPANY");
+              setDisable(false);
+              setColors({ companyColor: "#1bf79f" });
+            }}
+          >
+            Company
+          </button>
+
+          <button
+            style={{
+              background: colors?.customerColor && colors?.customerColor,
+            }}
+            type="button"
+            onClick={() => {
+              setColors({ customerColor: "#1bf79f" });
+              setAccountType("CUSTOMER");
+              setDisable(false);
+            }}
+          >
+            Customer
+          </button>
+        </div>
+
+        <input
+          type="submit"
+          className="btn login-btn"
+          value={"Login"}
+          disabled={isDisable}
+        />
       </form>
     </div>
   );
