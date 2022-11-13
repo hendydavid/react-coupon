@@ -11,7 +11,6 @@ const CouponDisplay = (props: Props) => {
   return (
     <div className="data-display">
       {iconsList.coupon("")}
-      
       <h4>Name:</h4>
       <p>{coupon.couponName}</p>
       <h4>Coupon price:</h4>
@@ -20,7 +19,6 @@ const CouponDisplay = (props: Props) => {
       <p>{coupon.description}</p>
       <h4>Amount of coupons available : </h4>
       <p>{coupon.amount}</p>
-
       <h4>Coupon current expiration date:</h4>
       <p>{`${String(coupon.endDate).slice(0, 10)}`}</p>
     </div>

@@ -15,11 +15,11 @@ const GetAllCompany = () => {
     navigate("error");
   };
 
-  const setLoadingMode = (isLoading: boolean) => {
+  const setLoadingMode = (isLoading:boolean) => {
     dispatch(changeLoadingMode(isLoading));
   };
 
- 
+  const loadingMode = useSelector((state: any) => state.loadingData.value);
 
   const postsPerPageToShow = (): number => {
     return window.innerWidth > 700 ? 9 : 10;
@@ -48,17 +48,17 @@ const GetAllCompany = () => {
     if (response.ok) {
       const data = await response.json();
       setCompanies(data);
-      setLoadingMode(false);
+      setLoadingMode(false)
     } else {
       const error = await response.json();
       getErrorMessage(error.value);
-      setLoadingMode(false);
+      setLoadingMode(false)
     }
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    setLoadingMode(true);
+    setLoadingMode(true)
     fetchCompany();
   }, []);
 

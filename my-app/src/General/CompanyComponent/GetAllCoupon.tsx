@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import UpdateAndDeleteCoupon from "./UpdateAndDeleteCoupon";
+
 import { Coupon } from "../Models/models";
 import Pagination from "../Utils/Pagination";
 import { getToken } from "../Utils/APIWrapper";
@@ -10,7 +10,6 @@ import { changeLoadingMode } from "../Redux/LoadingData";
 import CouponDisplay from "./CouponDisplay";
 
 const GetAllCoupons = () => {
-  let counter = 0;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const getErrorMessage = (message: string) => {
@@ -50,14 +49,14 @@ const GetAllCoupons = () => {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(postsPerPageToShow());
+  const [postsPerPage] = useState(10);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = coupons.slice(indexOfFirstPost, indexOfLastPost);
 
   const changepageNumber = (pageNumber: number) => setCurrentPage(pageNumber);
-
+  let counter =0;
   useEffect(() => {
     setLoadingMode(true);
     fetchCoupons();
@@ -67,25 +66,18 @@ const GetAllCoupons = () => {
 
   return (
     <div>
-      {coupons.length <= 0 ? (
-        <div>No Coupon Been Added Yet!</div>
-      ) : (
-        <>
-          <div className="data-row">
-            {currentPosts.map((coupon) => (
-              <CouponDisplay coupon={coupon}></CouponDisplay>
-            ))}
-          </div>
+      <div className="coupon-data-row">
+        {currentPosts.map((coupon) => (
+          <CouponDisplay coupon={coupon} key={counter++}></CouponDisplay>
+        ))}
+      </div>
 
-          <Pagination
-            key={counter++}
-            totalPosts={coupons.length}
-            postsPerPage={postsPerPage}
-            setCurrentPage={changepageNumber}
-            currentPage={currentPage}
-          ></Pagination>
-        </>
-      )}
+      <Pagination
+        totalPosts={coupons.length}
+        postsPerPage={postsPerPage}
+        setCurrentPage={changepageNumber}
+        currentPage={currentPage}
+      ></Pagination>
     </div>
   );
 };
