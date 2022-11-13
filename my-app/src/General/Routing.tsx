@@ -15,6 +15,11 @@ import { PagesLinks } from "./Models/models";
 import LoginPage from "./LoginPage";
 import CustomerNavBar from "./CustomerCompenents/CustomerNavBar";
 import CompanyNavBar from "./CompanyComponent/CompanyNavBar";
+import MainPageContent from "./AdminComponents/MainPageContent";
+import AddCoupon from "./CompanyComponent/AddCoupon";
+import UpdateCouponPage from "./CompanyComponent/UpdateCouponPage";
+import UpdateAndDeleteCouponsList from "./CompanyComponent/UpdateAndDeleteCouponList";
+import GetAllCoupons from "./CompanyComponent/GetAllCoupon";
 
 export const URL = {
   adminUrl: {
@@ -29,14 +34,16 @@ export const URL = {
     updateCompaniesPage: "/admin/updateCompaniesPage/",
     errorMessage: "/admin/error/",
   },
-
   customersUrl: {
     main: "/customer",
     error: "/customer/error",
   },
   companyUrl: {
     main: "/company",
-    error: "/company/error",
+    addCoupon: "/company/addCoupon/",
+    updateCouponPage: "/company/updateCouponPage/",
+    updateCouponList: "/company/updateAndDeleteCoupons/",
+    getAllCoupons: "/company/GetAllCompanyCoupons/",
   },
 };
 
@@ -72,13 +79,10 @@ export const keysAndValyeUrlForAdmin = (): PagesLinks[] => {
 };
 export const keysAndValyeUrlForCompany = (): PagesLinks[] => {
   const keysAndValyues = {
-    main: "/admin",
-    addCustomer: "/admin/addCustomer",
-    addCompany: "/admin/addCompany",
-    getAllCompany: "/admin/getAllCompanies",
-    getAllCustomer: "/admin/getAllCustomers",
-    editAndDeleteCustomers: "/admin/editAndDeleteCustomers/",
-    editAndDeleteCompanies: "/admin/editAndDeleteCompanies/",
+    main: URL.companyUrl.main,
+    addCoupon: URL.companyUrl.addCoupon,
+    editAndDeleteYourCoupons: URL.companyUrl.updateCouponList,
+    viewAllCoupons: URL.companyUrl.getAllCoupons,
   };
 
   const pageAndLink: PagesLinks[] = [];
@@ -124,14 +128,14 @@ const Routing = (): JSX.Element => {
     <>
       <Routes>
         <Route path="/" element={<LoginPage></LoginPage>} />
-        <Route path="/message" element={<PopUp></PopUp>} />
+        <Route path="/error" element={<PopUp></PopUp>} />
 
         <Route path="*" element={<Error></Error>} />
 
         {/* here is goin the admin routing  --- the above is just example*/}
         <Route path="/admin" element={<AdminNavBar></AdminNavBar>}>
-          <Route index element={<div>i am index default</div>} />
-          <Route path="/admin/error/:errorMessage" element={<PopUp></PopUp>} />
+          <Route index element={<MainPageContent></MainPageContent>} />
+          <Route path="/admin/error/" element={<PopUp></PopUp>} />
           <Route
             path="/admin/addCustomer"
             element={<AddCustomer></AddCustomer>}
@@ -166,15 +170,27 @@ const Routing = (): JSX.Element => {
             element={<GetAllCustomer></GetAllCustomer>}
           />
         </Route>
-       
+
         {/* here is goin the customer routing  */}
         <Route path="/customer" element={<CustomerNavBar></CustomerNavBar>}>
           <Route path="/customer/error" element={<PopUp></PopUp>} />
         </Route>
-       
-         {/* here is goin the company routing  */}
+
+        {/* here is goin the company routing  */}
         <Route path="/company" element={<CompanyNavBar></CompanyNavBar>}>
-          <Route path="/company/error/" element={<PopUp></PopUp>} />
+          <Route path="/company/addCoupon/" element={<AddCoupon></AddCoupon>} />{" "}
+          <Route
+            path="/company/updateCouponPage/:couponId"
+            element={<UpdateCouponPage></UpdateCouponPage>}
+          />
+          <Route
+            path="/company/UpdateAndDeleteCoupons/"
+            element={<UpdateAndDeleteCouponsList></UpdateAndDeleteCouponsList>}
+          />
+          <Route
+            path="/company/GetAllCompanyCoupons/"
+            element={<GetAllCoupons></GetAllCoupons>}
+          />
         </Route>
       </Routes>
     </>

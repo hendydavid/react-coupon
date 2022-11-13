@@ -22,7 +22,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const changeMessageRedux = (message: string) => {
     dispatch(changeMessage(message));
-    navigate("/meesage");
+    navigate("/error");
   };
 
   const [isDisable, setDisable] = useState(true);

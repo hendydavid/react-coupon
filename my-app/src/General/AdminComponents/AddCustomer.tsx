@@ -1,9 +1,11 @@
-import { API } from "../Utils/APIWrapper";
+import { API, APIResponseHandler } from "../Utils/APIWrapper";
 import { Customer } from "../Models/models";
 import "../css-files/App.css";
 
 import { SubmitHandler, useForm } from "react-hook-form";
-
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { changeMessage } from "../Redux/ErrorMessage";
 
 export interface IFormInputsCustomer {
   customerId: number;
@@ -14,13 +16,23 @@ export interface IFormInputsCustomer {
 }
 
 const AddCustomer = () => {
-  
   const {
     register,
     formState: { errors },
     handleSubmit,
     resetField,
   } = useForm<IFormInputsCustomer>();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const getErrorMessage = (message: string) => {
+    dispatch(changeMessage(message));
+    navigate("error");
+  };
+  const responseHandlerMethod: APIResponseHandler = {
+    onSuccess: () => {},
+    onFail: (error: string) => getErrorMessage(error),
+  };
 
   const reset = () => {
     resetField("firstName");
@@ -40,7 +52,7 @@ const AddCustomer = () => {
       password: data.password,
       coupons: [],
     };
-    API.updateCustomer(customerUpdated);
+    API.updateCustomer(customerUpdated,responseHandlerMethod);
     reset();
   };
 
@@ -60,7 +72,6 @@ const AddCustomer = () => {
 
         <label> Password</label>
         <input {...register("password", { required: true, minLength: 8 })} />
-        
 
         {errors.password && "password must be with 8 digit minimum"}
         <input type="submit" className="btn" value={"Add Customer"} />

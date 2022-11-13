@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { API, getToken } from "../Utils/APIWrapper";
+import { API, APIResponseHandler, getToken } from "../Utils/APIWrapper";
 import { useParams } from "react-router-dom";
 import { Company } from "../Models/models";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -17,10 +17,19 @@ export interface IFormInputsCompany {
 }
 
 const UpdateCompanyPage = () => {
-
   const { companyId } = useParams();
-
   const [company, setCompany] = useState<Company>();
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const getErrorMessage = (message: string) => {
+    dispatch(changeMessage(message));
+    navigate("error");
+  };
+  const responseHandlerMethod: APIResponseHandler = {
+    onSuccess: () => {},
+    onFail: (error: string) => getErrorMessage(error),
+  };
 
   const {
     register,
@@ -47,7 +56,7 @@ const UpdateCompanyPage = () => {
       coupons: [],
     };
 
-    API.updateCompany(companyUpdate,changeMessage);
+    API.updateCompany(companyUpdate, responseHandlerMethod);
     reset();
   };
 

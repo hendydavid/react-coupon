@@ -2,11 +2,11 @@ export interface Coupon {
   couponId: number;
   couponName: string;
   description: string;
-  company: Company;
-  customers: Customer[];
-  amount: Number;
+  company?: Company|any;
+  customers: Customer[]|any;
+  amount: number;
   price: number;
-  categoryId: Number;
+  categoryId: number;
   imageURL: string;
   startDate?: Date;
   endDate?: Date;

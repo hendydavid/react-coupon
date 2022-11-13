@@ -1,18 +1,24 @@
-import { Company, Customer } from "../Models/models";
+import { Company, Coupon, Customer } from "../Models/models";
 
-interface DeleteAndUpdatePromise {
-  fetchData: () => void;
-  errorRouting: () => void;
-}
 interface LoginInfo {
   email: string;
   password: string;
   forwardLogin: () => void;
-  forwardError: (message: string) => void;
+  forwardError: (error: string) => void;
 }
 
-export const getToken = (): any => {
-  let token = window.localStorage.getItem("token");
+export type APIResponseHandler = {
+  onSuccess: () => void;
+  onFail: (error: string) => void;
+};
+
+const DefaultAPIResponseHandler: APIResponseHandler = {
+  onSuccess: () => {},
+  onFail: (err) => {},
+};
+
+export const getToken = (): string => {
+  let token = String(window.localStorage.getItem("token"));
   return token;
 };
 
@@ -64,7 +70,10 @@ const companyLogin = async (loginDetails: LoginInfo) => {
     body: JSON.stringify(loginDetails),
   };
 
-  const response = await fetch(API_URL + "admin/loginAdmin", requestOptions);
+  const response = await fetch(
+    API_URL + "companies/loginCompany",
+    requestOptions
+  );
 
   if (response.ok) {
     let token = await response.text();
@@ -75,9 +84,10 @@ const companyLogin = async (loginDetails: LoginInfo) => {
     loginDetails.forwardError(error.value);
   }
 };
+
 const addCompanyHandler = async (
   company: Company,
-  onSuccess: () => void = () => {}
+  responseHandler: APIResponseHandler = DefaultAPIResponseHandler
 ) => {
   const requestOptions = {
     method: "POST",
@@ -87,16 +97,17 @@ const addCompanyHandler = async (
 
   const response = await fetch(API_URL + "admin/addCompany", requestOptions);
   if (response.ok) {
-    onSuccess();
+    responseHandler.onSuccess();
   } else if (!response.ok) {
     const error = await response.json();
+    responseHandler.onFail(error.value);
     console.log(error);
   }
 };
 
 const updateCompanyHandler = async (
   company: Company,
-  chagngeMessage: (m: string) => void
+  responseHandler: APIResponseHandler = DefaultAPIResponseHandler
 ) => {
   const requestOptions = {
     method: "POST",
@@ -108,13 +119,13 @@ const updateCompanyHandler = async (
 
   if (!response.ok) {
     const error = await response.json();
-    chagngeMessage(error.value);
+    responseHandler.onFail(error.value);
   }
 };
 
 const deleteCompanyHandler = async (
   companyId: number,
-  fetching: DeleteAndUpdatePromise
+  responseHandler: APIResponseHandler = DefaultAPIResponseHandler
 ) => {
   const requestOptions = {
     method: "DELETE",
@@ -126,15 +137,18 @@ const deleteCompanyHandler = async (
     requestOptions
   );
 
-  if (!response.ok) {
-    const error = await response.json();
-    fetching.errorRouting();
+  if (response.ok) {
+    responseHandler.onSuccess();
   } else {
-    fetching.fetchData();
+    const error = await response.json();
+    responseHandler.onFail(error.value);
   }
 };
 
-const addCustomerHandler = async (customer: Customer) => {
+const addCustomerHandler = async (
+  customer: Customer,
+  responseHandler: APIResponseHandler = DefaultAPIResponseHandler
+) => {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", token: getToken() },
@@ -145,13 +159,16 @@ const addCustomerHandler = async (customer: Customer) => {
 
   if (!response.ok) {
     const error = await response.json();
-    console.log(JSON.stringify(error));
+    responseHandler.onFail(error.value);
     return 1;
   }
   return 0;
 };
 
-const updateCustomerHandler = async (customer: Customer) => {
+const updateCustomerHandler = async (
+  customer: Customer,
+  responseHandler: APIResponseHandler = DefaultAPIResponseHandler
+) => {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json", token: getToken() },
@@ -165,44 +182,31 @@ const updateCustomerHandler = async (customer: Customer) => {
 
   if (!response.ok) {
     const error = await response.json();
-    console.log(JSON.stringify(error));
+    responseHandler.onFail(error.value);
   }
 };
 
-const deleteCustomerHandler = (
+const deleteCustomerHandler = async (
   customer: Customer,
-  fetching: DeleteAndUpdatePromise
+  responseHandler: APIResponseHandler = DefaultAPIResponseHandler
 ) => {
   const requestOptions = {
     method: "DELETE",
     headers: { "Content-Type": "application/json", token: getToken() },
-    body: JSON.stringify(customer),
+    body: "",
   };
 
-  fetch(API_URL + "admin/deleteCustomer/" + customer.customerId, requestOptions)
-    .then((res) => res.text())
-    .then((text) => {
-      if (text === "false") {
-        fetching.fetchData();
-      }
-    })
-    .catch(() => {
-      fetching.errorRouting();
-    });
-
-  // const response = await fetch(
-  //   API_URL + "admin/deleteCustomer/" + customer.customerId,
-  //   requestOptions
-  // );
-  // if (response.ok) {
-  //   const res = await response.text();
-  //   let isFalse = res;
-  //   console.log("your res is : " + isFalse);
-  //   console.log(JSON.stringify(res));
-  // } else if (!response.ok) {
-  //   const error = await response.json();
-  //   console.log(JSON.stringify(error));
-  // }
+  const response = await fetch(
+    API_URL + "admin/deleteCustomer/" + customer.customerId,
+    requestOptions
+  );
+  if (response.ok) {
+    const data = await response.text();
+    data === "false" && responseHandler.onSuccess();
+  } else {
+    const error = await response.json();
+    responseHandler.onFail(error.value);
+  }
 };
 
 export const API = {
@@ -217,4 +221,72 @@ export const API = {
   adminLogin: adminLogin,
   companyLogin: companyLogin,
   customerLogin: customerLogin,
+};
+
+const addCoupon = async (
+  coupon: Coupon,
+  responseHandler: APIResponseHandler = DefaultAPIResponseHandler
+) => {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json", token: getToken() },
+    body: JSON.stringify(coupon),
+  };
+
+  const response = await fetch(API_URL + "companies/addCoupon", requestOptions);
+  if (response.ok) {
+  } else {
+    const error = await response.json();
+    responseHandler.onFail(error.value);
+  }
+};
+const deleteCouponHandler = async (
+  couponId: number,
+  responseHandler: APIResponseHandler = DefaultAPIResponseHandler
+) => {
+  const requestOptions = {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", token: getToken() },
+    body: "",
+  };
+
+  const response = await fetch(
+    API_URL + "companies/deleteCoupon/" + couponId,
+    requestOptions
+  );
+  if (response.ok) {
+    responseHandler.onSuccess();
+  } else {
+    const error = await response.json();
+    responseHandler.onFail(error.value);
+  }
+};
+const updateCouponHandler = async (
+  coupon: Coupon,
+  responseHandler: APIResponseHandler = DefaultAPIResponseHandler
+) => {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json", token: getToken() },
+    body: JSON.stringify(coupon),
+  };
+
+  const response = await fetch(
+    API_URL + "companies/updateCoupon",
+    requestOptions
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    responseHandler.onFail(error.value);
+  }
+};
+
+
+
+export const CompanyApi = {
+  // compsny components
+  addCoupon: addCoupon,
+  deleteCoupon: deleteCouponHandler,
+  updateCoupon: updateCouponHandler,
 };

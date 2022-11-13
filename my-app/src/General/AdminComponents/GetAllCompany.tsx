@@ -1,9 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "../Utils/Pagination";
 import CompanyDisplay from "./CompanyDisplay";
-import { getToken } from "../Utils/APIWrapper";
+import { APIResponseHandler, getToken } from "../Utils/APIWrapper";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { changeMessage } from "../Redux/ErrorMessage";
+import { changeLoadingMode } from "../Redux/LoadingData";
 
 const GetAllCompany = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const getErrorMessage = (message: string) => {
+    dispatch(changeMessage(message));
+    navigate("error");
+  };
+
+  const setLoadingMode = (isLoading: boolean) => {
+    dispatch(changeLoadingMode(isLoading));
+  };
+
+ 
+
   const postsPerPageToShow = (): number => {
     return window.innerWidth > 700 ? 9 : 10;
   };
@@ -31,14 +48,17 @@ const GetAllCompany = () => {
     if (response.ok) {
       const data = await response.json();
       setCompanies(data);
+      setLoadingMode(false);
     } else {
       const error = await response.json();
-      console.log(error.value);
+      getErrorMessage(error.value);
+      setLoadingMode(false);
     }
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
+    setLoadingMode(true);
     fetchCompany();
   }, []);
 

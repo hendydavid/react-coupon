@@ -14,6 +14,13 @@
 
 }
 
+.icon-display {
+  margin-top: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .button-display {
   margin-top: 5px;
   display: flex;
@@ -79,9 +86,16 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.form textarea {
+  width: 80%;
+  border: #1976d2 solid 2px;
+  min-height: 100px;
+
+}
 
 .form button {
   margin-top: 15px;
+
 }
 
 .btn {
@@ -91,7 +105,8 @@
   color: rgb(255, 255, 255);
   background: rgb(101, 181, 242);
   border: none;
-  width: 30%;
+  text-align: center;
+
 }
 
 .login-btn {
@@ -198,6 +213,14 @@
 @media(max-width: 574px) {
   .text {
     display: none;
+  }
+
+}
+
+@media(max-width:400px) {
+
+  .btn {
+    font-size: 10px;
   }
 }
 

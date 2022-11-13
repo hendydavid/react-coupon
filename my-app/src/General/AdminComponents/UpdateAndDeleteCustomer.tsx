@@ -4,6 +4,8 @@ import { API } from "../Utils/APIWrapper";
 import { URL } from "../Routing";
 import { useNavigate } from "react-router-dom";
 import { iconsList } from "../Utils/Icon";
+import { changeMessage } from "../Redux/ErrorMessage";
+import { useDispatch } from "react-redux";
 
 type props = {
   customer: Customer;
@@ -12,8 +14,11 @@ type props = {
 
 const UpdateAndDeleteCustomer = (props: props) => {
   let customer = props.customer;
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const getErrorMessage = (errorMessage: string) => {
+    dispatch(changeMessage(errorMessage));
+  };
 
   return (
     <div className="data-display">
@@ -32,9 +37,10 @@ const UpdateAndDeleteCustomer = (props: props) => {
             )
           ) {
             API.deleteCustomer(props.customer, {
-              fetchData: props.fetchCustomers,
-              errorRouting: () => {
-                navigate(URL.adminUrl.errorMessage);
+              onSuccess: props.fetchCustomers,
+              onFail: (errorMessage: string) => {
+                navigate("error");
+                getErrorMessage(errorMessage);
               },
             });
           }

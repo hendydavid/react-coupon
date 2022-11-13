@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initState: string = "";
+
+const initState:string ="";
 
 export const ErrorMessage = createSlice({
   name: "errorMessage",
@@ -12,11 +13,12 @@ export const ErrorMessage = createSlice({
       state.value = action.payload;
     },
     clearMessage: (state) => {
-      state.value = initState;
-    },
+        state.value = initState;
+      },
+   
   },
 });
 
-export const { changeMessage } = ErrorMessage.actions;
-export const { clearMessage } = ErrorMessage.actions;
+export const {changeMessage} = ErrorMessage.actions;
+export const { clearMessage} = ErrorMessage.actions;
 export default ErrorMessage.reducer;

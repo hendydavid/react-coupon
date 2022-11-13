@@ -3,7 +3,21 @@ import UpdateAndDeleteCompany from "./UpdateAndDeleteCompany";
 import { useDispatch } from "react-redux";
 import Pagination from "../Utils/Pagination";
 import { getToken } from "../Utils/APIWrapper";
+import { useNavigate } from "react-router-dom";
+import { changeMessage } from "../Redux/ErrorMessage";
+import { changeLoadingMode } from "../Redux/LoadingData";
 const UpdateAndDeleteCompanyList = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const getErrorMessage = (message: string) => {
+    dispatch(changeMessage(message));
+    navigate("error");
+  };
+
+  const setLoadingMode = (isLoading: boolean) => {
+    dispatch(changeLoadingMode(isLoading));
+  };
 
   const postsPerPageToShow = (): number => {
     return window.innerWidth > 700 ? 9 : 10;
@@ -23,8 +37,11 @@ const UpdateAndDeleteCompanyList = () => {
     if (response.ok) {
       const data = await response.json();
       setCompanies(data);
+      setLoadingMode(false);
     } else {
-      console.log(response.json());
+      const error = await response.json();
+      getErrorMessage(error.value);
+      setLoadingMode(false);
     }
   };
 

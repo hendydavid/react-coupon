@@ -1,38 +1,52 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Route, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "../css-files/popUp.css";
-import { changeMessage, clearMessage } from "../Redux/ErrorMessage";
-import { useDispatch, useSelector } from "react-redux";
 
-export default function PopUp() {
-  const dispatch = useDispatch();
+type Props = {
+  pageToNavigate?: string;
+};
+
+export default function PopUp(prop: Props) {
   const navigate = useNavigate();
   const [modal, setModal] = useState(true);
-  const defaultMessage = "Something went wrong please try again";
-  const errorMessage = useSelector((state: any) => state.errorMessage.value);
+
+  const message = useSelector((state: any) => state.errorMessage.value);
 
   const toggleModal = () => {
     setModal(!modal);
-    navigate(-1);
-    dispatch(clearMessage());
+    if (prop.pageToNavigate) {
+      navigate(prop.pageToNavigate);
+    } else {
+      navigate(-1);
+    }
   };
 
   return (
     <>
       {modal && (
-        <div className="modal">
-          <div className="overlay"></div>
+        <div id="my-modal" className="modal">
           <div className="modal-content">
-            <p>{errorMessage ? errorMessage : defaultMessage}</p>
-
-            <button
-              className="close-modal"
-              onClick={() => {
-                toggleModal();
-              }}
-            >
-              CLOSE
-            </button>
+            <div className="modal-header">
+              <span
+                className="close"
+                onClick={() => {
+                  toggleModal();
+                }}
+              >
+                &times;
+              </span>
+              <h2>Something went wrong</h2>
+            </div>
+            <div className="modal-body">
+              <h4>Error:</h4>
+              <p>{message}</p>
+            </div>
+            <div className="modal-footer">
+              <h3>
+                <a href="/">return to login page</a>
+              </h3>
+            </div>
           </div>
         </div>
       )}

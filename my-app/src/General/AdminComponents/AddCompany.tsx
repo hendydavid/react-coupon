@@ -1,17 +1,31 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { API } from "../Utils/APIWrapper";
+import { API, APIResponseHandler } from "../Utils/APIWrapper";
 import { Company } from "../Models/models";
 import { IFormInputsCompany } from "./UpdateCompanyPage";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { changeMessage } from "../Redux/ErrorMessage";
+
+
 
 const AddCompany = () => {
-  const [addCompanySuccess,setAddCompanySuccess] = useState(true);
   const {
     register,
     formState: { errors },
     handleSubmit,
     resetField,
   } = useForm<IFormInputsCompany>();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const getErrorMessage = (message: string) => {
+    dispatch(changeMessage(message));
+    navigate("error");
+  };
+  const responseHandlerMethod: APIResponseHandler = {
+    onSuccess: () => {},
+    onFail: (error: string) => getErrorMessage(error),
+  };
 
   const reset = () => {
     resetField("companyName");
@@ -29,16 +43,14 @@ const AddCompany = () => {
       coupons: [],
     };
 
-    API.addCompany(company, () => {
-     setAddCompanySuccess(true)
-    });
+    API.addCompany(company, responseHandlerMethod);
     reset();
   };
 
   return (
     <>
       <h2 className="title">Please Add A New Company</h2>
-       
+
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label> Company Name </label>
         <input {...register("companyName", { required: true })} />

@@ -23,7 +23,7 @@ export const User = (size: number): JSX.Element => {
   );
 };
 
-export const Coupon = (size: number): JSX.Element => {
+export const Coupon = (size: any): JSX.Element => {
   return (
     <div className="icon">
       <BiPurchaseTag size={size}></BiPurchaseTag>

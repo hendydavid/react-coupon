@@ -3,20 +3,36 @@ import { Outlet } from "react-router-dom";
 import { keysAndValyeUrlForAdmin } from "../Routing";
 import Footer from "../shared/Footer";
 import Header from "../shared/Header";
-
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getToken } from "../Utils/APIWrapper";
+import { changeMessage } from "../Redux/ErrorMessage";
+import PopUp from "../shared/PopUp";
 const AdminNavBar = () => {
+  const dispatch = useDispatch();
+  const unauthorizedAccess = (): JSX.Element => {
+    dispatch(changeMessage("you are not allow to access this page"));
+    return <PopUp pageToNavigate={"/"}></PopUp>;
+  };
+
   return (
-    <div>
-      <Header
-        pages={keysAndValyeUrlForAdmin()}
-        userInfo={{
-          firstName: "Admin",
-          type: "admin",
-        }}
-      ></Header>
-      <Outlet></Outlet>
-      <Footer></Footer>
-    </div>
+    <>
+      {getToken().match("null") ? (
+        unauthorizedAccess()
+      ) : (
+        <div>
+          <Header
+            pages={keysAndValyeUrlForAdmin()}
+            userInfo={{
+              firstName: "Admin",
+              type: "admin",
+            }}
+          ></Header>
+          <Outlet></Outlet>
+          <Footer></Footer>
+        </div>
+      )}
+    </>
   );
 };
 

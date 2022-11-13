@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import UpdateAndDeleteCustomer from "./UpdateAndDeleteCustomer";
-import { Customer } from "../Models/models";
+import UpdateAndDeleteCoupon from "./UpdateAndDeleteCoupon";
+import { Coupon } from "../Models/models";
 import Pagination from "../Utils/Pagination";
 import { getToken } from "../Utils/APIWrapper";
 import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeLoadingMode } from "../Redux/LoadingData";
+import CouponDisplay from "./CouponDisplay";
 
-const UpdateAndDeleteCustomersList = () => {
+const GetAllCoupons = () => {
+  let counter = 0;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const getErrorMessage = (message: string) => {
@@ -19,26 +21,26 @@ const UpdateAndDeleteCustomersList = () => {
     dispatch(changeLoadingMode(isLoading));
   };
 
-  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [coupons, setCoupons] = useState<Coupon[]>([]);
 
   const postsPerPageToShow = (): number => {
     return window.innerWidth > 700 ? 9 : 10;
   };
 
-  const fetchCustomers = async () => {
+  const fetchCoupons = async () => {
     const requestOptions = {
       method: "GET",
       headers: { "Content-Type": "application/json", token: getToken() },
     };
 
     const response = await fetch(
-      "http://localhost:8080/admin/getAllCustomers",
+      "http://localhost:8080/companies/getAllCoupons",
       requestOptions
     );
 
     if (response.ok) {
       const data = await response.json();
-      setCustomers(data);
+      setCoupons(data);
       setLoadingMode(false);
     } else if (!response.ok) {
       const error = await response.json();
@@ -52,39 +54,40 @@ const UpdateAndDeleteCustomersList = () => {
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = customers.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = coupons.slice(indexOfFirstPost, indexOfLastPost);
 
   const changepageNumber = (pageNumber: number) => setCurrentPage(pageNumber);
 
   useEffect(() => {
     setLoadingMode(true);
-    fetchCustomers();
+    fetchCoupons();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let keyNumber = 1;
-
   return (
     <div>
-      <div className="data-row">
-        {currentPosts.map((customer) => (
-          <UpdateAndDeleteCustomer
-            fetchCustomers={fetchCustomers}
-            customer={customer}
-            key={keyNumber++}
-          ></UpdateAndDeleteCustomer>
-        ))}
-      </div>
+      {coupons.length <= 0 ? (
+        <div>No Coupon Been Added Yet!</div>
+      ) : (
+        <>
+          <div className="data-row">
+            {currentPosts.map((coupon) => (
+              <CouponDisplay coupon={coupon}></CouponDisplay>
+            ))}
+          </div>
 
-      <Pagination
-        totalPosts={customers.length}
-        postsPerPage={postsPerPage}
-        setCurrentPage={changepageNumber}
-        currentPage={currentPage}
-      ></Pagination>
+          <Pagination
+            key={counter++}
+            totalPosts={coupons.length}
+            postsPerPage={postsPerPage}
+            setCurrentPage={changepageNumber}
+            currentPage={currentPage}
+          ></Pagination>
+        </>
+      )}
     </div>
   );
 };
 
-export default UpdateAndDeleteCustomersList;
+export default GetAllCoupons;

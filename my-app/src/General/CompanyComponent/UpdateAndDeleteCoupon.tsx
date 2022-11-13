@@ -1,6 +1,6 @@
 import React from "react";
-import { Company } from "../Models/models";
-import { API, APIResponseHandler } from "../Utils/APIWrapper";
+import { Coupon } from "../Models/models";
+import { API, APIResponseHandler, CompanyApi } from "../Utils/APIWrapper";
 import { useNavigate } from "react-router-dom";
 import { URL } from "../Routing";
 import { iconsList } from "../Utils/Icon";
@@ -10,11 +10,11 @@ import { useDispatch } from "react-redux";
 import "../css-files/App.css";
 
 type Prop = {
-  company: Company;
-  fetchCompanies: () => void;
+  coupon: Coupon;
+  fetchCoupons: () => void;
 };
 
-const UpdateAndDeleteCompany = (prop: Prop) => {
+const UpdateAndDeleteCoupon = (prop: Prop) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const getErrorMessage = (message: string) => {
@@ -24,44 +24,48 @@ const UpdateAndDeleteCompany = (prop: Prop) => {
 
   const responseHandlerMethod: APIResponseHandler = {
     onSuccess: () => {
-      prop.fetchCompanies();
+      prop.fetchCoupons();
     },
     onFail: (error: string) => getErrorMessage(error),
   };
 
-  let company = prop.company;
+  let coupon = prop.coupon;
 
   return (
     <div className="data-display">
-      {iconsList.company("")}
+      {iconsList.coupon("")}
       <h4>Name:</h4>
-      <p>{company.companyName}</p>
-      <h4>Email:</h4>
-      <p>{company.email}</p>
-      <h4>Company Created Date:</h4>
-      <p>{`${String(company.dateCreated).slice(0, 10)}`}</p>
+      <p>{coupon.couponName}</p>
+      <h4>Coupon price:</h4>
+      <p>{coupon.price}</p>
+
+      <h4>Amount of coupons available : </h4>
+      <p>{coupon.amount}</p>
+
+      <h4>
+        Coupon current expiration date: 
+      </h4>
+      <p>{`${String(coupon.endDate).slice(0, 10)}`}</p>
       <div className="button-display">
         {iconsList.delete(() => {
           if (
             window.confirm(
-              `are you would you like to delete ${prop.company.companyName}`
+              `are you would you like to delete ${prop.coupon.couponName}`
             )
           ) {
-            API.deleteCompany(
-              Number(prop.company.companyId),
+            CompanyApi.deleteCoupon(
+              Number(prop.coupon.couponId),
               responseHandlerMethod
             );
           }
         })}
 
         {iconsList.update(() => {
-          navigate(
-            URL.adminUrl.updateCompaniesPage + `${prop.company.companyId}`
-          );
+          navigate(URL.companyUrl.updateCouponPage + `${prop.coupon.couponId}`);
         })}
       </div>
     </div>
   );
 };
 
-export default UpdateAndDeleteCompany;
+export default UpdateAndDeleteCoupon;
