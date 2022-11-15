@@ -7,6 +7,7 @@ import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeLoadingMode } from "../Redux/LoadingData";
+import { optionsCategory } from "../Utils/Category";
 
 export interface IFormInputsCompany {
   couponId: number;
@@ -133,7 +134,7 @@ const UpdateCompanyPage = () => {
 
   return (
     <>
-      <h2 className="title">Please Add A New Coupon </h2>
+      <h2 className="title">Please update your coupon </h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <label> Coupon name </label>
@@ -171,28 +172,20 @@ const UpdateCompanyPage = () => {
         />
         {errors.imageURL && "coupon must be with an image please add image url"}
 
-        <label>Your current expiration time : {String(coupon.endDate).slice(0, 10)}</label>
-        <input
-        
-          type={"date"}
-          {...register("endDate", { required: true })}
-        />
+        <label>
+          Your current expiration time : {String(coupon.endDate).slice(0, 10)}
+        </label>
+        <input type={"date"} {...register("endDate", { required: true })} />
         {errors.endDate && "coupon must be with an expiration date"}
         <label> Please select your category</label>
         <select
           {...register("categoryId", { required: true })}
           onChange={(e) => {
+            console.log(e.target.value);
             setCategory(Number(e.target.value));
           }}
         >
-          <option value="1"> Sport </option>
-          <option value="2">Clothing</option>
-          <option value="3">Computers </option>
-          <option value="4">Smartphones</option>
-          <option value="5">Medical</option>
-          <option value="6">Camping</option>
-          <option value="7">Electrincs</option>
-          <option value="8">Beauty</option>
+          {optionsCategory()}
         </select>
         {errors.categoryId && "Please select category for your coupon"}
 

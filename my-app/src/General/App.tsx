@@ -23,7 +23,6 @@ const App = () => {
           />
         </div>
       )}
-     
       <Main></Main>
     </div>
   );

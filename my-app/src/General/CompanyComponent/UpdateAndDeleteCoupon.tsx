@@ -8,6 +8,7 @@ import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
 
 import "../css-files/App.css";
+import { getKeyByValue } from "../Utils/Category";
 
 type Prop = {
   coupon: Coupon;
@@ -38,13 +39,12 @@ const UpdateAndDeleteCoupon = (prop: Prop) => {
       <p>{coupon.couponName}</p>
       <h4>Coupon price:</h4>
       <p>{coupon.price}</p>
-
+      <h4>Coupon category:</h4>
+      <p>{getKeyByValue(coupon.categoryId)}</p>
       <h4>Amount of coupons available : </h4>
       <p>{coupon.amount}</p>
 
-      <h4>
-        Coupon current expiration date: 
-      </h4>
+      <h4>Coupon current expiration date:</h4>
       <p>{`${String(coupon.endDate).slice(0, 10)}`}</p>
       <div className="button-display">
         {iconsList.delete(() => {

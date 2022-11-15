@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import UpdateAndDeleteCoupon from "./UpdateAndDeleteCoupon";
 import { Coupon } from "../Models/models";
 import Pagination from "../Utils/Pagination";
 import { getToken } from "../Utils/APIWrapper";
@@ -7,8 +6,9 @@ import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeLoadingMode } from "../Redux/LoadingData";
+import CouponDisplayForPurchase from "./CouponDisplayForPurchase";
 
-const UpdateAndDeleteCouponsList = () => {
+const PurchaseCouponsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const getErrorMessage = (message: string) => {
@@ -32,7 +32,7 @@ const UpdateAndDeleteCouponsList = () => {
     };
 
     const response = await fetch(
-      "http://localhost:8080/companies/getAllCoupons",
+      "http://localhost:8080/customers/getAllCoupons",
       requestOptions
     );
 
@@ -66,31 +66,28 @@ const UpdateAndDeleteCouponsList = () => {
   let keyNumber = 1;
 
   return (
-    <>
-      {coupons.length <= 0 ? (
-        <div className="btn">No Coupon Yet.. </div>
-      ) : (
-        <div>
-          <div className="data-row">
-            {currentPosts.map((coupon) => (
-              <UpdateAndDeleteCoupon
-                fetchCoupons={fetchCoupons}
-                coupon={coupon}
-                key={keyNumber++}
-              ></UpdateAndDeleteCoupon>
-            ))}
-          </div>
+    <div>
+      {coupons.length <= 0 && <div className="btn">No Coupon Yet.. </div>}
 
-          <Pagination
-            totalPosts={coupons.length}
-            postsPerPage={postsPerPage}
-            setCurrentPage={changepageNumber}
-            currentPage={currentPage}
-          ></Pagination>
+      <div>
+        <div className="coupon-purchase">
+          {currentPosts.map((coupon) => (
+            <CouponDisplayForPurchase
+              coupon={coupon}
+              key={keyNumber++}
+            ></CouponDisplayForPurchase>
+          ))}
         </div>
-      )}
-    </>
+
+        <Pagination
+          totalPosts={coupons.length}
+          postsPerPage={postsPerPage}
+          setCurrentPage={changepageNumber}
+          currentPage={currentPage}
+        ></Pagination>
+      </div>
+    </div>
   );
 };
 
-export default UpdateAndDeleteCouponsList;
+export default PurchaseCouponsList;

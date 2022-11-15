@@ -5,6 +5,9 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeMessage } from "../Redux/ErrorMessage";
 import { useState } from "react";
+import { optionsCategory } from "../Utils/Category";
+import "../css-files/select.css";
+
 
 const AddCoupon = () => {
   const [categoryId, setCategory] = useState(0);
@@ -23,7 +26,7 @@ const AddCoupon = () => {
     resetField("price");
     resetField("description");
     resetField("imageURL");
-    resetField("endDate")
+    resetField("endDate");
   };
 
   const dispatch = useDispatch();
@@ -38,9 +41,9 @@ const AddCoupon = () => {
   };
 
   const onSubmit: SubmitHandler<Coupon> = (data) => {
-    let end = new Date(String(data.endDate)).getTime()
+    let end = new Date(String(data.endDate)).getTime();
     let start = new Date().getTime();
-    if (end<=start) {
+    if (end <= start) {
       window.alert("Please select date later from today");
     } else {
       const defaultCompany = {
@@ -104,22 +107,19 @@ const AddCoupon = () => {
         <input type={"date"} {...register("endDate", { required: true })} />
         {errors.endDate && "coupon must be with an expiration date"}
         <label> Please select your category</label>
-        <select
-          {...register("categoryId", { required: true })}
-          onChange={(e) => {
-            setCategory(Number(e.target.value));
-          }}
-        >
-          <option value="1"> Sport </option>
-          <option value="2">Clothing</option>
-          <option value="3">Computers </option>
-          <option value="4">Smartphones</option>
-          <option value="5">Medical</option>
-          <option value="6">Camping</option>
-          <option value="7">Electrincs</option>
-          <option value="8">Beauty</option>
-        </select>
-        {errors.categoryId && "Please select category for your coupon"}
+
+        <div className="select">
+          <select
+            id="format"
+            {...register("categoryId", { required: true })}
+            onChange={(e) => {
+              console.log(e.target.value);
+              setCategory(Number(e.target.value));
+            }}
+          >
+            {optionsCategory()}
+          </select>
+        </div>
 
         <input type="submit" className="btn" value={"Add Coupon"} />
       </form>
