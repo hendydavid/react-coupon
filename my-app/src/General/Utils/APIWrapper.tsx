@@ -21,7 +21,10 @@ export const getToken = (): string => {
   let token = String(window.localStorage.getItem("token"));
   return token;
 };
-
+export const getType = (type:string): boolean => {
+  let typeFromStorage = String(window.localStorage.getItem("type"));
+  return typeFromStorage === type;
+};
 const API_URL = "http://localhost:8080/";
 
 const adminLogin = async (loginDetails: LoginInfo) => {

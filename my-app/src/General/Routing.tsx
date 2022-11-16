@@ -21,6 +21,7 @@ import UpdateCouponPage from "./CompanyComponent/UpdateCouponPage";
 import UpdateAndDeleteCouponsList from "./CompanyComponent/UpdateAndDeleteCouponList";
 import GetAllCoupons from "./CompanyComponent/GetAllCoupon";
 import PurchaseCouponsList from "./CustomerCompenents/PurchaseCouponList";
+import GetCustomerCoupon from "./CustomerCompenents/GetCustomerCoupon";
 
 export const URL = {
   adminUrl: {
@@ -38,6 +39,7 @@ export const URL = {
   customersUrl: {
     main: "/customer",
     purchaseCoupons: "/customer/purchaseCoupon",
+    ViewCustomerCoupon: "/customer/ViewCustomerCoupon",
   },
   companyUrl: {
     main: "/company",
@@ -101,8 +103,9 @@ export const keysAndValyeUrlForCompany = (): PagesLinks[] => {
 };
 export const keysAndValyeUrlForCustomer = (): PagesLinks[] => {
   const keysAndValyues = {
-    main:URL.customersUrl.main,
-    purchaseCoupons:URL.customersUrl.purchaseCoupons
+    main: URL.customersUrl.main,
+    purchaseCoupons: URL.customersUrl.purchaseCoupons,
+    viewMyCoupon: URL.customersUrl.ViewCustomerCoupon,
   };
 
   const pageAndLink: PagesLinks[] = [];
@@ -172,6 +175,10 @@ const Routing = (): JSX.Element => {
           <Route
             path="/customer/purchaseCoupon"
             element={<PurchaseCouponsList></PurchaseCouponsList>}
+          />
+          <Route
+            path="/customer/ViewCustomerCoupon"
+            element={<GetCustomerCoupon></GetCustomerCoupon>}
           />
         </Route>
 

@@ -5,9 +5,12 @@ import "./css-files/App.css";
 import Main from "./Main";
 import { useSelector } from "react-redux";
 import { getToken } from "./Utils/APIWrapper";
+import Pagination from "./Utils/PaginationCopy";
+import PaginationCopy from "./Utils/PaginationCopy";
 
 const App = () => {
   const loadingMode = useSelector((state: any) => state.loadingData.value);
+  const [number, setNumber] = useState(1);
   return (
     <div className="container">
       {loadingMode && (
@@ -24,6 +27,12 @@ const App = () => {
         </div>
       )}
       <Main></Main>
+      <PaginationCopy
+        postsPerPage={10}
+        totalPosts={100}
+        setCurrentPage={setNumber}
+        currentPage={number}
+      ></PaginationCopy>
     </div>
   );
 };

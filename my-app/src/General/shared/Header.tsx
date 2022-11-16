@@ -27,7 +27,7 @@ type Prop = {
 let counter = 0;
 const settings = ["Logout"];
 
-function Header(prop: Prop) {
+const Header = (prop: Prop) => {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -165,6 +165,7 @@ function Header(prop: Prop) {
                 onClick={() => {
                   if (window.confirm("are you sure you want to logout")) {
                     window.localStorage.removeItem("token");
+                    window.localStorage.removeItem("type");
                     navigate("/");
                   }
                 }}
@@ -177,5 +178,5 @@ function Header(prop: Prop) {
       </Container>
     </AppBar>
   );
-}
+};
 export default Header;

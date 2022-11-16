@@ -6,7 +6,7 @@ import { keysAndValyeUrlForCustomer } from "../Routing";
 import Footer from "../shared/Footer";
 import Header from "../shared/Header";
 import PopUp from "../shared/PopUp";
-import { getToken } from "../Utils/APIWrapper";
+import { getToken, getType } from "../Utils/APIWrapper";
 
 const CustomerNavBar = () => {
   const [userName, setUserName] = useState("");
@@ -27,7 +27,7 @@ const CustomerNavBar = () => {
 
   return (
     <>
-      {getToken().match("null") ? (
+      {!getType("CUSTOMER")? (
         unauthorizedAccess()
       ) : (
         <div>

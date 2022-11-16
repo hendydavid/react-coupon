@@ -3,9 +3,8 @@ import { Outlet } from "react-router-dom";
 import { keysAndValyeUrlForAdmin } from "../Routing";
 import Footer from "../shared/Footer";
 import Header from "../shared/Header";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getToken } from "../Utils/APIWrapper";
+import { getToken, getType } from "../Utils/APIWrapper";
 import { changeMessage } from "../Redux/ErrorMessage";
 import PopUp from "../shared/PopUp";
 const AdminNavBar = () => {
@@ -17,7 +16,7 @@ const AdminNavBar = () => {
 
   return (
     <>
-      {getToken().match("null") ? (
+      {!getType("ADMIN") ? (
         unauthorizedAccess()
       ) : (
         <div>

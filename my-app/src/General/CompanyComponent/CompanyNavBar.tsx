@@ -5,7 +5,7 @@ import { keysAndValyeUrlForCompany } from "../Routing";
 import Footer from "../shared/Footer";
 import Header from "../shared/Header";
 import PopUp from "../shared/PopUp";
-import { getToken } from "../Utils/APIWrapper";
+import { getToken, getType } from "../Utils/APIWrapper";
 import { useDispatch } from "react-redux";
 
 const CompanyNavBar = () => {
@@ -29,7 +29,7 @@ const CompanyNavBar = () => {
 
   return (
     <>
-      {getToken().match("null") ? (
+      {!getType("COMPANY") ? (
         unauthorizedAccess()
       ) : (
         <div>

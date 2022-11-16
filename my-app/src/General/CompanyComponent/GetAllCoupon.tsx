@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeLoadingMode } from "../Redux/LoadingData";
 import CouponDisplay from "./CouponDisplay";
+import { optionsCategory } from "../Utils/Category";
 
 const GetAllCoupons = () => {
   // main data component and util
@@ -205,14 +206,7 @@ const GetAllCoupons = () => {
                 setCategory(Number(e.target.value));
               }}
             >
-              <option value="1"> Sport </option>
-              <option value="2">Clothing</option>
-              <option value="3">Computers </option>
-              <option value="4">Smartphones</option>
-              <option value="5">Medical</option>
-              <option value="6">Camping</option>
-              <option value="7">Electrincs</option>
-              <option value="8">Beauty</option>
+              {optionsCategory()}
             </select>
           </div>
           <button className={"btn"} onClick={() => fetchCouponsByCategory()}>

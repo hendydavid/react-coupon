@@ -32,7 +32,6 @@ const LoginPage = () => {
   const succsessNavigate = (path: string) => {
     navigate(path);
   };
- 
 
   const {
     register,
@@ -52,21 +51,30 @@ const LoginPage = () => {
         email: data.email,
         password: data.password,
         forwardError: changeMessageRedux,
-        forwardLogin: () => succsessNavigate(URL.adminUrl.main),
+        forwardLogin: () => {
+          succsessNavigate(URL.adminUrl.main);
+          window.localStorage.setItem("type", "ADMIN");
+        },
       });
     } else if (accountType === "COMPANY") {
       API.companyLogin({
         email: data.email,
         password: data.password,
         forwardError: changeMessageRedux,
-        forwardLogin: () => succsessNavigate(URL.companyUrl.main),
+        forwardLogin: () => {
+          succsessNavigate(URL.companyUrl.main);
+          window.localStorage.setItem("type", "COMPANY");
+        },
       });
     } else {
       API.customerLogin({
         email: data.email,
         password: data.password,
         forwardError: changeMessageRedux,
-        forwardLogin: () => succsessNavigate(URL.customersUrl.main),
+        forwardLogin: () => {
+          succsessNavigate(URL.customersUrl.main);
+          window.localStorage.setItem("type", "CUSTOMER");
+        },
       });
     }
 
