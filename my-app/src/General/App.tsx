@@ -1,11 +1,8 @@
-import { clear } from "console";
 import { useState } from "react";
 import { ColorRing } from "react-loader-spinner";
 import "./css-files/App.css";
 import Main from "./Main";
 import { useSelector } from "react-redux";
-import { getToken } from "./Utils/APIWrapper";
-import Pagination from "./Utils/PaginationCopy";
 import PaginationCopy from "./Utils/PaginationCopy";
 
 const App = () => {
