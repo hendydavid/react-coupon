@@ -7,38 +7,52 @@ type Props = {
   setCurrentPage: (currentPage: number) => void;
   currentPage: number;
 };
-let i = 0;
+var counter = 0;
+const itemToShow: number = 8;
 const Pagination = (props: Props) => {
   const pageNumbers: number[] = [];
 
   for (let i = 1; i <= Math.ceil(props.totalPosts / props.postsPerPage); i++) {
     pageNumbers.push(i);
   }
+
   const setPageNumbers = (): JSX.Element[] => {
     const listOfCurrentPages: JSX.Element[] = [];
-    const lastPage = pageNumbers.slice(
-      props.currentPage,
-      props.currentPage + 8
-    );
+    let lastPage: number[] = [];
+    if (props.currentPage === pageNumbers.length) {
+      lastPage = pageNumbers.slice(
+        props.currentPage-1,
+        props.currentPage + itemToShow
+      );
+    } else {
+      lastPage = pageNumbers.slice(
+        props.currentPage,
+        props.currentPage + itemToShow
+      );
+    }
+
     for (
       let i = props.currentPage - 2;
-      i++;
-      i <= lastPage[lastPage.length - 1] - 1
+      i <= lastPage[lastPage.length - 1] - 1;
+      i++
     ) {
       listOfCurrentPages.push(
         <li
-          key={++i}
+          key={counter++}
           className={props.currentPage === i ? "selected-item" : "page-item"}
           onClick={() => props.setCurrentPage(i)}
         >
           {i}
         </li>
       );
-      if (i === lastPage[lastPage.length - 1] - 1) {
+      if (
+        i === lastPage[lastPage.length - 1] - 1 &&
+        pageNumbers.length - lastPage[0] >= itemToShow
+      ) {
         listOfCurrentPages.push(
           <li
-            key={++i}
-            className={props.currentPage === i ? "selected-item" : "page-item"}
+            key={counter++}
+            className={"page-item"}
             onClick={() => props.setCurrentPage(i)}
           >
             .....
@@ -50,21 +64,37 @@ const Pagination = (props: Props) => {
   };
   const setFirstNumbers = (): JSX.Element[] => {
     const listOfCurrentPages: JSX.Element[] = [];
-    const lastPage = pageNumbers.slice(
-      2,
-      props.currentPage + 8
-    );
-    for (let i = 2; i++; i <= lastPage[lastPage.length - 1] - 1) {
+    const lastPage = pageNumbers.slice(1, itemToShow);
+
+    for (let i = 0; i <= lastPage.length - 1; i++) {
+   
       listOfCurrentPages.push(
         <li
-          key={++i}
-          className={props.currentPage === i ? "selected-item" : "page-item"}
-          onClick={() => props.setCurrentPage(i)}
+          key={counter++}
+          className={
+            props.currentPage === lastPage[i] ? "selected-item" : "page-item"
+          }
+          onClick={() => props.setCurrentPage(lastPage[i])}
         >
-          {i}
+          {lastPage[i]}
         </li>
       );
+      if (
+        i === lastPage.length - 1 &&
+        pageNumbers.length - lastPage[0] >= itemToShow
+      ) {
+        listOfCurrentPages.push(
+          <li
+            key={counter++}
+            className={"page-item"}
+            onClick={() => props.setCurrentPage(i)}
+          >
+            .....
+          </li>
+        );
+      }
     }
+
     return listOfCurrentPages;
   };
 
@@ -72,11 +102,11 @@ const Pagination = (props: Props) => {
     <nav>
       <ul className="pagination">
         <li
-          key={++i}
+          key={counter++}
           className={props.currentPage === 1 ? "selected-item" : "page-item"}
           onClick={() => props.setCurrentPage(1)}
         >
-          {pageNumbers[0]}
+          {1}
         </li>
 
         {pageNumbers.length > 2 && props.currentPage >= 5 && setPageNumbers()}
@@ -85,9 +115,13 @@ const Pagination = (props: Props) => {
 
         {pageNumbers.length > 1 && (
           <li
-            key={++i}
-            className={props.currentPage === 1 ? "selected-item" : "page-item"}
-            onClick={() => props.setCurrentPage(1)}
+            key={counter++}
+            className={
+              props.currentPage === pageNumbers.length
+                ? "selected-item"
+                : "page-item"
+            }
+            onClick={() => props.setCurrentPage(pageNumbers.length)}
           >
             {pageNumbers[pageNumbers.length - 1]}
           </li>

@@ -26,7 +26,7 @@ const App = () => {
       <Main></Main>
       <PaginationCopy
         postsPerPage={10}
-        totalPosts={100}
+        totalPosts={300}
         setCurrentPage={setNumber}
         currentPage={number}
       ></PaginationCopy>
