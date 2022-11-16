@@ -75,7 +75,7 @@ const LoginPage = () => {
 
   return (
     <div className="login-page">
-      <h1 className="title">Welcome To Coupon Shppoer</h1>
+      <h1 className="title">Welcome To Coupon Shoppoer</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="login form ">
         <label> Please Enter Your Email </label>
 
