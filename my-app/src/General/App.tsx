@@ -24,12 +24,7 @@ const App = () => {
         </div>
       )}
       <Main></Main>
-      <PaginationCopy
-        postsPerPage={10}
-        totalPosts={300}
-        setCurrentPage={setNumber}
-        currentPage={number}
-      ></PaginationCopy>
+      
     </div>
   );
 };

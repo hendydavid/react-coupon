@@ -66,7 +66,7 @@ const Pagination = (props: Props) => {
     const listOfCurrentPages: JSX.Element[] = [];
     const lastPage = pageNumbers.slice(1, itemToShow);
 
-    for (let i = 0; i <= lastPage.length - 1; i++) {
+    for (let i = 0; i <= lastPage.length - 2; i++) {
    
       listOfCurrentPages.push(
         <li
@@ -80,7 +80,7 @@ const Pagination = (props: Props) => {
         </li>
       );
       if (
-        i === lastPage.length - 1 &&
+        i === lastPage.length - 2 &&
         pageNumbers.length - lastPage[0] >= itemToShow
       ) {
         listOfCurrentPages.push(
