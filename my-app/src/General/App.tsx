@@ -3,13 +3,14 @@ import { ColorRing } from "react-loader-spinner";
 import "./css-files/App.css";
 import Main from "./Main";
 import { useSelector } from "react-redux";
-import PaginationCopy from "./Utils/PaginationCopy";
+import GetAllCustomer from "./AdminComponents/GetAllCustomer";
 
 const App = () => {
   const loadingMode = useSelector((state: any) => state.loadingData.value);
   const [number, setNumber] = useState(1);
   return (
     <div className="container">
+     
       {loadingMode && (
         <div className="icon-display">
           <ColorRing
@@ -24,12 +25,7 @@ const App = () => {
         </div>
       )}
       <Main></Main>
-      <PaginationCopy
-        totalPosts={300}
-        postsPerPage={10}
-        setCurrentPage={setNumber}
-        currentPage={number}
-      ></PaginationCopy>
+  
     </div>
   );
 };

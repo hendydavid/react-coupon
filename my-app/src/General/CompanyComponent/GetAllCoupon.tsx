@@ -8,31 +8,46 @@ import { useNavigate } from "react-router-dom";
 import { changeLoadingMode } from "../Redux/LoadingData";
 import CouponDisplay from "./CouponDisplay";
 import { optionsCategory } from "../Utils/Category";
+import PaginationList from "../Utils/PagninationList";
+
+const FetchType = {
+  allCoupon: "All-Coupon-Fetching",
+  categoryCoupon: "Category-Coupon-Fetching",
+  dateCoupon: "Dates-Coupon-Fetching",
+  maxPriceCoupon: "Max-Price-Coupon-Fetchin",
+};
 
 const GetAllCoupons = () => {
-  // main data component and util
-  const [coupons, setCoupons] = useState<Coupon[]>([]);
-  const fetchCoupons = async () => {
+  const [fetchType, setFetchType] = useState(FetchType.allCoupon);
+  //  pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [couponList, setCoupons] = useState([]);
+  const [totalPosts, setTotalPost] = useState(0);
+
+  const fetchCoupon = async () => {
     const requestOptions = {
       method: "GET",
       headers: { "Content-Type": "application/json", token: getToken() },
     };
 
     const response = await fetch(
-      "http://localhost:8080/companies/getAllCoupons",
+      `http://localhost:8080/companies/getAllCoupons?pageNum=${
+        currentPage - 1
+      }`,
       requestOptions
     );
-
     if (response.ok) {
       const data = await response.json();
-      setCoupons(data);
+      setCoupons(data.content);
+      setTotalPost(data.totalElements);
       setLoadingMode(false);
-    } else if (!response.ok) {
+    } else {
       const error = await response.json();
       getErrorMessage(error.value);
       setLoadingMode(false);
     }
   };
+
   let counter = 0;
 
   // filtering function
@@ -47,14 +62,16 @@ const GetAllCoupons = () => {
     } else {
       setLoadingMode(true);
       const response = await fetch(
-        "http://localhost:8080/companies/getCompanyCouponByMaxPrice/" +
-          maxPrice,
+        `http://localhost:8080/companies/getCompanyCouponByMaxPrice/${maxPrice}?pageNum=${
+          currentPage - 1
+        }`,
         requestOptions
       );
 
       if (response.ok) {
         const data = await response.json();
-        setCoupons(data);
+        setCoupons(data.content);
+        setTotalPost(data.totalElements);
         setLoadingMode(false);
       } else if (!response.ok) {
         const error = await response.json();
@@ -73,14 +90,16 @@ const GetAllCoupons = () => {
     };
     setLoadingMode(true);
     const response = await fetch(
-      "http://localhost:8080/companies/getCompanyCouponByCategory/" +
-        categoryId,
+      `http://localhost:8080/companies/getCompanyCouponByCategory/${categoryId}?pageNum=${
+        currentPage - 1
+      }`,
       requestOptions
     );
 
     if (response.ok) {
       const data = await response.json();
-      setCoupons(data);
+      setCoupons(data.content);
+      setTotalPost(data.totalElements);
       setLoadingMode(false);
     } else if (!response.ok) {
       const error = await response.json();
@@ -102,13 +121,16 @@ const GetAllCoupons = () => {
       };
       setLoadingMode(true);
       const response = await fetch(
-        "http://localhost:8080/companies/getCouponsBetweenDates",
+        `http://localhost:8080/companies/getCouponsBetweenDates?pageNum=${
+          currentPage - 1
+        }`,
         requestOptions
       );
 
       if (response.ok) {
         const data = await response.json();
-        setCoupons(data);
+        setCoupons(data.content);
+        setTotalPost(data.totalElements);
         setLoadingMode(false);
       } else if (!response.ok) {
         const error = await response.json();
@@ -129,25 +151,29 @@ const GetAllCoupons = () => {
     dispatch(changeLoadingMode(isLoading));
   };
 
-  //  pagination states
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = coupons.slice(indexOfFirstPost, indexOfLastPost);
-
-  const changepageNumber = (pageNumber: number) => setCurrentPage(pageNumber);
-
   useEffect(() => {
     setLoadingMode(true);
-    fetchCoupons();
+    switch (fetchType) {
+      case FetchType.allCoupon:
+        fetchCoupon();
+        break;
+      case FetchType.categoryCoupon:
+        fetchCouponsByCategory();
+        break;
+      case FetchType.dateCoupon:
+        fetchCouponsByDate();
+        break;
+      case FetchType.maxPriceCoupon:
+        fetchCouponsByMaxPrice();
+        break;
+    }
+    fetchCoupon();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPage]);
 
   return (
     <>
-      {coupons.length <= 0 && <div>No Coupon Yet</div>}
+      {couponList.length <= 0 && <div>No Coupon Yet</div>}
       <div className="filter-menu">
         <div className="filter-option">
           <div style={{ display: "flex" }}>
@@ -179,10 +205,18 @@ const GetAllCoupons = () => {
             </div>
           </div>
 
-          <button className={"btn"} onClick={() => fetchCouponsByDate()}>
+          <button
+            className={"btn"}
+            onClick={() => {
+              setFetchType(FetchType.dateCoupon);
+              setCurrentPage(1);
+              fetchCouponsByDate();
+            }}
+          >
             Submit
           </button>
         </div>
+
         <div className="filter-option">
           <h4 className="title">Filter by max price</h4>
           <input
@@ -192,10 +226,33 @@ const GetAllCoupons = () => {
               console.log(maxPrice);
             }}
           />
-          <button className={"btn"} onClick={() => fetchCouponsByMaxPrice()}>
+          <button
+            className={"btn"}
+            onClick={() => {
+              setFetchType(FetchType.maxPriceCoupon);
+              setCurrentPage(1);
+              fetchCouponsByMaxPrice();
+            }}
+          >
             Submit
           </button>
         </div>
+
+        <div className="filter-option">
+          <h4 className="title">Get All Coupon</h4>
+
+          <button
+            className={"btn"}
+            onClick={() => {
+              setFetchType(FetchType.allCoupon);
+              setCurrentPage(1);
+              fetchCoupon();
+            }}
+          >
+            Submit
+          </button>
+        </div>
+
         <div className="filter-option select-filter">
           <h4 className="title">filter by category</h4>
           <div className="select">
@@ -209,7 +266,14 @@ const GetAllCoupons = () => {
               {optionsCategory()}
             </select>
           </div>
-          <button className={"btn"} onClick={() => fetchCouponsByCategory()}>
+          <button
+            className={"btn"}
+            onClick={() => {
+              setFetchType(FetchType.categoryCoupon);
+              setCurrentPage(1);
+              fetchCouponsByCategory();
+            }}
+          >
             Submit
           </button>
         </div>
@@ -217,17 +281,17 @@ const GetAllCoupons = () => {
 
       <div>
         <div className="coupon-data-row">
-          {currentPosts.map((coupon) => (
+          {couponList.map((coupon) => (
             <CouponDisplay coupon={coupon} key={counter++}></CouponDisplay>
           ))}
         </div>
 
-        <Pagination
-          totalPosts={coupons.length}
-          postsPerPage={postsPerPage}
-          setCurrentPage={changepageNumber}
+        <PaginationList
+          postsPerPage={8}
+          totalPosts={totalPosts}
+          setCurrentPage={(pageNumber: number) => setCurrentPage(pageNumber)}
           currentPage={currentPage}
-        ></Pagination>
+        ></PaginationList>
       </div>
     </>
   );

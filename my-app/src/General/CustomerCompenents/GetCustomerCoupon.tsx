@@ -115,6 +115,7 @@ const GetCustomerCoupon = () => {
   return (
     <>
       <div className="filter-menu">
+        
         <div className="filter-option">
           <h4 className="title">Filter by max price</h4>
           <input

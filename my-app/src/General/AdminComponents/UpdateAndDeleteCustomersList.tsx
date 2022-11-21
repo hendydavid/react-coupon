@@ -7,6 +7,7 @@ import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeLoadingMode } from "../Redux/LoadingData";
+import PaginationList from "../Utils/PagninationList";
 
 const UpdateAndDeleteCustomersList = () => {
   const dispatch = useDispatch();
@@ -19,11 +20,9 @@ const UpdateAndDeleteCustomersList = () => {
     dispatch(changeLoadingMode(isLoading));
   };
 
-  const [customers, setCustomers] = useState<Customer[]>([]);
-
-  const postsPerPageToShow = (): number => {
-    return window.innerWidth > 700 ? 9 : 10;
-  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const [customersList, setCustomers] = useState([]);
+  const [totalPosts, setTotalPost] = useState(0);
 
   const fetchCustomers = async () => {
     const requestOptions = {
@@ -32,43 +31,34 @@ const UpdateAndDeleteCustomersList = () => {
     };
 
     const response = await fetch(
-      "http://localhost:8080/admin/getAllCustomers",
+      `http://localhost:8080/admin/getAllCustomers?pageNum=${currentPage - 1}`,
       requestOptions
     );
-
     if (response.ok) {
       const data = await response.json();
-      setCustomers(data);
+      setCustomers(data.content);
+      setTotalPost(data.totalElements);
       setLoadingMode(false);
-    } else if (!response.ok) {
+    } else {
       const error = await response.json();
       getErrorMessage(error.value);
       setLoadingMode(false);
     }
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(postsPerPageToShow());
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = customers.slice(indexOfFirstPost, indexOfLastPost);
-
-  const changepageNumber = (pageNumber: number) => setCurrentPage(pageNumber);
-
   useEffect(() => {
     setLoadingMode(true);
     fetchCustomers();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPage]);
 
   let keyNumber = 1;
 
   return (
     <div>
       <div className="data-row">
-        {currentPosts.map((customer) => (
+        {customersList.map((customer) => (
           <UpdateAndDeleteCustomer
             fetchCustomers={fetchCustomers}
             customer={customer}
@@ -77,12 +67,12 @@ const UpdateAndDeleteCustomersList = () => {
         ))}
       </div>
 
-      <Pagination
-        totalPosts={customers.length}
-        postsPerPage={postsPerPage}
-        setCurrentPage={changepageNumber}
+      <PaginationList
+        postsPerPage={8}
+        totalPosts={totalPosts}
+        setCurrentPage={(pageNumber: number) => setCurrentPage(pageNumber)}
         currentPage={currentPage}
-      ></Pagination>
+      ></PaginationList>
     </div>
   );
 };

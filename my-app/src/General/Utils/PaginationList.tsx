@@ -9,14 +9,14 @@ type Props = {
 };
 var counter = 0;
 const itemToShow: number = 8;
-const Pagination = (props: Props) => {
+const PaginationList = (props: Props) => {
   const pageNumbers: number[] = [];
 
   for (let i = 1; i <= Math.ceil(props.totalPosts / props.postsPerPage); i++) {
     pageNumbers.push(i);
   }
 
-  const setPageNumbers = (): JSX.Element[] => {
+  const setPagePages = (): JSX.Element[] => {
     const listOfCurrentPages: JSX.Element[] = [];
     let lastPage: number[] = [];
     if (props.currentPage === pageNumbers.length) {
@@ -58,7 +58,7 @@ const Pagination = (props: Props) => {
     }
     return listOfCurrentPages;
   };
-  const setFirstNumbers = (): JSX.Element[] => {
+  const setFirstPages = (): JSX.Element[] => {
     const listOfCurrentPages: JSX.Element[] = [];
     const lastPage = pageNumbers.slice(1, itemToShow);
 
@@ -92,17 +92,19 @@ const Pagination = (props: Props) => {
   return (
     <nav>
       <ul className="pagination">
-        <li
-          key={counter++}
-          className={props.currentPage === 1 ? "selected-item" : "page-item"}
-          onClick={() => props.setCurrentPage(1)}
-        >
-          {1}
-        </li>
+        {pageNumbers.length >= 1 && (
+          <li
+            key={counter++}
+            className={props.currentPage === 1 ? "selected-item" : "page-item"}
+            onClick={() => props.setCurrentPage(1)}
+          >
+            {1}
+          </li>
+        )}
 
-        {pageNumbers.length > 2 && props.currentPage >= 5 && setPageNumbers()}
+        {pageNumbers.length > 2 && props.currentPage >= 5 && setPagePages()}
 
-        {pageNumbers.length > 2 && props.currentPage <= 4 && setFirstNumbers()}
+        {pageNumbers.length > 2 && props.currentPage <= 4 && setFirstPages()}
 
         {pageNumbers.length > 1 && (
           <li
@@ -122,4 +124,4 @@ const Pagination = (props: Props) => {
   );
 };
 
-export default Pagination;
+export default PaginationList;

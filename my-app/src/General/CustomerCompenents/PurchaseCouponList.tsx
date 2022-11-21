@@ -7,10 +7,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeLoadingMode } from "../Redux/LoadingData";
 import CouponDisplayForPurchase from "./CouponDisplayForPurchase";
+import PaginationList from "../Utils/PagninationList";
 
 const PurchaseCouponsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const getErrorMessage = (message: string) => {
     dispatch(changeMessage(message));
     navigate("error");
@@ -19,11 +21,9 @@ const PurchaseCouponsList = () => {
     dispatch(changeLoadingMode(isLoading));
   };
 
-  const [coupons, setCoupons] = useState<Coupon[]>([]);
-
-  const postsPerPageToShow = (): number => {
-    return window.innerWidth > 700 ? 9 : 10;
-  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const [couponList, setCoupons] = useState([]);
+  const [totalPosts, setTotalPost] = useState(0);
 
   const fetchCoupons = async () => {
     const requestOptions = {
@@ -32,46 +32,37 @@ const PurchaseCouponsList = () => {
     };
 
     const response = await fetch(
-      "http://localhost:8080/customers/getAllCoupons",
+      `http://localhost:8080/customers/getAllCoupons?pageNum=${currentPage - 1}`,
       requestOptions
     );
-
     if (response.ok) {
       const data = await response.json();
-      setCoupons(data);
+      setCoupons(data.content);
+      setTotalPost(data.totalElements);
       setLoadingMode(false);
-    } else if (!response.ok) {
+    } else {
       const error = await response.json();
       getErrorMessage(error.value);
       setLoadingMode(false);
     }
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(postsPerPageToShow());
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = coupons.slice(indexOfFirstPost, indexOfLastPost);
-
-  const changepageNumber = (pageNumber: number) => setCurrentPage(pageNumber);
-
   useEffect(() => {
     setLoadingMode(true);
     fetchCoupons();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPage]);
 
   let keyNumber = 1;
 
   return (
     <div>
-      {coupons.length <= 0 && <div className="btn">No Coupon Yet.. </div>}
+      {couponList.length <= 0 && <div className="btn">No Coupon Yet.. </div>}
 
       <div>
         <div className="coupon-purchase">
-          {currentPosts.map((coupon) => (
+          {couponList.map((coupon) => (
             <CouponDisplayForPurchase
               coupon={coupon}
               key={keyNumber++}
@@ -79,12 +70,12 @@ const PurchaseCouponsList = () => {
           ))}
         </div>
 
-        <Pagination
-          totalPosts={coupons.length}
-          postsPerPage={postsPerPage}
-          setCurrentPage={changepageNumber}
+        <PaginationList
+          postsPerPage={8}
+          totalPosts={totalPosts}
+          setCurrentPage={(pageNumber: number) => setCurrentPage(pageNumber)}
           currentPage={currentPage}
-        ></Pagination>
+        ></PaginationList>
       </div>
     </div>
   );

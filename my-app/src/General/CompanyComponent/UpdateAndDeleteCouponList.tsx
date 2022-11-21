@@ -7,6 +7,7 @@ import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeLoadingMode } from "../Redux/LoadingData";
+import PaginationList from "../Utils/PagninationList";
 
 const UpdateAndDeleteCouponsList = () => {
   const dispatch = useDispatch();
@@ -19,12 +20,9 @@ const UpdateAndDeleteCouponsList = () => {
     dispatch(changeLoadingMode(isLoading));
   };
 
-  const [coupons, setCoupons] = useState<Coupon[]>([]);
-
-  const postsPerPageToShow = (): number => {
-    return window.innerWidth > 700 ? 9 : 10;
-  };
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [couponList, setCoupons] = useState([]);
+  const [totalPosts, setTotalPost] = useState(0);
   const fetchCoupons = async () => {
     const requestOptions = {
       method: "GET",
@@ -32,47 +30,40 @@ const UpdateAndDeleteCouponsList = () => {
     };
 
     const response = await fetch(
-      "http://localhost:8080/companies/getAllCoupons",
+      `http://localhost:8080/companies/getAllCoupons?pageNum=${
+        currentPage - 1
+      }`,
       requestOptions
     );
-
     if (response.ok) {
       const data = await response.json();
-      setCoupons(data);
+      setCoupons(data.content);
+      setTotalPost(data.totalElements);
       setLoadingMode(false);
-    } else if (!response.ok) {
+    } else {
       const error = await response.json();
       getErrorMessage(error.value);
       setLoadingMode(false);
     }
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(postsPerPageToShow());
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = coupons.slice(indexOfFirstPost, indexOfLastPost);
-
-  const changepageNumber = (pageNumber: number) => setCurrentPage(pageNumber);
-
   useEffect(() => {
     setLoadingMode(true);
     fetchCoupons();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPage]);
 
   let keyNumber = 1;
 
   return (
     <>
-      {coupons.length <= 0 ? (
+      {couponList.length <= 0 ? (
         <div className="btn">No Coupon Yet.. </div>
       ) : (
         <div>
           <div className="data-row">
-            {currentPosts.map((coupon) => (
+            {couponList.map((coupon) => (
               <UpdateAndDeleteCoupon
                 fetchCoupons={fetchCoupons}
                 coupon={coupon}
@@ -81,12 +72,12 @@ const UpdateAndDeleteCouponsList = () => {
             ))}
           </div>
 
-          <Pagination
-            totalPosts={coupons.length}
-            postsPerPage={postsPerPage}
-            setCurrentPage={changepageNumber}
+          <PaginationList
+            postsPerPage={8}
+            totalPosts={totalPosts}
+            setCurrentPage={(pageNumber: number) => setCurrentPage(pageNumber)}
             currentPage={currentPage}
-          ></Pagination>
+          ></PaginationList>
         </div>
       )}
     </>

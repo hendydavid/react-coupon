@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeMessage } from "../Redux/ErrorMessage";
 import { changeLoadingMode } from "../Redux/LoadingData";
+import PaginationList from "../Utils/PagninationList";
 
 const GetAllCompany = () => {
   const dispatch = useDispatch();
@@ -15,69 +16,60 @@ const GetAllCompany = () => {
     navigate("error");
   };
 
-  const setLoadingMode = (isLoading:boolean) => {
+  const loadingMode = useSelector((state: any) => state.loadingData.value);
+
+  const setLoadingMode = (isLoading: boolean) => {
     dispatch(changeLoadingMode(isLoading));
   };
 
-  const loadingMode = useSelector((state: any) => state.loadingData.value);
-
-  const postsPerPageToShow = (): number => {
-    return window.innerWidth > 700 ? 9 : 10;
-  };
-
-  const [companies, setCompanies] = useState([]);
-
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(postsPerPageToShow());
+  const [companiesList, setCompanies] = useState([]);
+  const [totalPosts, setTotalPost] = useState(0);
 
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = companies.slice(indexOfFirstPost, indexOfLastPost);
-
-  const changepageNumber = (pageNumber: number) => setCurrentPage(pageNumber);
-  const fetchCompany = async () => {
+  const fetchCompanies = async () => {
     const requestOptions = {
       method: "GET",
       headers: { "Content-Type": "application/json", token: getToken() },
     };
 
     const response = await fetch(
-      "http://localhost:8080/admin/getAllCompanies",
+      `http://localhost:8080/admin/getAllCompanies?pageNum=${currentPage - 1}`,
       requestOptions
     );
     if (response.ok) {
       const data = await response.json();
-      setCompanies(data);
-      setLoadingMode(false)
+      setCompanies(data.content);
+      setTotalPost(data.totalElements);
+      setLoadingMode(false);
     } else {
       const error = await response.json();
       getErrorMessage(error.value);
-      setLoadingMode(false)
+      setLoadingMode(false);
     }
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    setLoadingMode(true)
-    fetchCompany();
-  }, []);
+    setLoadingMode(true);
+    fetchCompanies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   let keyNumber = 1;
 
   return (
     <div>
       <div className="data-row">
-        {currentPosts.map((company) => (
+        {companiesList.map((company) => (
           <CompanyDisplay company={company} key={keyNumber++}></CompanyDisplay>
         ))}
       </div>
 
-      <Pagination
-        totalPosts={companies.length}
-        postsPerPage={postsPerPage}
-        setCurrentPage={changepageNumber}
+      <PaginationList
+        postsPerPage={8}
+        totalPosts={totalPosts}
+        setCurrentPage={(pageNumber: number) => setCurrentPage(pageNumber)}
         currentPage={currentPage}
-      ></Pagination>
+      ></PaginationList>
     </div>
   );
 };

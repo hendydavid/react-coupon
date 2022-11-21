@@ -7,6 +7,7 @@ import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeLoadingMode } from "../Redux/LoadingData";
+import PaginationList from "../Utils/PagninationList";
 
 const GetAllCustomer = () => {
   const dispatch = useDispatch();
@@ -19,17 +20,9 @@ const GetAllCustomer = () => {
     dispatch(changeLoadingMode(isLoading));
   };
 
-  const postsPerPageToShow = (): number => {
-    return window.innerWidth > 700 ? 9 : 10;
-  };
-  const [customersList, setCustomers] = useState([]);
-
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(postsPerPageToShow());
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = customersList.slice(indexOfFirstPost, indexOfLastPost);
+  const [customersList, setCustomers] = useState([]);
+  const [totalPosts, setTotalPost] = useState(0);
 
   let keyNumber = 1;
   const fetchCustomer = async () => {
@@ -39,12 +32,13 @@ const GetAllCustomer = () => {
     };
 
     const response = await fetch(
-      "http://localhost:8080/admin/getAllCustomers",
+      `http://localhost:8080/admin/getAllCustomers?pageNum=${currentPage-1}`,
       requestOptions
     );
     if (response.ok) {
       const data = await response.json();
-      setCustomers(data);
+      setCustomers(data.content);
+      setTotalPost(data.totalElements);
       setLoadingMode(false);
     } else {
       const error = await response.json();
@@ -56,24 +50,25 @@ const GetAllCustomer = () => {
   useEffect(() => {
     setLoadingMode(true);
     fetchCustomer();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   return (
     <div>
       <div className="data-row">
-        {currentPosts.map((customer) => (
+        {customersList.map((customer) => (
           <CustomerDisplay
             customer={customer}
             key={keyNumber++}
           ></CustomerDisplay>
         ))}
       </div>
-      <Pagination
-        totalPosts={customersList.length}
-        postsPerPage={postsPerPage}
-        setCurrentPage={setCurrentPage}
+      <PaginationList
+        postsPerPage={8}
+        totalPosts={totalPosts}
+        setCurrentPage={(pageNumber: number) => setCurrentPage(pageNumber)}
         currentPage={currentPage}
-      ></Pagination>
+      ></PaginationList>
     </div>
   );
 };

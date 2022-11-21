@@ -9,6 +9,13 @@ type Props = {
 };
 
 const Pagination = (props: Props) => {
+  // const [currentPage, setCurrentPage] = useState(1);
+ 
+  // const indexOfLastPost = currentPage * postsPerPage;
+  // const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  // const currentPosts = customersList.slice(indexOfFirstPost, indexOfLastPost);
+
+
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(props.totalPosts / props.postsPerPage); i++) {

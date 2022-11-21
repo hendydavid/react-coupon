@@ -6,6 +6,7 @@ import { getToken } from "../Utils/APIWrapper";
 import { useNavigate } from "react-router-dom";
 import { changeMessage } from "../Redux/ErrorMessage";
 import { changeLoadingMode } from "../Redux/LoadingData";
+import PaginationList from "../Utils/PagninationList";
 const UpdateAndDeleteCompanyList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,24 +20,24 @@ const UpdateAndDeleteCompanyList = () => {
     dispatch(changeLoadingMode(isLoading));
   };
 
-  const postsPerPageToShow = (): number => {
-    return window.innerWidth > 700 ? 9 : 10;
-  };
-
-  const [companies, setCompanies] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [companiesList, setCompanies] = useState([]);
+  const [totalPosts, setTotalPost] = useState(0);
 
   const fetchCompanies = async () => {
     const requestOptions = {
       method: "GET",
       headers: { "Content-Type": "application/json", token: getToken() },
     };
+
     const response = await fetch(
-      "http://localhost:8080/admin/getAllCompanies",
+      `http://localhost:8080/admin/getAllCompanies?pageNum=${currentPage - 1}`,
       requestOptions
     );
     if (response.ok) {
       const data = await response.json();
-      setCompanies(data);
+      setCompanies(data.content);
+      setTotalPost(data.totalElements);
       setLoadingMode(false);
     } else {
       const error = await response.json();
@@ -45,25 +46,16 @@ const UpdateAndDeleteCompanyList = () => {
     }
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(postsPerPageToShow());
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = companies.slice(indexOfFirstPost, indexOfLastPost);
-
-  const changepageNumber = (pageNumber: number) => setCurrentPage(pageNumber);
-
   let keyNumber = 1;
   useEffect(() => {
     fetchCompanies();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPage]);
 
   return (
     <div>
       <div className="data-row">
-        {currentPosts.map((company) => (
+        {companiesList.map((company) => (
           <UpdateAndDeleteCompany
             company={company}
             fetchCompanies={() => fetchCompanies()}
@@ -72,12 +64,12 @@ const UpdateAndDeleteCompanyList = () => {
         ))}
       </div>
 
-      <Pagination
-        totalPosts={companies.length}
-        postsPerPage={postsPerPage}
-        setCurrentPage={changepageNumber}
+      <PaginationList
+        postsPerPage={8}
+        totalPosts={totalPosts}
+        setCurrentPage={(pageNumber: number) => setCurrentPage(pageNumber)}
         currentPage={currentPage}
-      ></Pagination>
+      ></PaginationList>
     </div>
   );
 };
