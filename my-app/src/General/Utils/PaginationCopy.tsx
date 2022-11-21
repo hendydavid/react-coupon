@@ -21,7 +21,7 @@ const Pagination = (props: Props) => {
     let lastPage: number[] = [];
     if (props.currentPage === pageNumbers.length) {
       lastPage = pageNumbers.slice(
-        props.currentPage-1,
+        props.currentPage - 1,
         props.currentPage + itemToShow
       );
     } else {
@@ -50,11 +50,7 @@ const Pagination = (props: Props) => {
         pageNumbers.length - lastPage[0] >= itemToShow
       ) {
         listOfCurrentPages.push(
-          <li
-            key={counter++}
-            className={"page-item"}
-            onClick={() => props.setCurrentPage(i)}
-          >
+          <li key={counter++} className={"page-item"}>
             .....
           </li>
         );
@@ -67,7 +63,6 @@ const Pagination = (props: Props) => {
     const lastPage = pageNumbers.slice(1, itemToShow);
 
     for (let i = 0; i <= lastPage.length - 2; i++) {
-   
       listOfCurrentPages.push(
         <li
           key={counter++}
@@ -84,11 +79,7 @@ const Pagination = (props: Props) => {
         pageNumbers.length - lastPage[0] >= itemToShow
       ) {
         listOfCurrentPages.push(
-          <li
-            key={counter++}
-            className={"page-item"}
-            onClick={() => props.setCurrentPage(i)}
-          >
+          <li key={counter++} className={"page-item"}>
             .....
           </li>
         );
