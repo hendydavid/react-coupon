@@ -3,7 +3,6 @@ import { ColorRing } from "react-loader-spinner";
 import "./css-files/App.css";
 import Main from "./Main";
 import { useSelector } from "react-redux";
-import GetAllCustomer from "./AdminComponents/GetAllCustomer";
 
 const App = () => {
   const loadingMode = useSelector((state: any) => state.loadingData.value);
