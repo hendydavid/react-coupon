@@ -7,7 +7,7 @@ import GetAllCustomer from "./AdminComponents/GetAllCustomer";
 
 const App = () => {
   const loadingMode = useSelector((state: any) => state.loadingData.value);
-  const [number, setNumber] = useState(1);
+
   return (
     <div className="container">
      
@@ -25,7 +25,7 @@ const App = () => {
         </div>
       )}
       <Main></Main>
-  
+      
     </div>
   );
 };
