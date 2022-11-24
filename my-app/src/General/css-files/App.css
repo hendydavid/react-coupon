@@ -144,7 +144,6 @@
   border: #1976d2 1px solid;
 }
 
-
 .pagination {
   display: flex;
   align-items: center;
@@ -240,12 +239,16 @@
   margin: 5px;
 }
 
+.filter-section {
+  display: flex;
+  flex-direction: column;
+}
+
 .filter-option * {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .filter-option {
-
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -262,6 +265,10 @@
 
 .filter-option button {
   background-color: rgb(145, 227, 193);
+}
+
+.filter-option button:hover {
+  background-color: rgb(43, 203, 136);
 }
 
 .filter-option .title {
@@ -289,6 +296,8 @@
 .select-filter select {
   width: 30%;
   height: 2rem;
+  text-align: left;
+  font-size: 12px;
 
 }
 
@@ -311,17 +320,37 @@
   font-family: 'Source Sans Pro', sans-serif;
 }
 
-@media(max-width: 574px) {
-  .text {
-    display: none;
-  }
-
-}
-
 @media(max-width:400px) {
 
   .btn {
     font-size: 10px;
+  }
+}
+
+@media(max-width:580px) {
+
+  .coupon-and-image,
+  .couponWraper {
+    flex-direction: column;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 5px;
+
+  }
+
+  .text {
+    display: none;
+  }
+
+  .coupon-and-image img,
+  .couponWraper img {
+
+    height: 200px;
+    width: 300px;
+
+  }
+
+  .purchased button {
+    width: 70%;
   }
 }
 
@@ -336,14 +365,29 @@
     border-bottom: #1976d2 1px solid;
   }
 
+  select {
+    font-size: small;
+    text-align: left;
+    padding-left: 10px;
+  }
+
+
+
+}
+
+@media(max-width:950px) {
   .filter-menu {
     flex-direction: column;
 
   }
 
-  .select-filter {
+  .filter-option {
     width: 60%;
+    margin-bottom: 10px;
+    border-bottom: #1976d2 1px solid;
   }
+
+
 
 }
 
@@ -351,6 +395,8 @@
   .coupon-data-row {
     grid-template-columns: repeat(1, 1fr);
   }
+
+
 }
 
 @media(min-width:1070px) {
@@ -359,25 +405,5 @@
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 5px;
 
-  }
-}
-
-@media(max-width:580px) {
-  .coupon-and-image {
-    flex-direction: column;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 5px;
-
-  }
-
-  .coupon-and-image img {
-
-    height: 200px;
-    width: 300px;
-
-  }
-
-  .purchased button {
-    width: 70%;
   }
 }

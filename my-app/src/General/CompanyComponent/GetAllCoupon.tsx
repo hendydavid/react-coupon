@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Coupon } from "../Models/models";
-import Pagination from "../Utils/Pagination";
 import { getToken } from "../Utils/APIWrapper";
 import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
@@ -9,6 +7,7 @@ import { changeLoadingMode } from "../Redux/LoadingData";
 import CouponDisplay from "./CouponDisplay";
 import { optionsCategory } from "../Utils/Category";
 import PaginationList from "../Utils/PagninationList";
+// import "../css-files/select.css"
 
 const FetchType = {
   allCoupon: "All-Coupon-Fetching",
@@ -175,6 +174,9 @@ const GetAllCoupons = () => {
     <>
       {couponList.length <= 0 && <div>No Coupon Yet</div>}
       <div className="filter-menu">
+        <div className="filter-section">
+          
+        </div>
         <div className="filter-option">
           <div style={{ display: "flex" }}>
             <div>

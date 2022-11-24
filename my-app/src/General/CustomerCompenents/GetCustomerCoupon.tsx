@@ -129,9 +129,11 @@ const GetCustomerCoupon = () => {
             Submit
           </button>
         </div>
+
         <div className="filter-option select-filter">
           <h4 className="title">filter by category</h4>
           <div className="select">
+            
             <select
               id="format"
               onChange={(e) => {
@@ -146,6 +148,7 @@ const GetCustomerCoupon = () => {
             Submit
           </button>
         </div>
+      
       </div>
 
       <div>

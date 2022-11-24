@@ -10,7 +10,7 @@ const CouponDisplay = (props: Props) => {
   let coupon = props.coupon;
 
   return (
-    <div style={{ display: "flex", alignItems: "center", margin: "auto" ,paddingBottom:'3px'}}>
+    <div style={{ display: "flex", alignItems: "center", margin: "auto" ,paddingBottom:'3px'}}  className="couponWraper">
       <img
         src={`https://picsum.photos/id/${Math.round(
           Math.random() * 120

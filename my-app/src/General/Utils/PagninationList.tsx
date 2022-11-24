@@ -14,7 +14,7 @@ const PaginationList = (props: Props) => {
 
   for (
     let i = 1;
-    i <= Math.ceil((props.totalPosts + 1) / props.postsPerPage);
+    i <= Math.ceil(props.totalPosts  / props.postsPerPage);
     i++
   ) {
     pageNumbers.push(i);

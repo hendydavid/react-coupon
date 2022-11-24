@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Coupon } from "../Models/models";
-import Pagination from "../Utils/Pagination";
 import { getToken } from "../Utils/APIWrapper";
 import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
