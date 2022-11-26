@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Error from "./forLearning/Error";
+import Error from "./shared/Error";
 import GetAllCompany from "../General/AdminComponents/GetAllCompany";
 import AdminNavBar from "./AdminComponents/AdminNavBar";
 import UpdateCompanyPage from "./AdminComponents/UpdateCompanyPage";

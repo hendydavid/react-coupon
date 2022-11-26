@@ -12,11 +12,7 @@ const itemToShow: number = 8;
 const PaginationList = (props: Props) => {
   const pageNumbers: number[] = [];
 
-  for (
-    let i = 1;
-    i <= Math.ceil(props.totalPosts  / props.postsPerPage);
-    i++
-  ) {
+  for (let i = 1; i <= Math.ceil(props.totalPosts / props.postsPerPage); i++) {
     pageNumbers.push(i);
   }
 

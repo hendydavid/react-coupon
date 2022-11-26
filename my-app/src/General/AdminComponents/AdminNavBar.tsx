@@ -4,7 +4,7 @@ import { keysAndValyeUrlForAdmin } from "../Routing";
 import Footer from "../shared/Footer";
 import Header from "../shared/Header";
 import { useDispatch } from "react-redux";
-import { getToken, getType } from "../Utils/APIWrapper";
+import {getType } from "../Utils/APIWrapper";
 import { changeMessage } from "../Redux/ErrorMessage";
 import PopUp from "../shared/PopUp";
 const AdminNavBar = () => {

@@ -1,33 +1,16 @@
-/* .modal,   
-
-.overlay {
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    position: fixed;
-}
-
-.overlay {
-    background: rgba(119, 188, 220, 0.8);
-}
-
 .modal-content {
     position: absolute;
-    top: 40%;
+    top: 10%;
     left: 50%;
     transform: translate(-50%, -50%);
     line-height: 1.4;
-    background: #f1f1f1;
+    background: #62cfe8;
     padding: 14px 28px;
     border-radius: 3px;
-    height:100px;
+    height: 200px;
     width: 300px;
-    max-width:50%;
-    height: 50%;
-    
+    max-width: 50%;
+
 }
 
 .close-modal {
@@ -46,10 +29,11 @@ h2 {
 
 .close-modal h2 {
     font-weight: bold;
-} */
+}
+
 :root {
     --modal-duration: 1s;
-    --modal-color: #428bca;
+    --modal-color: #49c7f1;
 }
 
 .button {
@@ -75,6 +59,7 @@ h2 {
     width: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
+    background: rgb(182, 245, 255);
 }
 
 .modal-content {
@@ -91,7 +76,6 @@ h2 {
 }
 
 .modal-header {
-    background: var(--modal-color);
     padding: 15px;
     color: #fff;
     border-top-left-radius: 5px;
@@ -101,15 +85,6 @@ h2 {
 .modal-body {
     padding: 10px 20px;
     background: #fff;
-}
-
-.modal-footer {
-    background: var(--modal-color);
-    padding: 10px;
-    color: #fff;
-    text-align: center;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 
 .close {

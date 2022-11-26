@@ -285,8 +285,6 @@ const updateCouponHandler = async (
   }
 };
 
-
-
 export const CompanyApi = {
   // compsny components
   addCoupon: addCoupon,

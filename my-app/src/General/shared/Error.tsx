@@ -1,26 +1,17 @@
-import React, { useState } from "react";
-import {  useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import "../css-files/popUp.css";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getToken } from "../Utils/APIWrapper";
 
-type Props = {
-  pageToNavigate?: string;
-};
-
-export default function PopUp(prop: Props) {
-  const navigate = useNavigate();
+export default function Error() {
   const [modal, setModal] = useState(true);
-
-  const message = useSelector((state: any) => state.errorMessage.value);
-
+  const navigate = useNavigate();
   const toggleModal = () => {
     setModal(!modal);
-    if (prop.pageToNavigate) {
-      navigate(prop.pageToNavigate);
-    } else {
-      navigate(-1);
-    }
   };
+
+  useEffect(() => {
+    setModal(true);
+  }, []);
 
   return (
     <>
@@ -31,7 +22,13 @@ export default function PopUp(prop: Props) {
               <span
                 className="close"
                 onClick={() => {
-                  toggleModal();
+                  if (getToken().length > 10) {
+                    toggleModal();
+                    navigate(-1);
+                  } else {
+                    toggleModal();
+                    navigate("/");
+                  }
                 }}
               >
                 &times;
@@ -40,11 +37,11 @@ export default function PopUp(prop: Props) {
             </div>
             <div className="modal-body">
               <h4>Error:</h4>
-              <p>{message}</p>
+              <p>Please enter A valid url!</p>
             </div>
             <div className="modal-footer">
               <h3>
-                <a href="/">return to login page</a>
+                <Link to={"/"}></Link>
               </h3>
             </div>
           </div>

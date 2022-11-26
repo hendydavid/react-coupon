@@ -3,8 +3,8 @@ import { API } from "../General/Utils/APIWrapper";
 import { URL } from "./Routing";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { changeMessage, clearMessage } from "./Redux/ErrorMessage";
-import { useDispatch, useSelector } from "react-redux";
+import { changeMessage } from "./Redux/ErrorMessage";
+import { useDispatch } from "react-redux";
 
 type LoginInfo = {
   email: string;
