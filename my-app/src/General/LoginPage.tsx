@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { API } from "../General/Utils/APIWrapper";
+import { API,API_URL } from "../General/Utils/APIWrapper";
 import { URL } from "./Routing";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -22,7 +22,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const changeMessageRedux = (message: string) => {
     dispatch(changeMessage(message));
-    navigate("/error");
+    navigate("error");
   };
 
   const [isDisable, setDisable] = useState(true);

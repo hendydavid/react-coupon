@@ -6,7 +6,7 @@ import { keysAndValyeUrlForCustomer } from "../Routing";
 import Footer from "../shared/Footer";
 import Header from "../shared/Header";
 import PopUp from "../shared/PopUp";
-import { getToken, getType } from "../Utils/APIWrapper";
+import { API_URL, getToken, getType } from "../Utils/APIWrapper";
 
 const CustomerNavBar = () => {
   const [userName, setUserName] = useState("");
@@ -20,7 +20,7 @@ const CustomerNavBar = () => {
       method: "GET",
       headers: { "Content-Type": "application/json", token: getToken() },
     };
-    fetch("http://localhost:8080/customers/getFirstAndLastName", requestOptions)
+    fetch(`${API_URL}customers/getFirstAndLastName`, requestOptions)
       .then((res) => res.text())
       .then((text) => setUserName(text));
   }, []);

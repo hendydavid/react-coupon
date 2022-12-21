@@ -2,11 +2,11 @@ import { Coupon } from "../Models/models";
 import { iconsList } from "../Utils/Icon";
 import "../css-files/App.css";
 import { getKeyByValue } from "../Utils/Category";
-import { getToken } from "../Utils/APIWrapper";
+import { API_URL, getToken } from "../Utils/APIWrapper";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeMessage } from "../Redux/ErrorMessage";
-import { changeLoadingMode } from "../Redux/LoadingData";
+import { changeLoadingMode } from "../Redux/LoadingCircleIcon";
 type Props = {
   coupon: Coupon;
 };
@@ -36,7 +36,7 @@ const CouponDisplayForPurchase = (props: Props) => {
     };
     setLoadingMode(true);
     const response = await fetch(
-      "http://localhost:8080/customers/addCouponPurchase/" + couponId,
+      `${API_URL}customers/addCouponPurchase/${couponId}`,
       requestOptions
     );
 
@@ -51,9 +51,7 @@ const CouponDisplayForPurchase = (props: Props) => {
 
   return (
     <div className="purchased">
-      <div
-       className="coupon-and-image"
-      >
+      <div className="coupon-and-image">
         <img
           src={`https://picsum.photos/id/${Math.round(
             Math.random() * 120

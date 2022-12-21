@@ -19,7 +19,7 @@ const UpdateAndDeleteCompany = (prop: Prop) => {
   const navigate = useNavigate();
   const getErrorMessage = (message: string) => {
     dispatch(changeMessage(message));
-    navigate("error");
+    navigate("/error");
   };
 
   const responseHandlerMethod: APIResponseHandler = {

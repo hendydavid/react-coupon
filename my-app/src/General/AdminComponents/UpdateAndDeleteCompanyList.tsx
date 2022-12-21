@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import UpdateAndDeleteCompany from "./UpdateAndDeleteCompany";
 import { useDispatch } from "react-redux";
-import Pagination from "../Utils/Pagination";
-import { getToken } from "../Utils/APIWrapper";
+import { getToken,API_URL } from "../Utils/APIWrapper";
 import { useNavigate } from "react-router-dom";
 import { changeMessage } from "../Redux/ErrorMessage";
-import { changeLoadingMode } from "../Redux/LoadingData";
+import { changeLoadingMode } from "../Redux/LoadingCircleIcon";
 import PaginationList from "../Utils/PagninationList";
 const UpdateAndDeleteCompanyList = () => {
   const dispatch = useDispatch();
@@ -13,7 +12,7 @@ const UpdateAndDeleteCompanyList = () => {
 
   const getErrorMessage = (message: string) => {
     dispatch(changeMessage(message));
-    navigate("error");
+    navigate("/error");
   };
 
   const setLoadingMode = (isLoading: boolean) => {
@@ -31,7 +30,7 @@ const UpdateAndDeleteCompanyList = () => {
     };
 
     const response = await fetch(
-      `http://localhost:8080/admin/getAllCompanies?pageNum=${currentPage - 1}`,
+      `${API_URL}admin/getAllCompanies?pageNum=${currentPage - 1}`,
       requestOptions
     );
     if (response.ok) {

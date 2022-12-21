@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CouponDisplay from "../CompanyComponent/CouponDisplay";
 import { changeMessage } from "../Redux/ErrorMessage";
-import { changeLoadingMode } from "../Redux/LoadingData";
-import { getToken } from "../Utils/APIWrapper";
+import { changeLoadingMode } from "../Redux/LoadingCircleIcon";
+import { API_URL, getToken } from "../Utils/APIWrapper";
 import { optionsCategory } from "../Utils/Category";
 import Pagination from "../Utils/Pagination";
 
@@ -18,7 +18,7 @@ const GetCustomerCoupon = () => {
     };
     setLoadingMode(true);
     const response = await fetch(
-      "http://localhost:8080/customers/getAllCustomerCoupon/",
+      `${API_URL}customers/getAllCustomerCoupon/`,
       requestOptions
     );
 
@@ -44,8 +44,7 @@ const GetCustomerCoupon = () => {
     } else {
       setLoadingMode(true);
       const response = await fetch(
-        "http://localhost:8080/customers/getCustomerCouponByMaxPrice/" +
-          maxPrice,
+        `${API_URL}customers/getAllCustomerCoupon/customers/getCustomerCouponByMaxPrice/${maxPrice}`,
         requestOptions
       );
 
@@ -70,8 +69,7 @@ const GetCustomerCoupon = () => {
     };
     setLoadingMode(true);
     const response = await fetch(
-      "http://localhost:8080/customers/getCustomerCouponByCategory/" +
-        categoryId,
+      `${API_URL}customers/getCustomerCouponByCategory/${categoryId}`,
       requestOptions
     );
 
@@ -101,7 +99,7 @@ const GetCustomerCoupon = () => {
   const navigate = useNavigate();
   const getErrorMessage = (message: string) => {
     dispatch(changeMessage(message));
-    navigate("error");
+    navigate("/error");
   };
   const setLoadingMode = (isLoading: boolean) => {
     dispatch(changeLoadingMode(isLoading));
@@ -115,7 +113,6 @@ const GetCustomerCoupon = () => {
   return (
     <>
       <div className="filter-menu">
-        
         <div className="filter-option">
           <h4 className="title">Filter by max price</h4>
           <input
@@ -133,7 +130,6 @@ const GetCustomerCoupon = () => {
         <div className="filter-option select-filter">
           <h4 className="title">filter by category</h4>
           <div className="select">
-            
             <select
               id="format"
               onChange={(e) => {
@@ -148,11 +144,12 @@ const GetCustomerCoupon = () => {
             Submit
           </button>
         </div>
-      
       </div>
 
       <div>
-        {customerCoupon.length <= 0 && <div className="title">No Coupon Yet</div>}
+        {customerCoupon.length <= 0 && (
+          <div className="title">No Coupon Yet</div>
+        )}
         <div className="coupon-data-row">
           {currentPosts.map((coupon) => (
             <CouponDisplay coupon={coupon} key={counter++}></CouponDisplay>

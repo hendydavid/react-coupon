@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { APIResponseHandler, CompanyApi, getToken } from "../Utils/APIWrapper";
+import { APIResponseHandler, API_URL, CompanyApi, getToken } from "../Utils/APIWrapper";
 import { useParams } from "react-router-dom";
 import { Coupon } from "../Models/models";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { changeLoadingMode } from "../Redux/LoadingData";
+import { changeLoadingMode } from "../Redux/LoadingCircleIcon";
 import { optionsCategory } from "../Utils/Category";
 
 export interface IFormInputsCompany {
@@ -47,7 +47,7 @@ const UpdateCompanyPage = () => {
   const navigate = useNavigate();
   const getErrorMessage = (message: string) => {
     dispatch(changeMessage(message));
-    navigate("error");
+    navigate("/error");
   };
   const responseHandlerMethod: APIResponseHandler = {
     onSuccess: () => {},
@@ -114,7 +114,7 @@ const UpdateCompanyPage = () => {
       headers: { "Content-Type": "application/json", token: getToken() },
     };
     const res = await fetch(
-      `http://localhost:8080/companies/getOneCoupon/${id}`,
+      `${API_URL}companies/getOneCoupon/${id}`,
       requestOptions
     );
     const data = await res.json();

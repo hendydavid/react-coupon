@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getToken } from "../Utils/APIWrapper";
+import { API_URL, getToken } from "../Utils/APIWrapper";
 import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { changeLoadingMode } from "../Redux/LoadingData";
+import { changeLoadingMode } from "../Redux/LoadingCircleIcon";
 import CouponDisplayForPurchase from "./CouponDisplayForPurchase";
 import PaginationList from "../Utils/PagninationList";
 
@@ -13,7 +13,7 @@ const PurchaseCouponsList = () => {
 
   const getErrorMessage = (message: string) => {
     dispatch(changeMessage(message));
-    navigate("error");
+    navigate("/error");
   };
   const setLoadingMode = (isLoading: boolean) => {
     dispatch(changeLoadingMode(isLoading));
@@ -30,7 +30,7 @@ const PurchaseCouponsList = () => {
     };
 
     const response = await fetch(
-      `http://localhost:8080/customers/getAllCoupons?pageNum=${currentPage - 1}`,
+      `${API_URL}customers/getAllCoupons?pageNum=${currentPage - 1}`,
       requestOptions
     );
     if (response.ok) {

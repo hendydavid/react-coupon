@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import UpdateAndDeleteCustomer from "./UpdateAndDeleteCustomer";
-import { Customer } from "../Models/models";
-import Pagination from "../Utils/Pagination";
-import { getToken } from "../Utils/APIWrapper";
+import { getToken, API_URL } from "../Utils/APIWrapper";
 import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { changeLoadingMode } from "../Redux/LoadingData";
+import { changeLoadingMode } from "../Redux/LoadingCircleIcon";
 import PaginationList from "../Utils/PagninationList";
 
 const UpdateAndDeleteCustomersList = () => {
@@ -14,7 +12,7 @@ const UpdateAndDeleteCustomersList = () => {
   const navigate = useNavigate();
   const getErrorMessage = (message: string) => {
     dispatch(changeMessage(message));
-    navigate("error");
+    navigate("/error");
   };
   const setLoadingMode = (isLoading: boolean) => {
     dispatch(changeLoadingMode(isLoading));
@@ -31,7 +29,7 @@ const UpdateAndDeleteCustomersList = () => {
     };
 
     const response = await fetch(
-      `http://localhost:8080/admin/getAllCustomers?pageNum=${currentPage - 1}`,
+      `${API_URL}admin/getAllCustomers?pageNum=${currentPage - 1}`,
       requestOptions
     );
     if (response.ok) {

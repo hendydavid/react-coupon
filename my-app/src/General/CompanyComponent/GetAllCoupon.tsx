@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getToken } from "../Utils/APIWrapper";
+import { API_URL, getToken } from "../Utils/APIWrapper";
 import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { changeLoadingMode } from "../Redux/LoadingData";
+import { changeLoadingMode } from "../Redux/LoadingCircleIcon";
 import CouponDisplay from "./CouponDisplay";
 import { optionsCategory } from "../Utils/Category";
 import PaginationList from "../Utils/PagninationList";
@@ -30,9 +30,7 @@ const GetAllCoupons = () => {
     };
 
     const response = await fetch(
-      `http://localhost:8080/companies/getAllCoupons?pageNum=${
-        currentPage - 1
-      }`,
+      `${API_URL}companies/getAllCoupons?pageNum=${currentPage - 1}`,
       requestOptions
     );
     if (response.ok) {
@@ -61,7 +59,7 @@ const GetAllCoupons = () => {
     } else {
       setLoadingMode(true);
       const response = await fetch(
-        `http://localhost:8080/companies/getCompanyCouponByMaxPrice/${maxPrice}?pageNum=${
+        `${API_URL}companies/getCompanyCouponByMaxPrice/${maxPrice+1}?pageNum=${
           currentPage - 1
         }`,
         requestOptions
@@ -89,7 +87,7 @@ const GetAllCoupons = () => {
     };
     setLoadingMode(true);
     const response = await fetch(
-      `http://localhost:8080/companies/getCompanyCouponByCategory/${categoryId}?pageNum=${
+      `${API_URL}companies/getCompanyCouponByCategory/${categoryId}?pageNum=${
         currentPage - 1
       }`,
       requestOptions
@@ -120,9 +118,7 @@ const GetAllCoupons = () => {
       };
       setLoadingMode(true);
       const response = await fetch(
-        `http://localhost:8080/companies/getCouponsBetweenDates?pageNum=${
-          currentPage - 1
-        }`,
+        `${API_URL}companies/getCouponsBetweenDates?pageNum=${currentPage - 1}`,
         requestOptions
       );
 
@@ -144,7 +140,7 @@ const GetAllCoupons = () => {
   const navigate = useNavigate();
   const getErrorMessage = (message: string) => {
     dispatch(changeMessage(message));
-    navigate("error");
+    navigate("/error");
   };
   const setLoadingMode = (isLoading: boolean) => {
     dispatch(changeLoadingMode(isLoading));
@@ -174,9 +170,7 @@ const GetAllCoupons = () => {
     <>
       {couponList.length <= 0 && <div>No Coupon Yet</div>}
       <div className="filter-menu">
-        <div className="filter-section">
-          
-        </div>
+        <div className="filter-section"></div>
         <div className="filter-option">
           <div style={{ display: "flex" }}>
             <div>

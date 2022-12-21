@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Pagination from "../Utils/Pagination";
 import CompanyDisplay from "./CompanyDisplay";
-import { APIResponseHandler, getToken } from "../Utils/APIWrapper";
+import { API_URL, getToken } from "../Utils/APIWrapper";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeMessage } from "../Redux/ErrorMessage";
-import { changeLoadingMode } from "../Redux/LoadingData";
+import { changeLoadingMode } from "../Redux/LoadingCircleIcon";
 import PaginationList from "../Utils/PagninationList";
 
 const GetAllCompany = () => {
@@ -13,10 +12,9 @@ const GetAllCompany = () => {
   const navigate = useNavigate();
   const getErrorMessage = (message: string) => {
     dispatch(changeMessage(message));
-    navigate("error");
+    navigate("/error");
   };
 
-  const loadingMode = useSelector((state: any) => state.loadingData.value);
 
   const setLoadingMode = (isLoading: boolean) => {
     dispatch(changeLoadingMode(isLoading));
@@ -33,7 +31,7 @@ const GetAllCompany = () => {
     };
 
     const response = await fetch(
-      `http://localhost:8080/admin/getAllCompanies?pageNum=${currentPage - 1}`,
+      `${API_URL}admin/getAllCompanies?pageNum=${currentPage - 1}`,
       requestOptions
     );
     if (response.ok) {

@@ -1,9 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Customer } from "../Models/models";
-import { API, getToken } from "../Utils/APIWrapper";
+import {
+  API,
+  APIResponseHandler,
+  API_URL,
+  getToken,
+} from "../Utils/APIWrapper";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { changeMessage } from "../Redux/ErrorMessage";
 
 export interface IFormInputsCustomer {
   customerId: number;
@@ -14,6 +21,8 @@ export interface IFormInputsCustomer {
 }
 
 const UpdateCustomerPage = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { customerId } = useParams();
   const {
     register,
@@ -21,6 +30,16 @@ const UpdateCustomerPage = () => {
     handleSubmit,
     resetField,
   } = useForm<IFormInputsCustomer>();
+
+  const getErrorMessage = (message: string) => {
+    dispatch(changeMessage(message));
+    navigate("/error");
+  };
+
+  const responseHandlerMethod: APIResponseHandler = {
+    onSuccess: () => {},
+    onFail: (error: string) => getErrorMessage(error),
+  };
 
   const reset = () => {
     resetField("firstName");
@@ -40,7 +59,7 @@ const UpdateCustomerPage = () => {
       password: data.password,
       coupons: [],
     };
-    API.updateCustomer(customerUpdated);
+    API.updateCustomer(customerUpdated, responseHandlerMethod);
     reset();
   };
 
@@ -50,14 +69,15 @@ const UpdateCustomerPage = () => {
       headers: { "Content-Type": "application/json", token: getToken() },
     };
     const res = await fetch(
-      `http://localhost:8080/admin/getOneCustomer/${customerId}`,
+      `${API_URL}admin/getOneCustomer/${customerId}`,
       requestOptions
     );
     if (res.ok) {
       const data = await res.json();
       setCustomer(data);
     } else {
-      console.log(res.json());
+      const data = await res.json();
+      getErrorMessage(data.value);
     }
   };
 

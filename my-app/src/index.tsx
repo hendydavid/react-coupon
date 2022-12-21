@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { BrowserRouter } from "react-router-dom";
 import ErrorMessage from "./General/Redux/ErrorMessage";
-import LoadingData from "./General/Redux/LoadingData";
+import LoadingData from "./General/Redux/LoadingCircleIcon";
 
 const store = configureStore({
   reducer: {

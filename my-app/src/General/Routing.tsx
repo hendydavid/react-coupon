@@ -134,7 +134,6 @@ const Routing = (): JSX.Element => {
         {/* here is goin the admin routing  --- the above is just example*/}
         <Route path="/admin" element={<AdminNavBar></AdminNavBar>}>
           <Route index element={<MainPageContent></MainPageContent>} />
-          <Route path="/admin/error/" element={<PopUp></PopUp>} />
           <Route
             path="/admin/addCustomer"
             element={<AddCustomer></AddCustomer>}

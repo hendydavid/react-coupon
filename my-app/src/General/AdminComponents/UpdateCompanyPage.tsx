@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { API, APIResponseHandler, getToken } from "../Utils/APIWrapper";
+import {
+  API,
+  APIResponseHandler,
+  API_URL,
+  getToken,
+} from "../Utils/APIWrapper";
 import { useParams } from "react-router-dom";
 import { Company } from "../Models/models";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { changeMessage, clearMessage } from "../Redux/ErrorMessage";
-import { useDispatch, useSelector } from "react-redux";
+import { changeMessage } from "../Redux/ErrorMessage";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export interface IFormInputsCompany {
@@ -19,12 +24,12 @@ export interface IFormInputsCompany {
 const UpdateCompanyPage = () => {
   const { companyId } = useParams();
   const [company, setCompany] = useState<Company>();
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const getErrorMessage = (message: string) => {
     dispatch(changeMessage(message));
-    navigate("error");
+    navigate("/error");
   };
   const responseHandlerMethod: APIResponseHandler = {
     onSuccess: () => {},
@@ -68,14 +73,15 @@ const UpdateCompanyPage = () => {
       headers: { "Content-Type": "application/json", token: getToken() },
     };
     const res = await fetch(
-      `http://localhost:8080/admin/getOneCompany/${id}`,
+      `${API_URL}admin/getOneCompany/${id}`,
       requestOptions
     );
     if (res.ok) {
       const data = await res.json();
       setCompany(data);
     } else {
-      console.log(res.json());
+      const data = await res.json();
+      getErrorMessage(data.value);
     }
   };
   useEffect(() => {

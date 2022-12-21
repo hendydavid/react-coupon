@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import UpdateAndDeleteCoupon from "./UpdateAndDeleteCoupon";
-import { Coupon } from "../Models/models";
-import Pagination from "../Utils/Pagination";
-import { getToken } from "../Utils/APIWrapper";
+import { API_URL, getToken } from "../Utils/APIWrapper";
 import { changeMessage } from "../Redux/ErrorMessage";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { changeLoadingMode } from "../Redux/LoadingData";
+import { changeLoadingMode } from "../Redux/LoadingCircleIcon";
 import PaginationList from "../Utils/PagninationList";
 
 const UpdateAndDeleteCouponsList = () => {
@@ -14,7 +12,7 @@ const UpdateAndDeleteCouponsList = () => {
   const navigate = useNavigate();
   const getErrorMessage = (message: string) => {
     dispatch(changeMessage(message));
-    navigate("error");
+    navigate("/error");
   };
   const setLoadingMode = (isLoading: boolean) => {
     dispatch(changeLoadingMode(isLoading));
@@ -30,9 +28,7 @@ const UpdateAndDeleteCouponsList = () => {
     };
 
     const response = await fetch(
-      `http://localhost:8080/companies/getAllCoupons?pageNum=${
-        currentPage - 1
-      }`,
+      `${API_URL}companies/getAllCoupons?pageNum=${currentPage - 1}`,
       requestOptions
     );
     if (response.ok) {
